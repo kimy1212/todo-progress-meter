@@ -1,7 +1,6 @@
 @charset "UTF-8";
 @import url("theme-color.css");
 
-
 body {
 	margin: 0;
 }
@@ -10,4 +9,29 @@ body {
 	color: var(--color-text-dark);
 	font-family: "Kosugi Maru", Arial, sans-serif;
 	font-size: small;
+}
+
+.text-large-dark {
+	color: var(--color-text-dark);
+	font-family: "Kosugi Maru", Arial, sans-serif;
+	font-size: xx-large;
+}
+
+input[type="text"] {
+	padding: 5px 0px 5px 8px;
+	outline: none;
+	border-color: var(--color-border-primary);
+}
+
+.button-circle {
+	align-items: center;
+	background-color: var(--color-button-primary);
+	border: none;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+}
+
+.icon {
+	color: var(--color-icon-primary);
 }
