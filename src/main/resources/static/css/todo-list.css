@@ -1,0 +1,69 @@
+@charset "UTF-8";
+@import url("common/theme-color.css");
+
+.todo-tabs {
+	align-items: center;
+	background-color: #F9F9FB;
+	box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.5);
+	display: flex;
+	height: 8vh;
+	width: 100vw;
+}
+
+.todo-tab {
+	align-items: center;
+	border-right: 1px solid var(--color-border-primary);
+	display: flex;
+	justify-content: center;
+}
+
+.todo-tab-text {
+	border: 1px solid;
+	width: 50%;
+}
+
+.todo-tab-label {
+	padding: 5px 20px;
+}
+
+.add-todo-tab-button {
+	height: 35px;
+	margin-left: auto;
+	margin-right: 20px;
+	width: 35px;
+}
+
+.add-todo-tab-button .icon {
+	font-size: 1.4em;
+}
+
+.todo {
+	align-items: center;
+	border-bottom: 2px solid var(--color-border-primary);
+	display: flex;
+	margin: 20px auto;
+	padding: 20px 0px;
+	width: 70%;
+}
+
+.todo-checkbox {
+	margin: 0px 20px;
+	transform: scale(2);
+}
+
+.todo-text {
+	border: 2px solid;
+	width: 60%;
+}
+
+.add-todo-button {
+	bottom: 30px;
+	height: 50px;
+	position: fixed;
+	right: 30px;
+	width: 50px;
+}
+
+.add-todo-button .icon {
+	font-size: 2em;
+}
