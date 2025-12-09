@@ -13,25 +13,14 @@
 
 	<main>
 		<div class="todo-tabs" id="todoTabs">
-			<div class="todo-tab">
-				<span class="text-small-dark todo-tab-label">新規１</span>
-			</div>
-			<div class="todo-tab">
-				<span class="text-small-dark todo-tab-label">新規２</span>
+			<div th:each="tab : ${tabs}" class="todo-tab" th:data-tab-id="${tab.tabId}">
+				<span th:text="${tab.tabName}" class="text-small-dark todo-tab-label"></span>
 			</div>
 			<button class="button-circle add-todo-tab-button" id="addTodoTabButton">
 				<i class="icon fa-solid fa-plus"></i>
 			</button>
 		</div>
 		<div class="todo-list" id="todoList">
-			<div class="todo">
-				<input type="checkbox" class="todo-checkbox" name="todo" />
-				<label class="text-large-dark">todo1</label>
-			</div>
-			<div class="todo">
-				<input type="checkbox" class="todo-checkbox" name="todo" />
-				<label class="text-large-dark">todo2</label>
-			</div>
 			<button class="button-circle add-todo-button" id="addTodoButton">
 				<i class="icon fa-solid fa-plus"></i>
 			</button>
