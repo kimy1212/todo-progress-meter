@@ -1,8 +1,12 @@
 package com.github.kimy12.todo.controller;
 
-import jakarta.servlet.http.HttpSession;
+import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +18,14 @@ import com.github.kimy12.todo.service.TodoListService;
 @Controller
 public class TodoListController {
 	
-	@Autowired
-	private TodoListService service;
+	private final TodoListService service;
+	
+	private final Validator validator;
+	
+	public TodoListController(TodoListService service, Validator validator) {
+		this.service = service;
+		this.validator = validator;
+	}
 
 	@GetMapping("/todo-list")
 	public String getTabsByUser(final HttpSession session, final Model model) {
@@ -23,6 +33,12 @@ public class TodoListController {
 		
 		GetTabsByUserRequest requestData = new GetTabsByUserRequest();
 		requestData.setUserId(userId);
+		
+        Set<ConstraintViolation<GetTabsByUserRequest>> violations = validator.validate(requestData);
+
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
 		
 		GetTabsByUserResponse responseData = service.getTabsByUser(requestData);
 		model.addAttribute("tabs", responseData.getTabs());
