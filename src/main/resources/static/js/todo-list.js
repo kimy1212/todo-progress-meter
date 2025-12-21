@@ -8,18 +8,22 @@ import * as common from './common/common.js';
  */
 document.addEventListener('DOMContentLoaded', init);
 
-async function init() {
+function init() {
 
 	const tabs = document.querySelectorAll('.todo-tab');
 	if (tabs.length > 0) {
-		tabs[0].classList.add('active');
-		const activeTabId = document.querySelector('.todo-tab.active').dataset.tabId;
-		const res = await fetchTodos(activeTabId);
-		createTodoList(res.todos);
+		activateTodoTab(tabs[0]);
+		loadTodosForActiveTab();
 	}
 
 	//イベント付与
 	const todoTabs = document.getElementById('todoTabs');
+	todoTabs.addEventListener('click', (event) => {
+		const todoTab = event.target.closest('.todo-tab');
+		if (!todoTab) return;
+		handleTodoTabClick(todoTab);
+	});
+
 	todoTabs.addEventListener('keydown', (event) => {
 		if (event.key === 'Enter' && event.target.tagName === 'INPUT' && event.target.type === 'text') {
 			common.replaceInputWithLabel(event.target, 'span', ['text-small-dark', 'todo-tab-label']);
@@ -90,6 +94,37 @@ async function fetchTodos(tabId) {
 }
 
 /**
+ * todoタブ押下
+ * 
+ * @param {HTMLElement} todoTab todoタブ要素
+ */
+function handleTodoTabClick(todoTab) {
+	activateTodoTab(todoTab);
+	loadTodosForActiveTab();
+}
+
+/**
+ * todoタブアクティブ化処理
+ * 
+ * @param {HTMLElement} activeTodoTab アクティブにするtodoタブ要素
+ */
+function activateTodoTab(activeTodoTab) {
+	document.querySelectorAll('.todo-tab.active').forEach(todoTab => {
+		todoTab.classList.remove('active');
+	});
+	activeTodoTab.classList.add('active');
+}
+
+/**
+ * アクティブタブのtodo取得処理
+ */
+async function loadTodosForActiveTab() {
+	const activeTabId = document.querySelector('.todo-tab.active').dataset.tabId;
+	const res = await fetchTodos(activeTabId);
+	createTodoList(res.todos);
+}
+
+/**
  * todoタブ追加ボタン押下
  */
 function handleAddTodoTabButtonClick() {
@@ -138,9 +173,12 @@ function createTodoElement(mode, todoName) {
 /**
  * todoリスト作成
  * 
- * @param {{todoId: number, todoName: string}[]} todos 初期表示時に取得したtodo
+ * @param {{todoId: number, todoName: string}[]} todos 取得したtodo
  */
 function createTodoList(todos) {
+	const todoList = document.getElementById('todoList');
+	todoList.innerHTML = '';
+	
 	todos.forEach(todo => {
 		displayTodo(todo.todoName);
 	});
