@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="common/head :: head"></th:block>
+
+<head>
+	<link th:href="@{/css/common/error.css}" rel="stylesheet">
+</head>
+
+<body>
+
+	<th:block th:replace="common/header :: header"></th:block>
+
+	<h1 class="error-code">404 Not Found</h1>
+	<p class="error-message text-large-dark">お探しのページは見つかりませんでした。</p>
+	
+	<form action="/todo-list" method="get">
+		<button class="back-to-top-button button-rectangle" type="submit">トップページへ戻る</button>
+	</form>
+
+</body>
+
+</html>
