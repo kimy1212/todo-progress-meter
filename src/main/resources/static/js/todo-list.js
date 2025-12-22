@@ -10,8 +10,20 @@ document.addEventListener('DOMContentLoaded', init);
 
 function init() {
 
+	const tabs = document.querySelectorAll('.todo-tab');
+	if (tabs.length > 0) {
+		activateTodoTab(tabs[0]);
+		loadTodosForActiveTab();
+	}
+
 	//イベント付与
 	const todoTabs = document.getElementById('todoTabs');
+	todoTabs.addEventListener('click', (event) => {
+		const todoTab = event.target.closest('.todo-tab');
+		if (!todoTab) return;
+		handleTodoTabClick(todoTab);
+	});
+
 	todoTabs.addEventListener('keydown', (event) => {
 		if (event.key === 'Enter' && event.target.tagName === 'INPUT' && event.target.type === 'text') {
 			common.replaceInputWithLabel(event.target, 'span', ['text-small-dark', 'todo-tab-label']);
@@ -56,6 +68,61 @@ function init() {
 	addTodoButton.addEventListener('click', handleAddTodoButtonClick);
 }
 
+/**
+ * todo取得
+ * 
+ * @param {number} tabId 選択したタブのタブID
+ */
+async function fetchTodos(tabId) {
+	const controller = new AbortController();
+
+	try {
+		const res = await fetch(`/api/todo-list/${tabId}`, {
+			method: 'GET',
+			signal: controller.signal
+		});
+
+		if (!res.ok) {
+			throw new Error(`Failed to fetch todos: status ${res.status}`);
+		}
+
+		return await res.json();
+
+	} catch (e) {
+		console.error(e);
+	}
+}
+
+/**
+ * todoタブ押下
+ * 
+ * @param {HTMLElement} todoTab todoタブ要素
+ */
+function handleTodoTabClick(todoTab) {
+	activateTodoTab(todoTab);
+	loadTodosForActiveTab();
+}
+
+/**
+ * todoタブアクティブ化処理
+ * 
+ * @param {HTMLElement} activeTodoTab アクティブにするtodoタブ要素
+ */
+function activateTodoTab(activeTodoTab) {
+	document.querySelectorAll('.todo-tab.active').forEach(todoTab => {
+		todoTab.classList.remove('active');
+	});
+	activeTodoTab.classList.add('active');
+}
+
+/**
+ * アクティブタブのtodo取得処理
+ */
+async function loadTodosForActiveTab() {
+	const activeTabId = document.querySelector('.todo-tab.active').dataset.tabId;
+	const res = await fetchTodos(activeTabId);
+	createTodoList(res.todos);
+}
 
 /**
  * todoタブ追加ボタン押下
@@ -79,19 +146,13 @@ function addTodoTab() {
 }
 
 /**
- * todo追加ボタン押下
+ * todo要素生成
+ * 
+ * @param {'span' | 'label' | 'input'} mode 生成タグ
+ * @param {string} todoName todo名
+ * @return {HTMLElement} todo要素
  */
-function handleAddTodoButtonClick() {
-	addTodo();
-}
-
-/**
- * todo追加処理
- */
-function addTodo() {
-	const todoList = document.getElementById('todoList');
-	const addTodoButton = document.getElementById('addTodoButton');
-
+function createTodoElement(mode, todoName) {
 	const newTodo = document.createElement('div');
 	newTodo.classList.add('todo');
 
@@ -100,6 +161,56 @@ function addTodo() {
 	newCheckbox.classList.add('todo-checkbox');
 	newCheckbox.name = 'todo';
 
-	newTodo.append(newCheckbox, common.createInputText('', ['text-large-dark', 'todo-text']));
+	if (mode === 'span' || mode === 'label') {
+		newTodo.append(newCheckbox, common.createLabel(mode, todoName, 'text-large-dark'));
+	} else if (mode === 'input') {
+		newTodo.append(newCheckbox, common.createInputText(todoName, ['text-large-dark', 'todo-text']));
+	}
+
+	return newTodo;
+}
+
+/**
+ * todoリスト作成
+ * 
+ * @param {{todoId: number, todoName: string}[]} todos 取得したtodo
+ */
+function createTodoList(todos) {
+	const todoList = document.getElementById('todoList');
+	todoList.innerHTML = '';
+	
+	todos.forEach(todo => {
+		displayTodo(todo.todoName);
+	});
+}
+
+/**
+ * todo表示処理（初期表示用）
+ * 
+ * @param {string} todoName todo名
+ */
+function displayTodo(todoName) {
+	const todoList = document.getElementById('todoList');
+	const addTodoButton = document.getElementById('addTodoButton');
+
+	const newTodo = createTodoElement('label', todoName);
+	todoList.insertBefore(newTodo, addTodoButton);
+}
+
+/**
+ * todo追加ボタン押下
+ */
+function handleAddTodoButtonClick() {
+	addTodo();
+}
+
+/**
+ * todo追加処理（todo追加ボタン押下時）
+ */
+function addTodo() {
+	const todoList = document.getElementById('todoList');
+	const addTodoButton = document.getElementById('addTodoButton');
+
+	const newTodo = createTodoElement('input', '');
 	todoList.insertBefore(newTodo, addTodoButton);
 }
