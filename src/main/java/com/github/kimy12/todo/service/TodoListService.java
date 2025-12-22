@@ -2,7 +2,6 @@ package com.github.kimy12.todo.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.github.kimy12.todo.dto.GetTabsByUserRequest;
@@ -17,8 +16,11 @@ import com.github.kimy12.todo.repository.TodoDao;
 @Service
 public class TodoListService {
 
-	@Autowired
-	private TodoDao dao;
+	private final TodoDao dao;
+	
+	public TodoListService(TodoDao dao) {
+		this.dao = dao;
+	}
 
 	public GetTabsByUserResponse getTabsByUser(final GetTabsByUserRequest requestData) {
 		List<TodoTab> tabs = dao.getTabsByUser(requestData.getUserId());
