@@ -32,6 +32,16 @@ input[type="text"] {
 	justify-content: center;
 }
 
+.button-rectangle {
+	align-items: center;
+	background-color: var(--color-button-primary);
+	border: none;
+	border-radius: 9999px;
+	display: flex;
+	justify-content: center;
+	padding: 8px;
+}
+
 .icon {
 	color: var(--color-icon-primary);
 }
