@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.github.kimy12.todo.dto.GetTabsByUserRequest;
-import com.github.kimy12.todo.dto.GetTabsByUserResponse;
-import com.github.kimy12.todo.dto.GetTodosByTabRequest;
-import com.github.kimy12.todo.dto.GetTodosByTabResponse;
+import com.github.kimy12.todo.dto.GetTodoTabsByUserRequest;
+import com.github.kimy12.todo.dto.GetTodoTabsByUserResponse;
+import com.github.kimy12.todo.dto.GetTodosByTodoTabRequest;
+import com.github.kimy12.todo.dto.GetTodosByTodoTabResponse;
 import com.github.kimy12.todo.dto.Todo;
 import com.github.kimy12.todo.dto.TodoTab;
 import com.github.kimy12.todo.exception.NotFoundException;
@@ -22,23 +22,23 @@ public class TodoListService {
 		this.dao = dao;
 	}
 
-	public GetTabsByUserResponse getTabsByUser(final GetTabsByUserRequest requestData) {
-		List<TodoTab> tabs = dao.getTabsByUser(requestData.getUserId());
+	public GetTodoTabsByUserResponse getTodoTabsByUser(final GetTodoTabsByUserRequest requestData) {
+		List<TodoTab> todoTabs = dao.getTodoTabsByUser(requestData.getUserId());
 
-		GetTabsByUserResponse responseData = new GetTabsByUserResponse();
-		responseData.setTabs(tabs);
+		GetTodoTabsByUserResponse responseData = new GetTodoTabsByUserResponse();
+		responseData.setTodoTabs(todoTabs);
 
 		return responseData;
 	}
 
-	public GetTodosByTabResponse getTodosByTab(final GetTodosByTabRequest requestData) {
-		if (!dao.existsTodoTab(requestData.getUserId(), requestData.getTabId())) {
+	public GetTodosByTodoTabResponse getTodosByTodoTab(final GetTodosByTodoTabRequest requestData) {
+		if (!dao.existsTodoTab(requestData.getUserId(), requestData.getTodoTabId())) {
 			throw new NotFoundException("TODOタブが見つかりませんでした");
 		}
 
-		List<Todo> todos = dao.getTodosByUserAndTab(requestData.getUserId(), requestData.getTabId());
+		List<Todo> todos = dao.getTodosByUserAndTodoTab(requestData.getUserId(), requestData.getTodoTabId());
 
-		GetTodosByTabResponse responseData = new GetTodosByTabResponse();
+		GetTodosByTodoTabResponse responseData = new GetTodosByTodoTabResponse();
 		responseData.setTodos(todos);
 
 		return responseData;

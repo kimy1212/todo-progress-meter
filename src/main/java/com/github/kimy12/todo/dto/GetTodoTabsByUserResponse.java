@@ -5,8 +5,8 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class GetTodosByTabResponse {
-
-	private List<Todo> todos;
-
+public class GetTodoTabsByUserResponse {
+	
+	private List<TodoTab> todoTabs;
+	
 }

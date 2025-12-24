@@ -19,50 +19,50 @@ public class TodoDaoImpl implements TodoDao {
 	}
 	
 	@Override
-	public List<TodoTab> getTabsByUser(final String userId) {
+	public List<TodoTab> getTodoTabsByUser(final String userId) {
 		String sql = """
-				SELECT tab_id, tab_name
+				SELECT todo_tab_id, todo_tab_name
 				FROM todo_tabs
 				WHERE user_id = :userId
-				ORDER BY tab_id
+				ORDER BY todo_tab_id
 				""";
 
 		return namedParameterJdbcTemplate.query(
 				sql,
 				Map.of("userId", userId),
 				(rs, rowNum) -> new TodoTab(
-						rs.getInt("tab_id"),
-						rs.getString("tab_name")));
+						rs.getInt("todo_tab_id"),
+						rs.getString("todo_tab_name")));
 	}
 
 	@Override
-	public List<Todo> getTodosByUserAndTab(final String userId, final Integer tabId) {
+	public List<Todo> getTodosByUserAndTodoTab(final String userId, final Integer todoTabId) {
 		String sql = """
 				SELECT todo_id, todo_name
 				FROM todos
-				WHERE user_id = :userId AND tab_id = :tabId
+				WHERE user_id = :userId AND todo_tab_id = :todoTabId
 				ORDER BY todo_id
 				""";
 
-		return namedParameterJdbcTemplate.query(sql, Map.of("userId", userId, "tabId", tabId),
+		return namedParameterJdbcTemplate.query(sql, Map.of("userId", userId, "todoTabId", todoTabId),
 				(rs, rowNum) -> new Todo(
 						rs.getInt("todo_id"),
 						rs.getString("todo_name")));
 	}
 
 	@Override
-	public boolean existsTodoTab(final String userId, final Integer tabId) {
+	public boolean existsTodoTab(final String userId, final Integer todoTabId) {
 		String sql = """
 				SELECT EXISTS (
 					SELECT 1
 					FROM todo_tabs
-					WHERE user_id = :userId AND tab_id = :tabId
+					WHERE user_id = :userId AND todo_tab_id = :todoTabId
 				)
 				""";
 
 		Map<String, Object> params = Map.of(
 				"userId", userId,
-				"tabId", tabId);
+				"todoTabId", todoTabId);
 
 		Boolean existsTodoTab = namedParameterJdbcTemplate.queryForObject(sql, params, Boolean.class);
 

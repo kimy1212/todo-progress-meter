@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.kimy12.todo.dto.GetTodosByTabRequest;
-import com.github.kimy12.todo.dto.GetTodosByTabResponse;
+import com.github.kimy12.todo.dto.GetTodosByTodoTabRequest;
+import com.github.kimy12.todo.dto.GetTodosByTodoTabResponse;
 import com.github.kimy12.todo.service.TodoListService;
 
 @RestController
@@ -32,24 +32,24 @@ public class TodoListApiController {
 		this.validator = validator;
 	}
 
-	@GetMapping("/api/todo-list/{tabId}")
-	public GetTodosByTabResponse getTodosByTab(
-			@PathVariable(name = "tabId") @NotNull @Positive final Integer tabId,
+	@GetMapping("/api/todo-list/{todoTabId}")
+	public GetTodosByTodoTabResponse getTodosByTodoTab(
+			@PathVariable(name = "todoTabId") @NotNull @Positive final Integer todoTabId,
 			final HttpSession session,
 			final Model model) {
 		String userId = (String) session.getAttribute("userId");
 
-		GetTodosByTabRequest requestData = new GetTodosByTabRequest();
+		GetTodosByTodoTabRequest requestData = new GetTodosByTodoTabRequest();
 		requestData.setUserId(userId);
-		requestData.setTabId(tabId);
+		requestData.setTodoTabId(todoTabId);
 
-        Set<ConstraintViolation<GetTodosByTabRequest>> violations = validator.validate(requestData);
+        Set<ConstraintViolation<GetTodosByTodoTabRequest>> violations = validator.validate(requestData);
 
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(violations);
         }
 		
-		GetTodosByTabResponse responseData = service.getTodosByTab(requestData);
+		GetTodosByTodoTabResponse responseData = service.getTodosByTodoTab(requestData);
 
 		return responseData;
 	}
