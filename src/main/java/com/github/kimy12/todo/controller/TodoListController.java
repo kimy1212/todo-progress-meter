@@ -11,8 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.github.kimy12.todo.dto.GetTabsByUserRequest;
-import com.github.kimy12.todo.dto.GetTabsByUserResponse;
+import com.github.kimy12.todo.dto.GetTodoTabsByUserRequest;
+import com.github.kimy12.todo.dto.GetTodoTabsByUserResponse;
 import com.github.kimy12.todo.service.TodoListService;
 
 @Controller
@@ -28,20 +28,20 @@ public class TodoListController {
 	}
 
 	@GetMapping("/todo-list")
-	public String getTabsByUser(final HttpSession session, final Model model) {
+	public String getTodoTabsByUser(final HttpSession session, final Model model) {
 		String userId = (String) session.getAttribute("userId");
 		
-		GetTabsByUserRequest requestData = new GetTabsByUserRequest();
-		requestData.setUserId(userId);
+		GetTodoTabsByUserRequest request = new GetTodoTabsByUserRequest();
+		request.setUserId(userId);
 		
-        Set<ConstraintViolation<GetTabsByUserRequest>> violations = validator.validate(requestData);
+        Set<ConstraintViolation<GetTodoTabsByUserRequest>> violations = validator.validate(request);
 
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(violations);
         }
 		
-		GetTabsByUserResponse responseData = service.getTabsByUser(requestData);
-		model.addAttribute("tabs", responseData.getTabs());
+		GetTodoTabsByUserResponse response = service.getTodoTabsByUser(request);
+		model.addAttribute("todoTabs", response.getTodoTabs());
 		
 		return "todo-list";
 	}

@@ -7,8 +7,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class TodoTab {
 
-	private Integer tabId;
+	private Integer todoTabId;
 	
-	private String tabName;
+	private String todoTabName;
 	
 }

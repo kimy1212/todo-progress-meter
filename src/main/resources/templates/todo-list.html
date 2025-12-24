@@ -12,9 +12,9 @@
 	<th:block th:replace="common/header :: header"></th:block>
 
 	<main>
-		<div class="todo-tabs" id="todoTabs">
-			<div th:each="tab : ${tabs}" class="todo-tab" th:data-tab-id="${tab.tabId}">
-				<span th:text="${tab.tabName}" class="text-small-dark todo-tab-label"></span>
+		<div class="todo-tab-list" id="todoTabList">
+			<div th:each="todoTab : ${todoTabs}" class="todo-tab" th:data-todo-tab-id="${todoTab.todoTabId}">
+				<span th:text="${todoTab.todoTabName}" class="text-small-dark todo-tab-label"></span>
 			</div>
 			<button class="button-circle add-todo-tab-button" id="addTodoTabButton">
 				<i class="icon fa-solid fa-plus"></i>
