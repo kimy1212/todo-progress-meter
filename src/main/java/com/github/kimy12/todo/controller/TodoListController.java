@@ -31,17 +31,17 @@ public class TodoListController {
 	public String getTodoTabsByUser(final HttpSession session, final Model model) {
 		String userId = (String) session.getAttribute("userId");
 		
-		GetTodoTabsByUserRequest requestData = new GetTodoTabsByUserRequest();
-		requestData.setUserId(userId);
+		GetTodoTabsByUserRequest request = new GetTodoTabsByUserRequest();
+		request.setUserId(userId);
 		
-        Set<ConstraintViolation<GetTodoTabsByUserRequest>> violations = validator.validate(requestData);
+        Set<ConstraintViolation<GetTodoTabsByUserRequest>> violations = validator.validate(request);
 
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(violations);
         }
 		
-		GetTodoTabsByUserResponse responseData = service.getTodoTabsByUser(requestData);
-		model.addAttribute("todoTabs", responseData.getTodoTabs());
+		GetTodoTabsByUserResponse response = service.getTodoTabsByUser(request);
+		model.addAttribute("todoTabs", response.getTodoTabs());
 		
 		return "todo-list";
 	}

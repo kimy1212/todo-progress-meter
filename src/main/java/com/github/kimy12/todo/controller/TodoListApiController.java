@@ -39,19 +39,19 @@ public class TodoListApiController {
 			final Model model) {
 		String userId = (String) session.getAttribute("userId");
 
-		GetTodosByTodoTabRequest requestData = new GetTodosByTodoTabRequest();
-		requestData.setUserId(userId);
-		requestData.setTodoTabId(todoTabId);
+		GetTodosByTodoTabRequest request = new GetTodosByTodoTabRequest();
+		request.setUserId(userId);
+		request.setTodoTabId(todoTabId);
 
-        Set<ConstraintViolation<GetTodosByTodoTabRequest>> violations = validator.validate(requestData);
+        Set<ConstraintViolation<GetTodosByTodoTabRequest>> violations = validator.validate(request);
 
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(violations);
         }
 		
-		GetTodosByTodoTabResponse responseData = service.getTodosByTodoTab(requestData);
+		GetTodosByTodoTabResponse response = service.getTodosByTodoTab(request);
 
-		return responseData;
+		return response;
 	}
 
 }

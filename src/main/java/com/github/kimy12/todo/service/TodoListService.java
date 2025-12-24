@@ -22,26 +22,26 @@ public class TodoListService {
 		this.dao = dao;
 	}
 
-	public GetTodoTabsByUserResponse getTodoTabsByUser(final GetTodoTabsByUserRequest requestData) {
-		List<TodoTab> todoTabs = dao.getTodoTabsByUser(requestData.getUserId());
+	public GetTodoTabsByUserResponse getTodoTabsByUser(final GetTodoTabsByUserRequest request) {
+		List<TodoTab> todoTabs = dao.getTodoTabsByUser(request.getUserId());
 
-		GetTodoTabsByUserResponse responseData = new GetTodoTabsByUserResponse();
-		responseData.setTodoTabs(todoTabs);
+		GetTodoTabsByUserResponse response = new GetTodoTabsByUserResponse();
+		response.setTodoTabs(todoTabs);
 
-		return responseData;
+		return response;
 	}
 
-	public GetTodosByTodoTabResponse getTodosByTodoTab(final GetTodosByTodoTabRequest requestData) {
-		if (!dao.existsTodoTab(requestData.getUserId(), requestData.getTodoTabId())) {
+	public GetTodosByTodoTabResponse getTodosByTodoTab(final GetTodosByTodoTabRequest request) {
+		if (!dao.existsTodoTab(request.getUserId(), request.getTodoTabId())) {
 			throw new NotFoundException("TODOタブが見つかりませんでした");
 		}
 
-		List<Todo> todos = dao.getTodosByUserAndTodoTab(requestData.getUserId(), requestData.getTodoTabId());
+		List<Todo> todos = dao.getTodosByUserAndTodoTab(request.getUserId(), request.getTodoTabId());
 
-		GetTodosByTodoTabResponse responseData = new GetTodosByTodoTabResponse();
-		responseData.setTodos(todos);
+		GetTodosByTodoTabResponse response = new GetTodosByTodoTabResponse();
+		response.setTodos(todos);
 
-		return responseData;
+		return response;
 	}
 
 }
