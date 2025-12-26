@@ -32,9 +32,9 @@ public class TodoListApiController {
 		this.validator = validator;
 	}
 
-	@GetMapping("/api/todo-list/{todoTabId}")
+	@GetMapping("/api/tabs/{tabId}/todos")
 	public GetTodosByTodoTabResponse getTodosByTodoTab(
-			@PathVariable(name = "todoTabId") @NotNull @Positive final Integer todoTabId,
+			@PathVariable(name = "tabId") @NotNull @Positive final Integer todoTabId,
 			final HttpSession session,
 			final Model model) {
 		String userId = (String) session.getAttribute("userId");

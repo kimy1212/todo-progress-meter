@@ -71,13 +71,13 @@ function init() {
 /**
  * todo取得
  * 
- * @param {number} todoTabId 選択したtodoタブのtodoタブID
+ * @param {number} tabId 選択したtodoタブのtodoタブID
  */
-async function fetchTodos(todoTabId) {
+async function fetchTodos(tabId) {
 	const controller = new AbortController();
 
 	try {
-		const res = await fetch(`/api/todo-list/${todoTabId}`, {
+		const res = await fetch(`/api/tabs/${tabId}/todos`, {
 			method: 'GET',
 			signal: controller.signal
 		});
