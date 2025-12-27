@@ -1,4 +1,4 @@
-package com.github.kimy12.todo.controller;
+package com.kimy1212.progressmeter.controller.todo;
 
 import java.util.Set;
 
@@ -11,9 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.github.kimy12.todo.dto.GetTodoTabsByUserRequest;
-import com.github.kimy12.todo.dto.GetTodoTabsByUserResponse;
-import com.github.kimy12.todo.service.TodoService;
+import com.kimy1212.progressmeter.controller.dto.GetTodoTabsByUserRequest;
+import com.kimy1212.progressmeter.controller.dto.GetTodoTabsByUserResponse;
+import com.kimy1212.progressmeter.service.todo.TodoService;
 
 @Controller
 public class TodoController {

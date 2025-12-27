@@ -1,4 +1,4 @@
-package com.github.kimy12.todo;
+package com.kimy1212.progressmeter;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

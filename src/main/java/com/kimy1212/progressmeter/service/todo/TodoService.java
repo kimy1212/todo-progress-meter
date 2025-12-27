@@ -1,17 +1,17 @@
-package com.github.kimy12.todo.service;
+package com.kimy1212.progressmeter.service.todo;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.github.kimy12.todo.dto.GetTodoTabsByUserRequest;
-import com.github.kimy12.todo.dto.GetTodoTabsByUserResponse;
-import com.github.kimy12.todo.dto.GetTodosByTodoTabRequest;
-import com.github.kimy12.todo.dto.GetTodosByTodoTabResponse;
-import com.github.kimy12.todo.dto.Todo;
-import com.github.kimy12.todo.dto.TodoTab;
-import com.github.kimy12.todo.exception.NotFoundException;
-import com.github.kimy12.todo.repository.TodoDao;
+import com.kimy1212.progressmeter.controller.dto.GetTodoTabsByUserRequest;
+import com.kimy1212.progressmeter.controller.dto.GetTodoTabsByUserResponse;
+import com.kimy1212.progressmeter.controller.dto.GetTodosByTodoTabRequest;
+import com.kimy1212.progressmeter.controller.dto.GetTodosByTodoTabResponse;
+import com.kimy1212.progressmeter.controller.dto.Todo;
+import com.kimy1212.progressmeter.controller.dto.TodoTab;
+import com.kimy1212.progressmeter.domain.repository.TodoDao;
+import com.kimy1212.progressmeter.service.exception.NotFoundException;
 
 @Service
 public class TodoService {

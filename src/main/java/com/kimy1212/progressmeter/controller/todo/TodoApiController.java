@@ -1,4 +1,4 @@
-package com.github.kimy12.todo.controller;
+package com.kimy1212.progressmeter.controller.todo;
 
 import java.util.Set;
 
@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.kimy12.todo.dto.GetTodosByTodoTabRequest;
-import com.github.kimy12.todo.dto.GetTodosByTodoTabResponse;
-import com.github.kimy12.todo.service.TodoService;
+import com.kimy1212.progressmeter.controller.dto.GetTodosByTodoTabRequest;
+import com.kimy1212.progressmeter.controller.dto.GetTodosByTodoTabResponse;
+import com.kimy1212.progressmeter.service.todo.TodoService;
 
 @RestController
 @Validated
