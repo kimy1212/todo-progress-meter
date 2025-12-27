@@ -14,16 +14,16 @@ import com.github.kimy12.todo.exception.NotFoundException;
 import com.github.kimy12.todo.repository.TodoDao;
 
 @Service
-public class TodoListService {
+public class TodoService {
 
 	private final TodoDao dao;
 	
-	public TodoListService(TodoDao dao) {
+	public TodoService(TodoDao dao) {
 		this.dao = dao;
 	}
 
-	public GetTodoTabsByUserResponse getTodoTabsByUser(final GetTodoTabsByUserRequest request) {
-		List<TodoTab> todoTabs = dao.getTodoTabsByUser(request.getUserId());
+	public GetTodoTabsByUserResponse getTodoTabs(final GetTodoTabsByUserRequest request) {
+		List<TodoTab> todoTabs = dao.findTodoTabsByUserId(request.getUserId());
 
 		GetTodoTabsByUserResponse response = new GetTodoTabsByUserResponse();
 		response.setTodoTabs(todoTabs);
@@ -31,12 +31,12 @@ public class TodoListService {
 		return response;
 	}
 
-	public GetTodosByTodoTabResponse getTodosByTodoTab(final GetTodosByTodoTabRequest request) {
-		if (!dao.existsTodoTab(request.getUserId(), request.getTodoTabId())) {
+	public GetTodosByTodoTabResponse getTodos(final GetTodosByTodoTabRequest request) {
+		if (!dao.existsTodoTabByUserIdAndTodoTabId(request.getUserId(), request.getTodoTabId())) {
 			throw new NotFoundException("TODOタブが見つかりませんでした");
 		}
 
-		List<Todo> todos = dao.getTodosByUserAndTodoTab(request.getUserId(), request.getTodoTabId());
+		List<Todo> todos = dao.findTodosByUserIdAndTodoTabId(request.getUserId(), request.getTodoTabId());
 
 		GetTodosByTodoTabResponse response = new GetTodosByTodoTabResponse();
 		response.setTodos(todos);
