@@ -19,7 +19,7 @@ public class TodoDaoImpl implements TodoDao {
 	}
 	
 	@Override
-	public List<TodoTab> getTodoTabsByUser(final String userId) {
+	public List<TodoTab> findTodoTabsByUserId(final String userId) {
 		String sql = """
 				SELECT todo_tab_id, todo_tab_name
 				FROM todo_tabs
@@ -36,7 +36,7 @@ public class TodoDaoImpl implements TodoDao {
 	}
 
 	@Override
-	public List<Todo> getTodosByUserAndTodoTab(final String userId, final Integer todoTabId) {
+	public List<Todo> findTodosByUserIdAndTodoTabId(final String userId, final Integer todoTabId) {
 		String sql = """
 				SELECT todo_id, todo_name
 				FROM todos
@@ -51,7 +51,7 @@ public class TodoDaoImpl implements TodoDao {
 	}
 
 	@Override
-	public boolean existsTodoTab(final String userId, final Integer todoTabId) {
+	public boolean existsTodoTabByUserIdAndTodoTabId(final String userId, final Integer todoTabId) {
 		String sql = """
 				SELECT EXISTS (
 					SELECT 1

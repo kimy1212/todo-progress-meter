@@ -13,22 +13,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.github.kimy12.todo.dto.GetTodoTabsByUserRequest;
 import com.github.kimy12.todo.dto.GetTodoTabsByUserResponse;
-import com.github.kimy12.todo.service.TodoListService;
+import com.github.kimy12.todo.service.TodoService;
 
 @Controller
-public class TodoListController {
+public class TodoController {
 	
-	private final TodoListService service;
+	private final TodoService service;
 	
 	private final Validator validator;
 	
-	public TodoListController(TodoListService service, Validator validator) {
+	public TodoController(TodoService service, Validator validator) {
 		this.service = service;
 		this.validator = validator;
 	}
 
 	@GetMapping("/")
-	public String getTodoTabsByUser(final HttpSession session, final Model model) {
+	public String getTodoTabs(final HttpSession session, final Model model) {
 		session.setAttribute("userId", "550e8400-e29b-41d4-a716-446655440000");
 		String userId = (String) session.getAttribute("userId");
 		
@@ -41,7 +41,7 @@ public class TodoListController {
             throw new ConstraintViolationException(violations);
         }
 		
-		GetTodoTabsByUserResponse response = service.getTodoTabsByUser(request);
+		GetTodoTabsByUserResponse response = service.getTodoTabs(request);
 		model.addAttribute("todoTabs", response.getTodoTabs());
 		
 		return "todo-list";

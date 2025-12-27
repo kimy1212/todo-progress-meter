@@ -7,10 +7,10 @@ import com.github.kimy12.todo.dto.TodoTab;
 
 public interface TodoDao {
 	
-	public List<TodoTab> getTodoTabsByUser(final String userId) ;
+	public List<TodoTab> findTodoTabsByUserId(final String userId) ;
 	
-	public List<Todo> getTodosByUserAndTodoTab(final String userId, final Integer todoTabId);
+	public List<Todo> findTodosByUserIdAndTodoTabId(final String userId, final Integer todoTabId);
 	
-	public boolean existsTodoTab(final String userId, final Integer todoTabId);
+	public boolean existsTodoTabByUserIdAndTodoTabId(final String userId, final Integer todoTabId);
 
 }
