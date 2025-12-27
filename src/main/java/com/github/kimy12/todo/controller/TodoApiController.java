@@ -24,9 +24,9 @@ import com.github.kimy12.todo.service.TodoService;
 public class TodoApiController {
 
 	private final TodoService service;
-	
+
 	private final Validator validator;
-	
+
 	public TodoApiController(TodoService service, Validator validator) {
 		this.service = service;
 		this.validator = validator;
@@ -43,12 +43,12 @@ public class TodoApiController {
 		request.setUserId(userId);
 		request.setTodoTabId(todoTabId);
 
-        Set<ConstraintViolation<GetTodosByTodoTabRequest>> violations = validator.validate(request);
+		Set<ConstraintViolation<GetTodosByTodoTabRequest>> violations = validator.validate(request);
 
-        if (!violations.isEmpty()) {
-            throw new ConstraintViolationException(violations);
-        }
-		
+		if (!violations.isEmpty()) {
+			throw new ConstraintViolationException(violations);
+		}
+
 		GetTodosByTodoTabResponse response = service.getTodos(request);
 
 		return response;
