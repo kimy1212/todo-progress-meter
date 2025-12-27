@@ -1,4 +1,4 @@
-package com.github.kimy12.todo.exception;
+package com.kimy1212.progressmeter.service.exception;
 
 public class NotFoundException extends RuntimeException {
 

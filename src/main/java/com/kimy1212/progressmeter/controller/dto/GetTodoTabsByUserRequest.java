@@ -1,4 +1,4 @@
-package com.github.kimy12.todo.dto;
+package com.kimy1212.progressmeter.controller.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

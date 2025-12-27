@@ -1,4 +1,4 @@
-package com.github.kimy12.todo.advice;
+package com.kimy1212.progressmeter.controller.advice;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.github.kimy12.todo.exception.NotFoundException;
+import com.kimy1212.progressmeter.service.exception.NotFoundException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {

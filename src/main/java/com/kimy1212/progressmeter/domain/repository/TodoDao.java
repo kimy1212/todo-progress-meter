@@ -1,9 +1,9 @@
-package com.github.kimy12.todo.repository;
+package com.kimy1212.progressmeter.domain.repository;
 
 import java.util.List;
 
-import com.github.kimy12.todo.dto.Todo;
-import com.github.kimy12.todo.dto.TodoTab;
+import com.kimy1212.progressmeter.controller.dto.Todo;
+import com.kimy1212.progressmeter.controller.dto.TodoTab;
 
 public interface TodoDao {
 	
