@@ -176,8 +176,7 @@ function createTodoElement(mode, todoName) {
  * @param {{todoId: number, todoName: string}[]} todos 取得したtodo
  */
 function createTodoList(todos) {
-	const todoList = document.getElementById('todoList');
-	todoList.innerHTML = '';
+	document.querySelectorAll('#todoList .todo').forEach(e => e.remove());
 	
 	todos.forEach(todo => {
 		displayTodo(todo.todoName);
