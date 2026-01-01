@@ -2,15 +2,17 @@ package com.kimy1212.progressmeter.domain.repository;
 
 import java.util.List;
 
-import com.kimy1212.progressmeter.controller.dto.Todo;
-import com.kimy1212.progressmeter.controller.dto.TodoTab;
+import com.kimy1212.progressmeter.domain.valueobject.TodoTabId;
+import com.kimy1212.progressmeter.domain.valueobject.UserId;
+import com.kimy1212.progressmeter.infrastructure.repository.row.TodoRow;
+import com.kimy1212.progressmeter.infrastructure.repository.row.TodoTabRow;
 
 public interface TodoDao {
 	
-	public List<TodoTab> findTodoTabsByUserId(final String userId) ;
+	public List<TodoTabRow> findTodoTabsByUserId(final UserId userId) ;
 	
-	public List<Todo> findTodosByUserIdAndTodoTabId(final String userId, final Integer todoTabId);
+	public List<TodoRow> findTodosByUserIdAndTodoTabId(final UserId userId, final TodoTabId todoTabId);
 	
-	public boolean existsTodoTabByUserIdAndTodoTabId(final String userId, final Integer todoTabId);
+	public boolean existsTodoTabByUserIdAndTodoTabId(final UserId userId, final TodoTabId todoTabId);
 
 }

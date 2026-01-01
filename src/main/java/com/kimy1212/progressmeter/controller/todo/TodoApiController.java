@@ -1,22 +1,21 @@
 package com.kimy1212.progressmeter.controller.todo;
 
-import java.util.Set;
+import java.util.List;
 
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Validator;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
-import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kimy1212.progressmeter.controller.dto.GetTodosByTodoTabRequest;
-import com.kimy1212.progressmeter.controller.dto.GetTodosByTodoTabResponse;
+import com.kimy1212.progressmeter.controller.dto.TodoResponse;
+import com.kimy1212.progressmeter.domain.valueobject.TodoTabId;
+import com.kimy1212.progressmeter.domain.valueobject.UserId;
+import com.kimy1212.progressmeter.infrastructure.repository.row.TodoRow;
+import com.kimy1212.progressmeter.service.command.GetTodosCommand;
 import com.kimy1212.progressmeter.service.todo.TodoService;
 
 @RestController
@@ -25,31 +24,26 @@ public class TodoApiController {
 
 	private final TodoService service;
 
-	private final Validator validator;
-
-	public TodoApiController(TodoService service, Validator validator) {
+	public TodoApiController(TodoService service) {
 		this.service = service;
-		this.validator = validator;
 	}
 
 	@GetMapping("/api/tabs/{tabId}/todos")
-	public GetTodosByTodoTabResponse getTodos(
-			@PathVariable(name = "tabId") @NotNull @Positive final Integer todoTabId,
-			final HttpSession session,
-			final Model model) {
-		String userId = (String) session.getAttribute("userId");
+	public List<TodoResponse> getTodos(
+			@PathVariable(name = "tabId") @NotNull @Positive final Integer tabId,
+			final HttpSession session) {
+		UserId userId = UserId.of((String) session.getAttribute("userId"));
+		TodoTabId todoTabId = TodoTabId.of(tabId);
 
-		GetTodosByTodoTabRequest request = new GetTodosByTodoTabRequest();
-		request.setUserId(userId);
-		request.setTodoTabId(todoTabId);
+		GetTodosCommand command = new GetTodosCommand(userId, todoTabId);
 
-		Set<ConstraintViolation<GetTodosByTodoTabRequest>> violations = validator.validate(request);
+		List<TodoRow> rows = service.getTodos(command);
 
-		if (!violations.isEmpty()) {
-			throw new ConstraintViolationException(violations);
-		}
-
-		GetTodosByTodoTabResponse response = service.getTodos(request);
+		List<TodoResponse> response = rows.stream()
+				.map(row -> new TodoResponse(
+						row.todoId(),
+						row.todoName()))
+				.toList();
 
 		return response;
 	}
