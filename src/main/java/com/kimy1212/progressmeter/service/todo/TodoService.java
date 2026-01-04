@@ -3,11 +3,14 @@ package com.kimy1212.progressmeter.service.todo;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kimy1212.progressmeter.domain.repository.TodoDao;
 import com.kimy1212.progressmeter.domain.valueobject.UserId;
 import com.kimy1212.progressmeter.infrastructure.repository.row.TodoRow;
 import com.kimy1212.progressmeter.infrastructure.repository.row.TodoTabRow;
+import com.kimy1212.progressmeter.service.command.DeleteTodoTabsCommand;
+import com.kimy1212.progressmeter.service.command.DeleteTodosCommand;
 import com.kimy1212.progressmeter.service.command.GetTodosCommand;
 import com.kimy1212.progressmeter.service.exception.NotFoundException;
 
@@ -30,6 +33,27 @@ public class TodoService {
 		}
 
 		return dao.findTodosByUserIdAndTodoTabId(command.getUserId(), command.getTodoTabId());
+	}
+
+	@Transactional
+	public void deleteTodoTabs(final DeleteTodoTabsCommand command) {
+		int deleted = dao.deleteTodoTabsByUserIdAndTodoTabId(command.getUserId(), command.getTodoTabId());
+
+		if (deleted == 0) {
+			throw new NotFoundException("TODOタブが見つかりませんでした");
+		}
+	}
+
+	@Transactional
+	public void deleteTodos(final DeleteTodosCommand command) {
+		int deleted = dao.deleteTodosByUserIdAndTodoTabIdAndTodoId(
+				command.getUserId(),
+				command.getTodoTabId(),
+				command.getTodoId());
+
+		if (deleted == 0) {
+			throw new NotFoundException("TODOが見つかりませんでした");
+		}
 	}
 
 }
