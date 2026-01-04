@@ -10,33 +10,33 @@ document.addEventListener('DOMContentLoaded', init);
 
 function init() {
 
-	const tabs = document.querySelectorAll('.todo-tab');
-	if (tabs.length > 0) {
-		activateTodoTab(tabs[0]);
-		loadTodosForActiveTab();
+	const todoTabs = document.querySelectorAll('.todo-tab');
+	if (todoTabs.length > 0) {
+		activateTodoTab(todoTabs[0]);
+		loadTodosForActiveTodoTab();
 	}
 
 	//イベント付与
-	const todoTabs = document.getElementById('todoTabs');
-	todoTabs.addEventListener('click', (event) => {
+	const todoTabList = document.getElementById('todoTabList');
+	todoTabList.addEventListener('click', (event) => {
 		const todoTab = event.target.closest('.todo-tab');
 		if (!todoTab) return;
 		handleTodoTabClick(todoTab);
 	});
 
-	todoTabs.addEventListener('keydown', (event) => {
+	todoTabList.addEventListener('keydown', (event) => {
 		if (event.key === 'Enter' && event.target.tagName === 'INPUT' && event.target.type === 'text') {
 			common.replaceInputWithLabel(event.target, 'span', ['text-small-dark', 'todo-tab-label']);
 		}
 	});
 
-	todoTabs.addEventListener('focusout', (event) => {
+	todoTabList.addEventListener('focusout', (event) => {
 		if (event.target.tagName === 'INPUT' && event.target.type === 'text') {
 			common.replaceInputWithLabel(event.target, 'span', ['text-small-dark', 'todo-tab-label']);
 		}
 	});
 
-	todoTabs.addEventListener('dblclick', (event) => {
+	todoTabList.addEventListener('dblclick', (event) => {
 		if (event.target.tagName === 'SPAN') {
 			common.replaceLabelWithInput(event.target, ['text-small-dark', 'todo-tab-text']);
 		}
@@ -71,13 +71,13 @@ function init() {
 /**
  * todo取得
  * 
- * @param {number} tabId 選択したタブのタブID
+ * @param {number} tabId 選択したtodoタブのtodoタブID
  */
 async function fetchTodos(tabId) {
 	const controller = new AbortController();
 
 	try {
-		const res = await fetch(`/api/todo-list/${tabId}`, {
+		const res = await fetch(`/api/tabs/${tabId}/todos`, {
 			method: 'GET',
 			signal: controller.signal
 		});
@@ -100,7 +100,7 @@ async function fetchTodos(tabId) {
  */
 function handleTodoTabClick(todoTab) {
 	activateTodoTab(todoTab);
-	loadTodosForActiveTab();
+	loadTodosForActiveTodoTab();
 }
 
 /**
@@ -116,12 +116,12 @@ function activateTodoTab(activeTodoTab) {
 }
 
 /**
- * アクティブタブのtodo取得処理
+ * アクティブtodoタブのtodo取得処理
  */
-async function loadTodosForActiveTab() {
-	const activeTabId = document.querySelector('.todo-tab.active').dataset.tabId;
-	const res = await fetchTodos(activeTabId);
-	createTodoList(res.todos);
+async function loadTodosForActiveTodoTab() {
+	const activeTodoTabId = document.querySelector('.todo-tab.active').dataset.todoTabId;
+	const res = await fetchTodos(activeTodoTabId);
+	createTodoList(res);
 }
 
 /**
@@ -135,14 +135,14 @@ function handleAddTodoTabButtonClick() {
  * todoタブ追加処理
  */
 function addTodoTab() {
-	const todoTabs = document.getElementById('todoTabs');
+	const todoTabList = document.getElementById('todoTabList');
 	const addTodoTabButton = document.getElementById('addTodoTabButton');
 
 	const newTodoTab = document.createElement('div');
 	newTodoTab.classList.add('todo-tab');
 
 	newTodoTab.append(common.createInputText('', ['text-small-dark', 'todo-tab-text']));
-	todoTabs.insertBefore(newTodoTab, addTodoTabButton);
+	todoTabList.insertBefore(newTodoTab, addTodoTabButton);
 }
 
 /**
@@ -176,8 +176,7 @@ function createTodoElement(mode, todoName) {
  * @param {{todoId: number, todoName: string}[]} todos 取得したtodo
  */
 function createTodoList(todos) {
-	const todoList = document.getElementById('todoList');
-	todoList.innerHTML = '';
+	document.querySelectorAll('#todoList .todo').forEach(e => e.remove());
 	
 	todos.forEach(todo => {
 		displayTodo(todo.todoName);
