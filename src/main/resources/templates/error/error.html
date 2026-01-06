@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="common/head :: head"></head>
+
+<th:block th:fragment="extraHead">
+	<link th:href="@{/css/common/error.css}" rel="stylesheet">
+</th:block>
+
+<body>
+
+	<th:block th:replace="common/header :: header"></th:block>
+
+	<h1 class="error-code">問題が発生しました</h1>
+	<p class="error-message text-large-dark">処理中に予期しないエラーが発生しました。</p>
+
+	<form action="/" method="get">
+		<button class="back-to-top-button button-rectangle" type="submit">トップページへ戻る</button>
+	</form>
+
+</body>
+
+</html>
