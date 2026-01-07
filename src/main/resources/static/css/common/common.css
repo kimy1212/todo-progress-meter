@@ -14,7 +14,7 @@ body {
 .text-large-dark {
 	color: var(--color-text-dark);
 	font-family: "Kosugi Maru", Arial, sans-serif;
-	font-size: xx-large;
+	font-size: x-large;
 }
 
 input[type="text"] {
@@ -30,6 +30,16 @@ input[type="text"] {
 	border-radius: 50%;
 	display: flex;
 	justify-content: center;
+}
+
+.button-rectangle {
+	align-items: center;
+	background-color: var(--color-button-primary);
+	border: none;
+	border-radius: 9999px;
+	display: flex;
+	justify-content: center;
+	padding: 8px;
 }
 
 .icon {

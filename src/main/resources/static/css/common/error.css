@@ -1,0 +1,18 @@
+@charset "UTF-8";
+@import url("theme-color.css");
+
+.error-code {
+	color: var(--color-text-error);
+	margin-top: 64px;
+	text-align: center;
+}
+
+.error-message {
+	text-align: center;
+}
+
+.back-to-top-button {
+	color: var(--color-text-dark);
+	font-weight: bold;
+	margin: 64px auto;
+}
