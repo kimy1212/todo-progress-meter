@@ -3,45 +3,57 @@ package com.kimy1212.progressmeter.service.todo;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.kimy1212.progressmeter.controller.dto.GetTodoTabsByUserRequest;
-import com.kimy1212.progressmeter.controller.dto.GetTodoTabsByUserResponse;
-import com.kimy1212.progressmeter.controller.dto.GetTodosByTodoTabRequest;
-import com.kimy1212.progressmeter.controller.dto.GetTodosByTodoTabResponse;
-import com.kimy1212.progressmeter.controller.dto.Todo;
-import com.kimy1212.progressmeter.controller.dto.TodoTab;
 import com.kimy1212.progressmeter.domain.repository.TodoDao;
+import com.kimy1212.progressmeter.domain.valueobject.UserId;
+import com.kimy1212.progressmeter.infrastructure.repository.row.TodoRow;
+import com.kimy1212.progressmeter.infrastructure.repository.row.TodoTabRow;
+import com.kimy1212.progressmeter.service.command.DeleteTodoTabsCommand;
+import com.kimy1212.progressmeter.service.command.DeleteTodosCommand;
+import com.kimy1212.progressmeter.service.command.GetTodosCommand;
 import com.kimy1212.progressmeter.service.exception.NotFoundException;
 
 @Service
 public class TodoService {
 
 	private final TodoDao dao;
-	
+
 	public TodoService(TodoDao dao) {
 		this.dao = dao;
 	}
 
-	public GetTodoTabsByUserResponse getTodoTabs(final GetTodoTabsByUserRequest request) {
-		List<TodoTab> todoTabs = dao.findTodoTabsByUserId(request.getUserId());
-
-		GetTodoTabsByUserResponse response = new GetTodoTabsByUserResponse();
-		response.setTodoTabs(todoTabs);
-
-		return response;
+	public List<TodoTabRow> getTodoTabs(final UserId userId) {
+		return dao.findTodoTabsByUserId(userId);
 	}
 
-	public GetTodosByTodoTabResponse getTodos(final GetTodosByTodoTabRequest request) {
-		if (!dao.existsTodoTabByUserIdAndTodoTabId(request.getUserId(), request.getTodoTabId())) {
+	public List<TodoRow> getTodos(final GetTodosCommand command) {
+		if (!dao.existsTodoTabByUserIdAndTodoTabId(command.getUserId(), command.getTodoTabId())) {
 			throw new NotFoundException("TODOタブが見つかりませんでした");
 		}
 
-		List<Todo> todos = dao.findTodosByUserIdAndTodoTabId(request.getUserId(), request.getTodoTabId());
+		return dao.findTodosByUserIdAndTodoTabId(command.getUserId(), command.getTodoTabId());
+	}
 
-		GetTodosByTodoTabResponse response = new GetTodosByTodoTabResponse();
-		response.setTodos(todos);
+	@Transactional
+	public void deleteTodoTabs(final DeleteTodoTabsCommand command) {
+		int deleted = dao.deleteTodoTabsByUserIdAndTodoTabId(command.getUserId(), command.getTodoTabId());
 
-		return response;
+		if (deleted == 0) {
+			throw new NotFoundException("TODOタブが見つかりませんでした");
+		}
+	}
+
+	@Transactional
+	public void deleteTodos(final DeleteTodosCommand command) {
+		int deleted = dao.deleteTodosByUserIdAndTodoTabIdAndTodoId(
+				command.getUserId(),
+				command.getTodoTabId(),
+				command.getTodoId());
+
+		if (deleted == 0) {
+			throw new NotFoundException("TODOが見つかりませんでした");
+		}
 	}
 
 }

@@ -83,7 +83,7 @@ async function fetchTodos(tabId) {
 		});
 
 		if (!res.ok) {
-			throw new Error(`Failed to fetch todos: status ${res.status}`);
+			common.redirectByStatusCode(res.status);
 		}
 
 		return await res.json();
@@ -121,7 +121,7 @@ function activateTodoTab(activeTodoTab) {
 async function loadTodosForActiveTodoTab() {
 	const activeTodoTabId = document.querySelector('.todo-tab.active').dataset.todoTabId;
 	const res = await fetchTodos(activeTodoTabId);
-	createTodoList(res.todos);
+	createTodoList(res);
 }
 
 /**
@@ -177,7 +177,7 @@ function createTodoElement(mode, todoName) {
  */
 function createTodoList(todos) {
 	document.querySelectorAll('#todoList .todo').forEach(e => e.remove());
-	
+
 	todos.forEach(todo => {
 		displayTodo(todo.todoName);
 	});
