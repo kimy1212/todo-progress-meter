@@ -83,7 +83,7 @@ async function fetchTodos(tabId) {
 		});
 
 		if (!res.ok) {
-			throw new Error(`Failed to fetch todos: status ${res.status}`);
+			common.redirectByStatusCode(res.status);
 		}
 
 		return await res.json();
@@ -177,7 +177,7 @@ function createTodoElement(mode, todoName) {
  */
 function createTodoList(todos) {
 	document.querySelectorAll('#todoList .todo').forEach(e => e.remove());
-	
+
 	todos.forEach(todo => {
 		displayTodo(todo.todoName);
 	});
