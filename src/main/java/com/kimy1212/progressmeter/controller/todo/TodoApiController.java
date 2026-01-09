@@ -34,12 +34,11 @@ public class TodoApiController {
 
 	@GetMapping("/api/tabs/{tabId}/todos")
 	public List<TodoResponse> getTodos(
-			@PathVariable(name = "tabId") @NotNull @Positive final Integer tabId,
+			@PathVariable(name = "tabId") @NotNull @Positive final Integer todoTabId,
 			final HttpSession session) {
-		UserId userId = UserId.of((String) session.getAttribute("userId"));
-		TodoTabId todoTabId = TodoTabId.of(tabId);
-
-		GetTodosCommand command = new GetTodosCommand(userId, todoTabId);
+		GetTodosCommand command = new GetTodosCommand(
+				UserId.of((String) session.getAttribute("userId")),
+				TodoTabId.of(todoTabId));
 
 		List<TodoRow> rows = service.getTodos(command);
 
@@ -54,27 +53,25 @@ public class TodoApiController {
 
 	@DeleteMapping("api/tabs/{tabId}")
 	public void deleteTodoTabs(
-			@PathVariable(name = "tabId") @NotNull @Positive final Integer todoTabIdValue,
+			@PathVariable(name = "tabId") @NotNull @Positive final Integer todoTabId,
 			final HttpSession session) {
-		UserId userId = UserId.of((String) session.getAttribute("userId"));
-		TodoTabId todoTabId = TodoTabId.of(todoTabIdValue);
-
-		DeleteTodoTabsCommand command = new DeleteTodoTabsCommand(userId, todoTabId);
+		DeleteTodoTabsCommand command = new DeleteTodoTabsCommand(
+				UserId.of((String) session.getAttribute("userId")),
+				TodoTabId.of(todoTabId));
 
 		service.deleteTodoTabs(command);
 	}
 
 	@DeleteMapping("api/tabs/{tabId}/todos/{todoId}")
 	public void deleteTodos(
-			@PathVariable(name = "tabId") @NotNull @Positive final Integer todoTabIdValue,
-			@PathVariable(name = "todoId") @NotNull @Positive final Integer todoIdValue,
+			@PathVariable(name = "tabId") @NotNull @Positive final Integer todoTabId,
+			@PathVariable(name = "todoId") @NotNull @Positive final Integer todoId,
 			final HttpSession session) {
-		UserId userId = UserId.of((String) session.getAttribute("userId"));
-		TodoTabId todoTabId = TodoTabId.of(todoTabIdValue);
-		TodoId todoId = TodoId.of(todoIdValue);
-		
-		DeleteTodosCommand command = new DeleteTodosCommand(userId, todoTabId, todoId);
-		
+		DeleteTodosCommand command = new DeleteTodosCommand(
+				UserId.of((String) session.getAttribute("userId")),
+				TodoTabId.of(todoTabId),
+				TodoId.of(todoId));
+
 		service.deleteTodos(command);
 	}
 
