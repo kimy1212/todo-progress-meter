@@ -73,24 +73,38 @@ function init() {
  * 
  * @param {number} tabId 選択したtodoタブのtodoタブID
  */
+let todosController;
+
 async function fetchTodos(tabId) {
-	const controller = new AbortController();
+	if (todosController) {
+		todosController.abort();
+	}
+
+	todosController = new AbortController();
 
 	try {
 		const res = await fetch(`/api/tabs/${tabId}/todos`, {
 			method: 'GET',
-			signal: controller.signal
+			signal: todosController.signal
 		});
 
 		if (!res.ok) {
-			throw new Error(`Failed to fetch todos: status ${res.status}`);
+			common.redirectByStatusCode(res.status);
+			return;
 		}
 
 		return await res.json();
 
 	} catch (e) {
-		console.error(e);
+		if (e.name === 'AbortError') {
+			return;
+		}
+
+		common.redirectToGenericError();
+	} finally {
+		todosController = null;
 	}
+	
 }
 
 /**
@@ -177,7 +191,7 @@ function createTodoElement(mode, todoName) {
  */
 function createTodoList(todos) {
 	document.querySelectorAll('#todoList .todo').forEach(e => e.remove());
-	
+
 	todos.forEach(todo => {
 		displayTodo(todo.todoName);
 	});

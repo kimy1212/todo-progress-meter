@@ -1,4 +1,4 @@
-package com.github.kimy12;
+package com.kimy1212.progressmeter;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

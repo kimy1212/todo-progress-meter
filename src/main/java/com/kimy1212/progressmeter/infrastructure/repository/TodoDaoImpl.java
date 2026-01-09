@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kimy1212.progressmeter.domain.repository.TodoDao;
+import com.kimy1212.progressmeter.domain.valueobject.TodoId;
 import com.kimy1212.progressmeter.domain.valueobject.TodoTabId;
 import com.kimy1212.progressmeter.domain.valueobject.UserId;
 import com.kimy1212.progressmeter.infrastructure.repository.row.TodoRow;
@@ -53,6 +54,38 @@ public class TodoDaoImpl implements TodoDao {
 				(rs, rowNum) -> new TodoRow(
 						rs.getInt("todo_id"),
 						rs.getString("todo_name")));
+	}
+
+	@Override
+	public int deleteTodoTabsByUserIdAndTodoTabId(final UserId userId, final TodoTabId todoTabId) {
+		String sql = """
+				DELETE
+				FROM todo_tabs
+				WHERE user_id = :userId AND todo_tab_id = :todoTabId
+				""";
+
+		return namedParameterJdbcTemplate.update(
+				sql,
+				Map.of("userId", userId.value(), "todoTabId", todoTabId.value()));
+	}
+
+	@Override
+	public int deleteTodosByUserIdAndTodoTabIdAndTodoId(
+			final UserId userId,
+			final TodoTabId todoTabId,
+			final TodoId todoId) {
+		String sql = """
+				DELETE
+				FROM todos
+				WHERE user_id = :userId AND todo_tab_id = :todoTabId AND todo_id = :todoId
+				""";
+
+		return namedParameterJdbcTemplate.update(
+				sql,
+				Map.of(
+						"userId", userId.value(),
+						"todoTabId", todoTabId.value(),
+						"todoId", todoId.value()));
 	}
 
 	@Override

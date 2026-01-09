@@ -7,14 +7,18 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kimy1212.progressmeter.controller.dto.TodoResponse;
+import com.kimy1212.progressmeter.domain.valueobject.TodoId;
 import com.kimy1212.progressmeter.domain.valueobject.TodoTabId;
 import com.kimy1212.progressmeter.domain.valueobject.UserId;
 import com.kimy1212.progressmeter.infrastructure.repository.row.TodoRow;
+import com.kimy1212.progressmeter.service.command.DeleteTodoTabsCommand;
+import com.kimy1212.progressmeter.service.command.DeleteTodosCommand;
 import com.kimy1212.progressmeter.service.command.GetTodosCommand;
 import com.kimy1212.progressmeter.service.todo.TodoService;
 
@@ -46,6 +50,32 @@ public class TodoApiController {
 				.toList();
 
 		return response;
+	}
+
+	@DeleteMapping("api/tabs/{tabId}")
+	public void deleteTodoTabs(
+			@PathVariable(name = "tabId") @NotNull @Positive final Integer todoTabIdValue,
+			final HttpSession session) {
+		UserId userId = UserId.of((String) session.getAttribute("userId"));
+		TodoTabId todoTabId = TodoTabId.of(todoTabIdValue);
+
+		DeleteTodoTabsCommand command = new DeleteTodoTabsCommand(userId, todoTabId);
+
+		service.deleteTodoTabs(command);
+	}
+
+	@DeleteMapping("api/tabs/{tabId}/todos/{todoId}")
+	public void deleteTodos(
+			@PathVariable(name = "tabId") @NotNull @Positive final Integer todoTabIdValue,
+			@PathVariable(name = "todoId") @NotNull @Positive final Integer todoIdValue,
+			final HttpSession session) {
+		UserId userId = UserId.of((String) session.getAttribute("userId"));
+		TodoTabId todoTabId = TodoTabId.of(todoTabIdValue);
+		TodoId todoId = TodoId.of(todoIdValue);
+		
+		DeleteTodosCommand command = new DeleteTodosCommand(userId, todoTabId, todoId);
+		
+		service.deleteTodos(command);
 	}
 
 }
