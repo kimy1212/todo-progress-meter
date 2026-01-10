@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-	
+
 <head th:replace="common/head :: head"></head>
 
 <th:block th:fragment="extraHead">
@@ -27,6 +27,15 @@
 		</div>
 	</main>
 
+	<!--	 templates -->
+	<template id="todo">
+		<div class="todo">
+			<input type="checkbox" class="todo-checkbox" name="todo">
+			<div class="todo-content"></div>
+		</div>
+	</template>
+
+	<!--	 scripts -->
 	<script type="module" th:src="@{/js/todo-list.js}"></script>
 
 </body>

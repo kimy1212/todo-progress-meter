@@ -104,7 +104,7 @@ async function fetchTodos(tabId) {
 	} finally {
 		todosController = null;
 	}
-	
+
 }
 
 /**
@@ -167,21 +167,19 @@ function addTodoTab() {
  * @return {HTMLElement} todo要素
  */
 function createTodoElement(mode, todoName) {
-	const newTodo = document.createElement('div');
-	newTodo.classList.add('todo');
+	const todoTemplate = document.getElementById('todo');
 
-	const newCheckbox = document.createElement('input');
-	newCheckbox.type = 'checkbox';
-	newCheckbox.classList.add('todo-checkbox');
-	newCheckbox.name = 'todo';
+	const todoClone = todoTemplate.content.cloneNode(true);
+
+	const todoContent = todoClone.querySelector('.todo-content');
 
 	if (mode === 'span' || mode === 'label') {
-		newTodo.append(newCheckbox, common.createLabel(mode, todoName, 'text-large-dark'));
+		todoContent.append(common.createLabel(mode, todoName, 'text-large-dark'));
 	} else if (mode === 'input') {
-		newTodo.append(newCheckbox, common.createInputText(todoName, ['text-large-dark', 'todo-text']));
+		todoContent.append(common.createInputText(todoName, ['text-large-dark', 'todo-text']));
 	}
 
-	return newTodo;
+	return todoClone;
 }
 
 /**
