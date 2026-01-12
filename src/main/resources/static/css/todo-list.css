@@ -38,6 +38,17 @@
 	padding: 5px 20px;
 }
 
+.delete-todo-tab-button {
+	display: none;
+}
+
+.todo-tab:hover:has(.todo-tab-label) .delete-todo-tab-button {
+	background: none;
+	border: none;
+	display: block;
+	margin-right: 10px;
+}
+
 .add-todo-tab-button {
 	height: 35px;
 	margin-left: auto;

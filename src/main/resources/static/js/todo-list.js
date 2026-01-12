@@ -19,6 +19,15 @@ function init() {
 	//イベント付与
 	const todoTabList = document.getElementById('todoTabList');
 	todoTabList.addEventListener('click', (event) => {
+		const deleteTodoTabButton = event.target.closest('.delete-todo-tab-button');
+		if (deleteTodoTabButton) {
+			const todoTab = deleteTodoTabButton.closest('.todo-tab');
+			if (!todoTab) return;
+
+			handleDeleteTodoTabButtonClick(todoTab.dataset.todoTabId);
+			return;
+		}
+
 		const todoTab = event.target.closest('.todo-tab');
 		if (!todoTab) return;
 		handleTodoTabClick(todoTab);
@@ -131,6 +140,29 @@ async function fetchTodos(tabId) {
 }
 
 /**
+ * todoタブ削除
+ *
+ * @param {number} tabId 削除対象のtodoタブID
+ */
+async function deleteTodoTab(tabId) {
+	try {
+		const res = await fetch(`/api/tabs/${tabId}`, {
+			method: 'DELETE',
+		});
+
+		if (!res.ok) {
+			common.redirectByStatusCode(res.status);
+			return false;
+		}
+
+		return true;
+	} catch {
+		common.redirectToGenericError();
+		return false;
+	}
+}
+
+/**
  * todo削除
  *
  * @param {number} tabId 削除対象のtodoタブID
@@ -192,6 +224,17 @@ async function loadTodosForActiveTodoTab() {
  */
 function getActiveTodoTabId() {
 	return document.querySelector('.todo-tab.active').dataset.todoTabId;
+}
+
+/**
+ * todoタブ削除ボタン押下
+ * 
+ * @param {number} tabId 削除対象のtodoタブID
+ */
+async function handleDeleteTodoTabButtonClick(tabId) {
+	const isDeleted = await deleteTodoTab(tabId);
+	if (!isDeleted) return;
+	window.location.href = '/';
 }
 
 /**
@@ -274,7 +317,7 @@ function displayTodo(todo) {
  */
 async function handleDeleteTodoButtonClick(tabId, todoId) {
 	const isDeleted = await deleteTodo(tabId, todoId);
-	if(!isDeleted) return;
+	if (!isDeleted) return;
 	loadTodosForActiveTodoTab();
 }
 
