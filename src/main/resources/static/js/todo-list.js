@@ -19,6 +19,15 @@ function init() {
 	//イベント付与
 	const todoTabList = document.getElementById('todoTabList');
 	todoTabList.addEventListener('click', (event) => {
+		const deleteTodoTabButton = event.target.closest('.delete-todo-tab-button');
+		if (deleteTodoTabButton) {
+			const todoTab = deleteTodoTabButton.closest('.todo-tab');
+			if (!todoTab) return;
+
+			handleDeleteTodoTabButtonClick(todoTab.dataset.todoTabId);
+			return;
+		}
+
 		const todoTab = event.target.closest('.todo-tab');
 		if (!todoTab) return;
 		handleTodoTabClick(todoTab);
@@ -64,6 +73,30 @@ function init() {
 		}
 	});
 
+	document.addEventListener('click', (event) => {
+		const trigger = event.target.closest('.todo-actions-trigger');
+		const menu = event.target.closest('.todo-actions-menu');
+
+		if (trigger) {
+			const targetMenu = trigger.nextElementSibling;
+			targetMenu.classList.toggle('is-open');
+			return;
+		}
+
+		if (menu) return;
+
+		document
+			.querySelectorAll('.todo-actions-menu.is-open')
+			.forEach(e => e.classList.remove('is-open'));
+	});
+
+	todoList.addEventListener('click', (event) => {
+		const deleteTodoButton = event.target.closest('#deleteTodoButton');
+		if (!deleteTodoButton) return;
+		const todoId = event.target.closest('.todo').dataset.todoId;
+		handleDeleteTodoButtonClick(getActiveTodoTabId(), todoId);
+	});
+
 	const addTodoButton = document.getElementById('addTodoButton');
 	addTodoButton.addEventListener('click', handleAddTodoButtonClick);
 }
@@ -104,7 +137,53 @@ async function fetchTodos(tabId) {
 	} finally {
 		todosController = null;
 	}
+}
 
+/**
+ * todoタブ削除
+ *
+ * @param {number} tabId 削除対象のtodoタブID
+ */
+async function deleteTodoTab(tabId) {
+	try {
+		const res = await fetch(`/api/tabs/${tabId}`, {
+			method: 'DELETE',
+		});
+
+		if (!res.ok) {
+			common.redirectByStatusCode(res.status);
+			return false;
+		}
+
+		return true;
+	} catch {
+		common.redirectToGenericError();
+		return false;
+	}
+}
+
+/**
+ * todo削除
+ *
+ * @param {number} tabId 削除対象のtodoタブID
+ * @param {number} todoId 削除対象のtodoID
+ */
+async function deleteTodo(tabId, todoId) {
+	try {
+		const res = await fetch(`/api/tabs/${tabId}/todos/${todoId}`, {
+			method: 'DELETE',
+		});
+
+		if (!res.ok) {
+			common.redirectByStatusCode(res.status);
+			return false;
+		}
+
+		return true;
+	} catch {
+		common.redirectToGenericError();
+		return false;
+	}
 }
 
 /**
@@ -139,6 +218,26 @@ async function loadTodosForActiveTodoTab() {
 }
 
 /**
+ * アクティブtodoタブID取得処理
+ * 
+ * @return {number} アクティブtodoタブのtodoタブID
+ */
+function getActiveTodoTabId() {
+	return document.querySelector('.todo-tab.active').dataset.todoTabId;
+}
+
+/**
+ * todoタブ削除ボタン押下
+ * 
+ * @param {number} tabId 削除対象のtodoタブID
+ */
+async function handleDeleteTodoTabButtonClick(tabId) {
+	const isDeleted = await deleteTodoTab(tabId);
+	if (!isDeleted) return;
+	window.location.href = '/';
+}
+
+/**
  * todoタブ追加ボタン押下
  */
 function handleAddTodoTabButtonClick() {
@@ -163,20 +262,22 @@ function addTodoTab() {
  * todo要素生成
  * 
  * @param {'span' | 'label' | 'input'} mode 生成タグ
- * @param {string} todoName todo名
+ * @param {{todoId: number, todoName: string}[]} todo 生成対象のtodo
  * @return {HTMLElement} todo要素
  */
-function createTodoElement(mode, todoName) {
+function createTodoElement(mode, todo) {
 	const todoTemplate = document.getElementById('todo');
 
 	const todoClone = todoTemplate.content.cloneNode(true);
 
 	const todoContent = todoClone.querySelector('.todo-content');
 
+	todoClone.querySelector('.todo').dataset.todoId = todo.todoId;
+
 	if (mode === 'span' || mode === 'label') {
-		todoContent.append(common.createLabel(mode, todoName, 'text-large-dark'));
+		todoContent.append(common.createLabel(mode, todo.todoName, 'text-large-dark'));
 	} else if (mode === 'input') {
-		todoContent.append(common.createInputText(todoName, ['text-large-dark', 'todo-text']));
+		todoContent.append(common.createInputText(todo.todoName, ['text-large-dark', 'todo-text']));
 	}
 
 	return todoClone;
@@ -191,21 +292,33 @@ function createTodoList(todos) {
 	document.querySelectorAll('#todoList .todo').forEach(e => e.remove());
 
 	todos.forEach(todo => {
-		displayTodo(todo.todoName);
+		displayTodo(todo);
 	});
 }
 
 /**
  * todo表示処理（初期表示用）
  * 
- * @param {string} todoName todo名
+ * @param {{todoId: number, todoName: string}[]} todo 表示対象のtodo
  */
-function displayTodo(todoName) {
+function displayTodo(todo) {
 	const todoList = document.getElementById('todoList');
 	const addTodoButton = document.getElementById('addTodoButton');
 
-	const newTodo = createTodoElement('label', todoName);
+	const newTodo = createTodoElement('label', todo);
 	todoList.insertBefore(newTodo, addTodoButton);
+}
+
+/**
+ * todo削除ボタン押下
+ * 
+ * @param {number} tabId 削除対象のtodoタブID
+ * @param {number} todoId 削除対象のtodoID
+ */
+async function handleDeleteTodoButtonClick(tabId, todoId) {
+	const isDeleted = await deleteTodo(tabId, todoId);
+	if (!isDeleted) return;
+	loadTodosForActiveTodoTab();
 }
 
 /**
