@@ -46,6 +46,7 @@
 }
 
 .add-todo-tab-button .icon {
+	color: var(--color-icon-light);
 	font-size: 1.4em;
 }
 
@@ -55,6 +56,7 @@
 	display: flex;
 	margin: 20px auto;
 	padding: 20px 0px;
+	position: relative;
 	width: 70%;
 }
 
@@ -68,6 +70,63 @@
 	width: 60%;
 }
 
+.todo:hover {
+	background-color: var(--color-bg-hover);
+}
+
+.todo-actions-trigger {
+	display: none;
+}
+
+.todo:hover .todo-actions-trigger {
+	background-color: var(--color-bg-hover);
+	border: none;
+	display: block;
+	margin-left: auto;
+	margin-right: 20px;
+}
+
+.todo-actions-trigger .icon {
+	color: var(--color-icon-dark);
+	font-size: large;
+}
+
+.todo-actions-menu {
+	background-color: #FFFFFF;
+	border: 1px solid;
+	display: none;
+	padding: 5px;
+	position: absolute;
+	right: 0%;
+	top: 100%;
+	transform: translate(110px, -40px);
+	z-index: 1;
+}
+
+.todo-actions-menu.is-open {
+	display: block;
+}
+
+.todo-actions-menu li {
+	list-style: none;
+	padding: 5px;
+}
+
+.todo-actions-menu li:hover {
+	background-color: var(--color-bg-hover);
+}
+
+.todo-actions-item {
+	align-items: center;
+	background: none;
+	border: none;
+	display: flex;
+	gap: 8px;
+	height: 100%;
+	padding: 5px;
+	width: 100%;
+}
+
 .add-todo-button {
 	bottom: 30px;
 	height: 50px;
@@ -77,5 +136,6 @@
 }
 
 .add-todo-button .icon {
+	color: var(--color-icon-light);
 	font-size: 2em;
 }
