@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.kimy1212.progressmeter.domain.repository.TodoDao;
 import com.kimy1212.progressmeter.domain.valueobject.TodoId;
 import com.kimy1212.progressmeter.domain.valueobject.TodoTabId;
+import com.kimy1212.progressmeter.domain.valueobject.TodoTabName;
 import com.kimy1212.progressmeter.domain.valueobject.UserId;
 import com.kimy1212.progressmeter.infrastructure.repository.row.TodoRow;
 import com.kimy1212.progressmeter.infrastructure.repository.row.TodoTabRow;
@@ -54,6 +55,23 @@ public class TodoDaoImpl implements TodoDao {
 				(rs, rowNum) -> new TodoRow(
 						rs.getInt("todo_id"),
 						rs.getString("todo_name")));
+	}
+
+	@Override
+	public void createTodoTab(final UserId userId, final TodoTabName todoTabName) {
+		String sql = """
+				INSERT INTO todo_tabs (user_id, todo_tab_id, todo_tab_name)
+				SELECT
+					:userId,
+					COALESCE(MAX(todo_tab_id), 0) + 1,
+					:todoTabName
+				FROM todo_tabs
+				WHERE user_id = :userId
+				""";
+
+		namedParameterJdbcTemplate.update(
+				sql,
+				Map.of("userId", userId.value(), "todoTabName", todoTabName.value()));
 	}
 
 	@Override
