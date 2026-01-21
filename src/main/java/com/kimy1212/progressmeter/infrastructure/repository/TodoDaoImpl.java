@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kimy1212.progressmeter.domain.repository.TodoDao;
 import com.kimy1212.progressmeter.domain.valueobject.TodoId;
+import com.kimy1212.progressmeter.domain.valueobject.TodoName;
 import com.kimy1212.progressmeter.domain.valueobject.TodoTabId;
 import com.kimy1212.progressmeter.domain.valueobject.TodoTabName;
 import com.kimy1212.progressmeter.domain.valueobject.UserId;
@@ -72,6 +73,24 @@ public class TodoDaoImpl implements TodoDao {
 		namedParameterJdbcTemplate.update(
 				sql,
 				Map.of("userId", userId.value(), "todoTabName", todoTabName.value()));
+	}
+
+	@Override
+	public void createTodo(final UserId userId, final TodoTabId todoTabId, final TodoName todoName) {
+		String sql = """
+				INSERT INTO todos (user_id, todo_tab_id, todo_id, todo_name)
+				SELECT
+					:userId,
+					:todoTabId,
+					COALESCE(MAX(todo_id), 0) + 1,
+					:todoName
+				FROM todos
+				WHERE user_id = :userId
+				""";
+
+		namedParameterJdbcTemplate.update(
+				sql,
+				Map.of("userId", userId.value(), "todoTabId", todoTabId.value(), "todoName", todoName.value()));
 	}
 
 	@Override
