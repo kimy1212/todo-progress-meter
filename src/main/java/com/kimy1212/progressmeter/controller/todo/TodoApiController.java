@@ -3,6 +3,7 @@ package com.kimy1212.progressmeter.controller.todo;
 import java.util.List;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
@@ -10,13 +11,21 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kimy1212.progressmeter.controller.dto.TodoRequest;
 import com.kimy1212.progressmeter.controller.dto.TodoResponse;
+import com.kimy1212.progressmeter.controller.dto.TodoTabRequest;
 import com.kimy1212.progressmeter.domain.valueobject.TodoId;
+import com.kimy1212.progressmeter.domain.valueobject.TodoName;
 import com.kimy1212.progressmeter.domain.valueobject.TodoTabId;
+import com.kimy1212.progressmeter.domain.valueobject.TodoTabName;
 import com.kimy1212.progressmeter.domain.valueobject.UserId;
 import com.kimy1212.progressmeter.infrastructure.repository.row.TodoRow;
+import com.kimy1212.progressmeter.service.command.CreateTodoCommand;
+import com.kimy1212.progressmeter.service.command.CreateTodoTabsCommand;
 import com.kimy1212.progressmeter.service.command.DeleteTodoTabsCommand;
 import com.kimy1212.progressmeter.service.command.DeleteTodosCommand;
 import com.kimy1212.progressmeter.service.command.GetTodosCommand;
@@ -49,6 +58,30 @@ public class TodoApiController {
 				.toList();
 
 		return response;
+	}
+
+	@PostMapping("api/tabs")
+	public void createTodoTab(
+			@Valid @RequestBody final TodoTabRequest request,
+			final HttpSession session) {
+		CreateTodoTabsCommand command = new CreateTodoTabsCommand(
+				UserId.of((String) session.getAttribute("userId")),
+				TodoTabName.of(request.todoTabName()));
+
+		service.createTodoTab(command);
+	}
+
+	@PostMapping("api/tabs/{tabId}/todos")
+	public void createTodo(
+			@PathVariable(name = "tabId") @NotNull @Positive final Integer todoTabId,
+			@Valid @RequestBody final TodoRequest request,
+			final HttpSession session) {
+		CreateTodoCommand command = new CreateTodoCommand(
+				UserId.of((String) session.getAttribute("userId")),
+				TodoTabId.of(todoTabId),
+				TodoName.of(request.todoName()));
+
+		service.createTodo(command);
 	}
 
 	@DeleteMapping("api/tabs/{tabId}")

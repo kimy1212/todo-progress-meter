@@ -9,6 +9,8 @@ import com.kimy1212.progressmeter.domain.repository.TodoDao;
 import com.kimy1212.progressmeter.domain.valueobject.UserId;
 import com.kimy1212.progressmeter.infrastructure.repository.row.TodoRow;
 import com.kimy1212.progressmeter.infrastructure.repository.row.TodoTabRow;
+import com.kimy1212.progressmeter.service.command.CreateTodoCommand;
+import com.kimy1212.progressmeter.service.command.CreateTodoTabsCommand;
 import com.kimy1212.progressmeter.service.command.DeleteTodoTabsCommand;
 import com.kimy1212.progressmeter.service.command.DeleteTodosCommand;
 import com.kimy1212.progressmeter.service.command.GetTodosCommand;
@@ -33,6 +35,16 @@ public class TodoService {
 		}
 
 		return dao.findTodosByUserIdAndTodoTabId(command.getUserId(), command.getTodoTabId());
+	}
+
+	@Transactional
+	public void createTodoTab(final CreateTodoTabsCommand command) {
+		dao.createTodoTab(command.getUserId(), command.getTodoTabName());
+	}
+
+	@Transactional
+	public void createTodo(final CreateTodoCommand command) {
+		dao.createTodo(command.getUserId(), command.getTodoTabId(), command.getTodoName());
 	}
 
 	@Transactional
