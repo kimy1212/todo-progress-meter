@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kimy1212.progressmeter.controller.dto.CreateTodoTabResponse;
 import com.kimy1212.progressmeter.controller.dto.TodoRequest;
 import com.kimy1212.progressmeter.controller.dto.TodoResponse;
 import com.kimy1212.progressmeter.controller.dto.TodoTabRequest;
@@ -61,14 +62,16 @@ public class TodoApiController {
 	}
 
 	@PostMapping("api/tabs")
-	public void createTodoTab(
+	public CreateTodoTabResponse createTodoTab(
 			@Valid @RequestBody final TodoTabRequest request,
 			final HttpSession session) {
 		CreateTodoTabsCommand command = new CreateTodoTabsCommand(
 				UserId.of((String) session.getAttribute("userId")),
 				TodoTabName.of(request.todoTabName()));
 
-		service.createTodoTab(command);
+		TodoTabId todoTabId = service.createTodoTab(command);
+
+		return new CreateTodoTabResponse(todoTabId.value());
 	}
 
 	@PostMapping("api/tabs/{tabId}/todos")

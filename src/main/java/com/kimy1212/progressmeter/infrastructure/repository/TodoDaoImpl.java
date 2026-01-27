@@ -59,20 +59,15 @@ public class TodoDaoImpl implements TodoDao {
 	}
 
 	@Override
-	public void createTodoTab(final UserId userId, final TodoTabName todoTabName) {
+	public void createTodoTab(final UserId userId, final TodoTabId todoTabId, final TodoTabName todoTabName) {
 		String sql = """
 				INSERT INTO todo_tabs (user_id, todo_tab_id, todo_tab_name)
-				SELECT
-					:userId,
-					COALESCE(MAX(todo_tab_id), 0) + 1,
-					:todoTabName
-				FROM todo_tabs
-				WHERE user_id = :userId
+				VALUES (:userId, :todoTabId, :todoTabName)
 				""";
 
 		namedParameterJdbcTemplate.update(
 				sql,
-				Map.of("userId", userId.value(), "todoTabName", todoTabName.value()));
+				Map.of("userId", userId.value(), "todoTabId", todoTabId.value(), "todoTabName", todoTabName.value()));
 	}
 
 	@Override
