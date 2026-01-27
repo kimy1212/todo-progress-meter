@@ -2,6 +2,8 @@
  * todoリスト画面
  */
 import * as common from './common/common.js';
+import { TodoTabNameValidationResult, validateTodoTabName } from './validation/todoTabName/validateTodoTabName.js';
+import { todoTabNameErrorMessage } from './validation/todoTabName/todoTabNameErrorMessage.js';
 
 /**
  * 初期表示
@@ -35,13 +37,7 @@ function init() {
 
 	todoTabList.addEventListener('keydown', (event) => {
 		if (event.key === 'Enter' && event.target.tagName === 'INPUT' && event.target.type === 'text') {
-			common.replaceInputWithLabel(event.target, 'span', ['text-small-dark', 'todo-tab-label']);
-		}
-	});
-
-	todoTabList.addEventListener('focusout', (event) => {
-		if (event.target.tagName === 'INPUT' && event.target.type === 'text') {
-			common.replaceInputWithLabel(event.target, 'span', ['text-small-dark', 'todo-tab-label']);
+			commitTodoTabName(event.target);
 		}
 	});
 
@@ -140,6 +136,35 @@ async function fetchTodos(tabId) {
 }
 
 /**
+ * todoタブ作成
+ * 
+ * @param {string} todoTabName 作成対象のtodo名
+ */
+async function createTodoTab(todoTabName) {
+	try {
+		const dto = {
+			todoTabName: todoTabName.trim(),
+		};
+
+		const res = await fetch(`/api/tabs`, {
+			method: 'POST',
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(dto),
+		});
+
+		if (!res.ok) {
+			common.redirectByStatusCode(res.status);
+			return false;
+		}
+
+		return await res.json();
+	} catch {
+		common.redirectToGenericError();
+		return false;
+	}
+}
+
+/**
  * todoタブ削除
  *
  * @param {number} tabId 削除対象のtodoタブID
@@ -187,6 +212,42 @@ async function deleteTodo(tabId, todoId) {
 }
 
 /**
+ * todoタブ名確定
+ * 
+ * @param {HTMLElement} input todoタブ要素
+ */
+async function commitTodoTabName(input) {
+	let todoTabId = input.closest('.todo-tab').dataset.todoTabId;
+	const todoTabName = input.value;
+
+	const result = validateTodoTabName(todoTabName);
+	if (result !== TodoTabNameValidationResult.OK) {
+		alert(todoTabNameErrorMessage(result));
+		input.focus();
+		return;
+	}
+
+	try {
+		if (todoTabId) {
+			//TODO:await updateTodoTab(todoTabId, todoTabName);
+		} else {
+			const data = await createTodoTab(todoTabName);
+			todoTabId = data.todoTabId;
+			input.closest('.todo-tab').dataset.todoTabId = todoTabId;
+		}
+
+		common.replaceInputWithLabel(input, 'span', ['text-small-dark', 'todo-tab-label']);
+
+		const todoTab = document.querySelector(`.todo-tab[data-todo-tab-id="${todoTabId}"]`);
+		activateTodoTab(todoTab);
+		loadTodosForActiveTodoTab();
+	} catch {
+		alert('保存に失敗しました');
+		input.focus();
+	}
+}
+
+/**
  * todoタブ押下
  * 
  * @param {HTMLElement} todoTab todoタブ要素
@@ -202,6 +263,8 @@ function handleTodoTabClick(todoTab) {
  * @param {HTMLElement} activeTodoTab アクティブにするtodoタブ要素
  */
 function activateTodoTab(activeTodoTab) {
+	if (activeTodoTab.querySelector('input')) return;
+
 	document.querySelectorAll('.todo-tab.active').forEach(todoTab => {
 		todoTab.classList.remove('active');
 	});
@@ -253,8 +316,15 @@ function addTodoTab() {
 
 	const newTodoTab = document.createElement('div');
 	newTodoTab.classList.add('todo-tab');
+	
+	const newDeleteTodoTabButton = document.createElement('button');
+	newDeleteTodoTabButton.classList.add('delete-todo-tab-button');
+	
+	const newDeleteTodoTabButtonIcon = document.createElement('i');
+	newDeleteTodoTabButtonIcon.classList.add('fa-solid', 'fa-trash');
 
-	newTodoTab.append(common.createInputText('', ['text-small-dark', 'todo-tab-text']));
+	newDeleteTodoTabButton.append(newDeleteTodoTabButtonIcon);
+	newTodoTab.append(common.createInputText('', ['text-small-dark', 'todo-tab-text']), newDeleteTodoTabButton);
 	todoTabList.insertBefore(newTodoTab, addTodoTabButton);
 }
 

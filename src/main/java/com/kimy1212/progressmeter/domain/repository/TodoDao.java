@@ -16,7 +16,7 @@ public interface TodoDao {
 
 	public List<TodoRow> findTodosByUserIdAndTodoTabId(final UserId userId, final TodoTabId todoTabId);
 	
-	public void createTodoTab(final UserId userId, final TodoTabName todoTabName);
+	public void createTodoTab(final UserId userId, final TodoTabId todoTabId, final TodoTabName todoTabName);
 	
 	public void createTodo(final UserId userId, final TodoTabId todoTabId, final TodoName todoName);
 
