@@ -41,7 +41,3 @@ input[type="text"] {
 	justify-content: center;
 	padding: 8px;
 }
-
-.icon {
-	color: var(--color-icon-primary);
-}
