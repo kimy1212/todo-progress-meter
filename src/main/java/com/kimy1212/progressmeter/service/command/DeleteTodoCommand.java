@@ -1,17 +1,21 @@
 package com.kimy1212.progressmeter.service.command;
 
+import com.kimy1212.progressmeter.domain.valueobject.TodoId;
 import com.kimy1212.progressmeter.domain.valueobject.TodoTabId;
 import com.kimy1212.progressmeter.domain.valueobject.UserId;
 
-public class DeleteTodoTabsCommand {
+public class DeleteTodoCommand {
 
 	private final UserId userId;
 
 	private final TodoTabId todoTabId;
 
-	public DeleteTodoTabsCommand(UserId userId, TodoTabId todoTabId) {
+	private final TodoId todoId;
+
+	public DeleteTodoCommand(UserId userId, TodoTabId todoTabId, TodoId todoId) {
 		this.userId = userId;
 		this.todoTabId = todoTabId;
+		this.todoId = todoId;
 	}
 
 	public UserId getUserId() {
@@ -20,6 +24,10 @@ public class DeleteTodoTabsCommand {
 
 	public TodoTabId getTodoTabId() {
 		return todoTabId;
+	}
+
+	public TodoId getTodoId() {
+		return todoId;
 	}
 
 }

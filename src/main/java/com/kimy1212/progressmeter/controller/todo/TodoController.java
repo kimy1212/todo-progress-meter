@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.kimy1212.progressmeter.controller.dto.TodoTabResponse;
 import com.kimy1212.progressmeter.domain.valueobject.UserId;
 import com.kimy1212.progressmeter.infrastructure.repository.row.TodoTabRow;
+import com.kimy1212.progressmeter.service.command.GetTodoTabsCommand;
 import com.kimy1212.progressmeter.service.todo.TodoService;
 
 @Controller
@@ -25,9 +26,10 @@ public class TodoController {
 	@GetMapping("/")
 	public String getTodoTabs(final HttpSession session, final Model model) {
 		session.setAttribute("userId", "550e8400-e29b-41d4-a716-446655440000");
-		UserId userId = UserId.of((String) session.getAttribute("userId"));
+		GetTodoTabsCommand command = new GetTodoTabsCommand(
+				UserId.of((String) session.getAttribute("userId")));
 
-		List<TodoTabRow> rows = service.getTodoTabs(userId);
+		List<TodoTabRow> rows = service.getTodoTabs(command);
 
 		List<TodoTabResponse> response = rows.stream()
 				.map(row -> new TodoTabResponse(
