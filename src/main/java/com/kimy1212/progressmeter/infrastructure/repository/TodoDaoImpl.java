@@ -89,7 +89,7 @@ public class TodoDaoImpl implements TodoDao {
 	}
 
 	@Override
-	public int deleteTodoTabsByUserIdAndTodoTabId(final UserId userId, final TodoTabId todoTabId) {
+	public int deleteTodoTabByUserIdAndTodoTabId(final UserId userId, final TodoTabId todoTabId) {
 		String sql = """
 				DELETE
 				FROM todo_tabs
@@ -102,7 +102,7 @@ public class TodoDaoImpl implements TodoDao {
 	}
 
 	@Override
-	public int deleteTodosByUserIdAndTodoTabIdAndTodoId(
+	public int deleteTodoByUserIdAndTodoTabIdAndTodoId(
 			final UserId userId,
 			final TodoTabId todoTabId,
 			final TodoId todoId) {
