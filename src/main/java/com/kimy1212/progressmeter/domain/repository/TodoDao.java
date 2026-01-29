@@ -15,14 +15,14 @@ public interface TodoDao {
 	public List<TodoTabRow> findTodoTabsByUserId(final UserId userId);
 
 	public List<TodoRow> findTodosByUserIdAndTodoTabId(final UserId userId, final TodoTabId todoTabId);
-	
+
 	public void createTodoTab(final UserId userId, final TodoTabId todoTabId, final TodoTabName todoTabName);
-	
+
 	public void createTodo(final UserId userId, final TodoTabId todoTabId, final TodoName todoName);
 
-	public int deleteTodoTabsByUserIdAndTodoTabId(final UserId userId, final TodoTabId todoTabId);
+	public int deleteTodoTabByUserIdAndTodoTabId(final UserId userId, final TodoTabId todoTabId);
 
-	public int deleteTodosByUserIdAndTodoTabIdAndTodoId(
+	public int deleteTodoByUserIdAndTodoTabIdAndTodoId(
 			final UserId userId,
 			final TodoTabId todoTabId,
 			final TodoId todoId);
