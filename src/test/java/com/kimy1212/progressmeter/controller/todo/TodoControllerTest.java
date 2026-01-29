@@ -17,8 +17,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kimy1212.progressmeter.controller.dto.TodoTabResponse;
-import com.kimy1212.progressmeter.domain.valueobject.UserId;
 import com.kimy1212.progressmeter.infrastructure.repository.row.TodoTabRow;
+import com.kimy1212.progressmeter.service.command.GetTodoTabsCommand;
 import com.kimy1212.progressmeter.service.todo.TodoService;
 
 @WebMvcTest(TodoController.class)
@@ -36,7 +36,7 @@ class TodoControllerTest {
 				new TodoTabRow(1, "仕事"),
 				new TodoTabRow(2, "プライベート"));
 
-		when(service.getTodoTabs(any(UserId.class)))
+		when(service.getTodoTabs(any(GetTodoTabsCommand.class)))
 				.thenReturn(rows);
 
 		MvcResult result = mockMvc.perform(get("/"))
