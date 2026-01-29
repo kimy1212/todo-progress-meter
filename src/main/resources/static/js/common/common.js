@@ -3,6 +3,32 @@
  */
 
 /**
+ * エラー画面遷移
+ * 
+ * @param {number} status ステータスコード
+ */
+export function redirectByStatusCode(status) {
+	switch (status) {
+		case 401:
+			window.location.href = '/error/401';
+			break;
+		case 404:
+			window.location.href = '/error/404';
+			break;
+		case 500:
+			window.location.href = '/error/500';
+			break;
+		default:
+			redirectToGenericError();
+			break;
+	}
+}
+
+export function redirectToGenericError() {
+	window.location.href = '/error/general';
+}
+
+/**
  * テキスト入力項目作成
  */
 export function createInputText(text, className) {

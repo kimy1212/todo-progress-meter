@@ -7,5 +7,7 @@
 	--color-text-error: #D8A373;
 	--color-border-primary: #DFDDE6;
 	--color-button-primary: #D8A373;
-	--color-icon-primary: #FCFAF2;
+	--color-icon-light: #FCFAF2;
+	--color-icon-dark: #333333;
+	--color-bg-hover: #F0F2F5;
 }

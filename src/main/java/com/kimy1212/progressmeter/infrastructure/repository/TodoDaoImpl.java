@@ -7,7 +7,10 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kimy1212.progressmeter.domain.repository.TodoDao;
+import com.kimy1212.progressmeter.domain.valueobject.TodoId;
+import com.kimy1212.progressmeter.domain.valueobject.TodoName;
 import com.kimy1212.progressmeter.domain.valueobject.TodoTabId;
+import com.kimy1212.progressmeter.domain.valueobject.TodoTabName;
 import com.kimy1212.progressmeter.domain.valueobject.UserId;
 import com.kimy1212.progressmeter.infrastructure.repository.row.TodoRow;
 import com.kimy1212.progressmeter.infrastructure.repository.row.TodoTabRow;
@@ -53,6 +56,68 @@ public class TodoDaoImpl implements TodoDao {
 				(rs, rowNum) -> new TodoRow(
 						rs.getInt("todo_id"),
 						rs.getString("todo_name")));
+	}
+
+	@Override
+	public void createTodoTab(final UserId userId, final TodoTabId todoTabId, final TodoTabName todoTabName) {
+		String sql = """
+				INSERT INTO todo_tabs (user_id, todo_tab_id, todo_tab_name)
+				VALUES (:userId, :todoTabId, :todoTabName)
+				""";
+
+		namedParameterJdbcTemplate.update(
+				sql,
+				Map.of("userId", userId.value(), "todoTabId", todoTabId.value(), "todoTabName", todoTabName.value()));
+	}
+
+	@Override
+	public void createTodo(final UserId userId, final TodoTabId todoTabId, final TodoName todoName) {
+		String sql = """
+				INSERT INTO todos (user_id, todo_tab_id, todo_id, todo_name)
+				SELECT
+					:userId,
+					:todoTabId,
+					COALESCE(MAX(todo_id), 0) + 1,
+					:todoName
+				FROM todos
+				WHERE user_id = :userId
+				""";
+
+		namedParameterJdbcTemplate.update(
+				sql,
+				Map.of("userId", userId.value(), "todoTabId", todoTabId.value(), "todoName", todoName.value()));
+	}
+
+	@Override
+	public int deleteTodoTabByUserIdAndTodoTabId(final UserId userId, final TodoTabId todoTabId) {
+		String sql = """
+				DELETE
+				FROM todo_tabs
+				WHERE user_id = :userId AND todo_tab_id = :todoTabId
+				""";
+
+		return namedParameterJdbcTemplate.update(
+				sql,
+				Map.of("userId", userId.value(), "todoTabId", todoTabId.value()));
+	}
+
+	@Override
+	public int deleteTodoByUserIdAndTodoTabIdAndTodoId(
+			final UserId userId,
+			final TodoTabId todoTabId,
+			final TodoId todoId) {
+		String sql = """
+				DELETE
+				FROM todos
+				WHERE user_id = :userId AND todo_tab_id = :todoTabId AND todo_id = :todoId
+				""";
+
+		return namedParameterJdbcTemplate.update(
+				sql,
+				Map.of(
+						"userId", userId.value(),
+						"todoTabId", todoTabId.value(),
+						"todoId", todoId.value()));
 	}
 
 	@Override
