@@ -4,6 +4,8 @@
 import * as common from './common/common.js';
 import { TodoTabNameValidationResult, validateTodoTabName } from './validation/todoTabName/validateTodoTabName.js';
 import { todoTabNameErrorMessage } from './validation/todoTabName/todoTabNameErrorMessage.js';
+import { TodoNameValidationResult, validateTodoName } from './validation/todoName/validateTodoName.js';
+import { todoNameErrorMessage } from './validation/todoName/todoNameErrorMessage.js';
 
 /**
  * 初期表示
@@ -53,13 +55,7 @@ function init() {
 	const todoList = document.getElementById('todoList');
 	todoList.addEventListener('keydown', (event) => {
 		if (event.key === 'Enter' && event.target.tagName === 'INPUT' && event.target.type === 'text') {
-			common.replaceInputWithLabel(event.target, 'label', 'text-large-dark');
-		}
-	});
-
-	todoList.addEventListener('focusout', (event) => {
-		if (event.target.tagName === 'INPUT' && event.target.type === 'text') {
-			common.replaceInputWithLabel(event.target, 'label', 'text-large-dark');
+			commitTodoName(event.target);
 		}
 	});
 
@@ -138,7 +134,7 @@ async function fetchTodos(tabId) {
 /**
  * todoタブ作成
  * 
- * @param {string} todoTabName 作成対象のtodo名
+ * @param {string} todoTabName 作成対象のtodoタブ名
  */
 async function createTodoTab(todoTabName) {
 	try {
@@ -158,6 +154,36 @@ async function createTodoTab(todoTabName) {
 		}
 
 		return await res.json();
+	} catch {
+		common.redirectToGenericError();
+		return false;
+	}
+}
+
+/**
+ * todo作成
+ * 
+ * @param {number} tabId 作成対象のtodoに紐づくタブID
+ * @param {string} todoName 作成対象のtodo名
+ */
+async function createTodo(tabId, todoName) {
+	try {
+		const dto = {
+			todoName: todoName.trim(),
+		};
+
+		const res = await fetch(`/api/tabs/${tabId}/todos`, {
+			method: 'POST',
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(dto),
+		});
+
+		if (!res.ok) {
+			common.redirectByStatusCode(res.status);
+			return false;
+		}
+
+		return true;
 	} catch {
 		common.redirectToGenericError();
 		return false;
@@ -248,6 +274,39 @@ async function commitTodoTabName(input) {
 }
 
 /**
+ * todo名確定
+ * 
+ * @param {HTMLElement} input todo要素
+ */
+async function commitTodoName(input) {
+	let todoId = input.closest('.todo').dataset.todoId;
+	const todoName = input.value;
+
+	const result = validateTodoName(todoName);
+	if (result !== TodoNameValidationResult.OK) {
+		alert(todoNameErrorMessage(result));
+		input.focus();
+		return;
+	}
+
+	try {
+		if (todoId) {
+			//TODO:await updateTodo(todoTabId, todoName);
+		} else {
+			const isCreated = await createTodo(getActiveTodoTabId(), todoName);
+			if (!isCreated) return;
+		}
+
+		common.replaceInputWithLabel(input, 'label', 'text-large-dark');
+
+		loadTodosForActiveTodoTab();
+	} catch {
+		alert('保存に失敗しました');
+		input.focus();
+	}
+}
+
+/**
  * todoタブ押下
  * 
  * @param {HTMLElement} todoTab todoタブ要素
@@ -316,10 +375,10 @@ function addTodoTab() {
 
 	const newTodoTab = document.createElement('div');
 	newTodoTab.classList.add('todo-tab');
-	
+
 	const newDeleteTodoTabButton = document.createElement('button');
 	newDeleteTodoTabButton.classList.add('delete-todo-tab-button');
-	
+
 	const newDeleteTodoTabButtonIcon = document.createElement('i');
 	newDeleteTodoTabButtonIcon.classList.add('fa-solid', 'fa-trash');
 
@@ -405,6 +464,10 @@ function addTodo() {
 	const todoList = document.getElementById('todoList');
 	const addTodoButton = document.getElementById('addTodoButton');
 
-	const newTodo = createTodoElement('input', '');
+	const newTodoData = {
+		todoId: '',
+		todoName: ''
+	}
+	const newTodo = createTodoElement('input', newTodoData);
 	todoList.insertBefore(newTodo, addTodoButton);
 }
