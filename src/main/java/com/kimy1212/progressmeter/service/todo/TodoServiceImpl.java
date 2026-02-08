@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kimy1212.progressmeter.domain.repository.TodoDao;
-import com.kimy1212.progressmeter.domain.repository.TodoTabIdSequenceDao;
 import com.kimy1212.progressmeter.domain.valueobject.TodoTabId;
 import com.kimy1212.progressmeter.infrastructure.repository.row.TodoRow;
 import com.kimy1212.progressmeter.infrastructure.repository.row.TodoTabRow;
@@ -23,11 +22,8 @@ public class TodoServiceImpl implements TodoService {
 
 	private final TodoDao dao;
 
-	private final TodoTabIdSequenceDao todoTabIdSequenceDao;
-
-	public TodoServiceImpl(TodoDao dao, TodoTabIdSequenceDao todoTabIdSequenceDao) {
+	public TodoServiceImpl(TodoDao dao) {
 		this.dao = dao;
-		this.todoTabIdSequenceDao = todoTabIdSequenceDao;
 	}
 
 	@Override
@@ -47,10 +43,7 @@ public class TodoServiceImpl implements TodoService {
 	@Override
 	@Transactional
 	public TodoTabId createTodoTab(final CreateTodoTabCommand command) {
-		TodoTabId todoTabId = todoTabIdSequenceDao.allocate(command.getUserId());
-		dao.createTodoTab(command.getUserId(), todoTabId, command.getTodoTabName());
-
-		return todoTabId;
+		return dao.createTodoTab(command.getUserId(), command.getTodoTabName());
 	}
 
 	@Override
