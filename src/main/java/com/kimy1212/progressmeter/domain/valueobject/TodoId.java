@@ -2,20 +2,20 @@ package com.kimy1212.progressmeter.domain.valueobject;
 
 public final class TodoId {
 
-	private final int value;
+	private final long value;
 
-	private TodoId(int value) {
+	private TodoId(long value) {
 		if (value <= 0) {
 			throw new IllegalArgumentException("TodoId must be positive");
 		}
 		this.value = value;
 	}
 
-	public static TodoId of(int value) {
+	public static TodoId of(long value) {
 		return new TodoId(value);
 	}
 
-	public int value() {
+	public long value() {
 		return value;
 	}
 
