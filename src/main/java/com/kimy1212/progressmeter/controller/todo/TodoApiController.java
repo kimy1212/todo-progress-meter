@@ -44,7 +44,7 @@ public class TodoApiController {
 
 	@GetMapping("/api/tabs/{tabId}/todos")
 	public List<TodoResponse> getTodos(
-			@PathVariable(name = "tabId") @NotNull @Positive final Integer todoTabId,
+			@PathVariable(name = "tabId") @NotNull @Positive final long todoTabId,
 			final HttpSession session) {
 		GetTodosCommand command = new GetTodosCommand(
 				UserId.of((String) session.getAttribute("userId")),
@@ -76,7 +76,7 @@ public class TodoApiController {
 
 	@PostMapping("api/tabs/{tabId}/todos")
 	public void createTodo(
-			@PathVariable(name = "tabId") @NotNull @Positive final Integer todoTabId,
+			@PathVariable(name = "tabId") @NotNull @Positive final long todoTabId,
 			@Valid @RequestBody final CreateTodoRequest request,
 			final HttpSession session) {
 		CreateTodoCommand command = new CreateTodoCommand(
@@ -89,7 +89,7 @@ public class TodoApiController {
 
 	@DeleteMapping("api/tabs/{tabId}")
 	public void deleteTodoTab(
-			@PathVariable(name = "tabId") @NotNull @Positive final Integer todoTabId,
+			@PathVariable(name = "tabId") @NotNull @Positive final long todoTabId,
 			final HttpSession session) {
 		DeleteTodoTabCommand command = new DeleteTodoTabCommand(
 				UserId.of((String) session.getAttribute("userId")),
@@ -100,8 +100,8 @@ public class TodoApiController {
 
 	@DeleteMapping("api/tabs/{tabId}/todos/{todoId}")
 	public void deleteTodo(
-			@PathVariable(name = "tabId") @NotNull @Positive final Integer todoTabId,
-			@PathVariable(name = "todoId") @NotNull @Positive final Integer todoId,
+			@PathVariable(name = "tabId") @NotNull @Positive final long todoTabId,
+			@PathVariable(name = "todoId") @NotNull @Positive final long todoId,
 			final HttpSession session) {
 		DeleteTodoCommand command = new DeleteTodoCommand(
 				UserId.of((String) session.getAttribute("userId")),
