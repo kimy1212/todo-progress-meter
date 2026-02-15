@@ -103,6 +103,20 @@ public class TodoDaoImpl implements TodoDao {
 	}
 
 	@Override
+	public void updateTodoTab(final UserId userId, final TodoTabId todoTabId, final TodoTabName todoTabName) {
+		String sql = """
+				UPDATE todo_tabs
+				SET todo_tab_name = :todoTabName
+				WHERE todo_tab_id = :todoTabId
+				AND user_id = :userId
+				""";
+
+		namedParameterJdbcTemplate.update(
+				sql,
+				Map.of("userId", userId.value(), "todoTabId", todoTabId.value(), "todoTabName", todoTabName.value()));
+	}
+
+	@Override
 	public int deleteTodoTabByUserIdAndTodoTabId(final UserId userId, final TodoTabId todoTabId) {
 		String sql = """
 				DELETE

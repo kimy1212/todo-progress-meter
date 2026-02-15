@@ -20,6 +20,8 @@ public interface TodoDao {
 
 	public void createTodo(final UserId userId, final TodoTabId todoTabId, final TodoName todoName);
 
+	public void updateTodoTab(final UserId userId, final TodoTabId todoTabId, final TodoTabName todoTabName);
+
 	public int deleteTodoTabByUserIdAndTodoTabId(final UserId userId, final TodoTabId todoTabId);
 
 	public int deleteTodoByUserIdAndTodoTabIdAndTodoId(
