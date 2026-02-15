@@ -215,6 +215,36 @@ async function updateTodoTabName(tabId, todoTabName) {
 }
 
 /**
+ * todoタブ名更新
+ * 
+ * @param {number} tabId 更新対象のtodoに紐づくタブID
+ * @param {string} todoTabName 更新対象のtodoタブ名
+ */
+async function updateTodoTabName(tabId, todoTabName) {
+	try {
+		const dto = {
+			todoTabName: todoTabName.trim(),
+		};
+
+		const res = await fetch(`/api/tabs/${tabId}`, {
+			method: 'PATCH',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(dto),
+		});
+
+		if (!res.ok) {
+			common.redirectByStatusCode(res.status);
+			return false;
+		}
+
+		return true;
+	} catch {
+		common.redirectToGenericError();
+		return false;
+	}
+}
+
+/**
  * todoタブ削除
  *
  * @param {number} tabId 削除対象のtodoタブID
