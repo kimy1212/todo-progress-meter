@@ -190,6 +190,12 @@ async function createTodo(tabId, todoName) {
 	}
 }
 
+/**
+ * todoタブ名更新
+ * 
+ * @param {number} tabId 更新対象のtodoに紐づくタブID
+ * @param {string} todoTabName 更新対象のtodoタブ名
+ */
 async function updateTodoTabName(tabId, todoTabName) {
 	try {
 		const dto = {
