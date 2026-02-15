@@ -190,6 +190,30 @@ async function createTodo(tabId, todoName) {
 	}
 }
 
+async function updateTodoTabName(tabId, todoTabName) {
+	try {
+		const dto = {
+			todoTabName: todoTabName.trim(),
+		};
+
+		const res = await fetch(`/api/tabs/${tabId}`, {
+			method: 'PATCH',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(dto),
+		});
+
+		if (!res.ok) {
+			common.redirectByStatusCode(res.status);
+			return false;
+		}
+
+		return true;
+	} catch {
+		common.redirectToGenericError();
+		return false;
+	}
+}
+
 /**
  * todoタブ削除
  *
@@ -255,7 +279,7 @@ async function commitTodoTabName(input) {
 
 	try {
 		if (todoTabId) {
-			//TODO:await updateTodoTab(todoTabId, todoTabName);
+			await updateTodoTabName(todoTabId, todoTabName);
 		} else {
 			const data = await createTodoTab(todoTabName);
 			todoTabId = data.todoTabId;

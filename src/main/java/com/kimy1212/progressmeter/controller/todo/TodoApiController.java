@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Positive;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +20,7 @@ import com.kimy1212.progressmeter.controller.dto.CreateTodoRequest;
 import com.kimy1212.progressmeter.controller.dto.CreateTodoTabRequest;
 import com.kimy1212.progressmeter.controller.dto.CreateTodoTabResponse;
 import com.kimy1212.progressmeter.controller.dto.TodoResponse;
+import com.kimy1212.progressmeter.controller.dto.UpdateTodoTabRequest;
 import com.kimy1212.progressmeter.domain.valueobject.TodoId;
 import com.kimy1212.progressmeter.domain.valueobject.TodoName;
 import com.kimy1212.progressmeter.domain.valueobject.TodoTabId;
@@ -30,6 +32,7 @@ import com.kimy1212.progressmeter.service.command.CreateTodoTabCommand;
 import com.kimy1212.progressmeter.service.command.DeleteTodoCommand;
 import com.kimy1212.progressmeter.service.command.DeleteTodoTabCommand;
 import com.kimy1212.progressmeter.service.command.GetTodosCommand;
+import com.kimy1212.progressmeter.service.command.UpdateTodoTabCommand;
 import com.kimy1212.progressmeter.service.todo.TodoService;
 
 @RestController
@@ -85,6 +88,19 @@ public class TodoApiController {
 				TodoName.of(request.todoName()));
 
 		service.createTodo(command);
+	}
+
+	@PatchMapping("api/tabs/{tabId}")
+	public void updateTodoTab(
+			@PathVariable(name = "tabId") @NotNull @Positive final long todoTabId,
+			@Valid @RequestBody final UpdateTodoTabRequest request,
+			final HttpSession session) {
+		UpdateTodoTabCommand command = new UpdateTodoTabCommand(
+				UserId.of((String) session.getAttribute("userId")),
+				TodoTabId.of(todoTabId),
+				TodoTabName.of(request.todoTabName()));
+
+		service.updateTodoTab(command);
 	}
 
 	@DeleteMapping("api/tabs/{tabId}")

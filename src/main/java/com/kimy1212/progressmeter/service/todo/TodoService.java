@@ -11,6 +11,7 @@ import com.kimy1212.progressmeter.service.command.DeleteTodoCommand;
 import com.kimy1212.progressmeter.service.command.DeleteTodoTabCommand;
 import com.kimy1212.progressmeter.service.command.GetTodoTabsCommand;
 import com.kimy1212.progressmeter.service.command.GetTodosCommand;
+import com.kimy1212.progressmeter.service.command.UpdateTodoTabCommand;
 
 public interface TodoService {
 
@@ -21,6 +22,8 @@ public interface TodoService {
 	public TodoTabId createTodoTab(final CreateTodoTabCommand command);
 
 	public void createTodo(final CreateTodoCommand command);
+
+	public void updateTodoTab(final UpdateTodoTabCommand command);
 
 	public void deleteTodoTab(final DeleteTodoTabCommand command);
 
