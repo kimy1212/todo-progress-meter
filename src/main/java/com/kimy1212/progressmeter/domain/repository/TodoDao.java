@@ -9,6 +9,7 @@ import com.kimy1212.progressmeter.domain.valueobject.TodoTabName;
 import com.kimy1212.progressmeter.domain.valueobject.UserId;
 import com.kimy1212.progressmeter.infrastructure.repository.row.TodoRow;
 import com.kimy1212.progressmeter.infrastructure.repository.row.TodoTabRow;
+import com.kimy1212.progressmeter.service.command.UpdateTodoCommand;
 
 public interface TodoDao {
 
@@ -21,6 +22,8 @@ public interface TodoDao {
 	public void createTodo(final UserId userId, final TodoTabId todoTabId, final TodoName todoName);
 
 	public void updateTodoTab(final UserId userId, final TodoTabId todoTabId, final TodoTabName todoTabName);
+	
+	public void updateTodo(final UpdateTodoCommand command);
 
 	public int deleteTodoTabByUserIdAndTodoTabId(final UserId userId, final TodoTabId todoTabId);
 

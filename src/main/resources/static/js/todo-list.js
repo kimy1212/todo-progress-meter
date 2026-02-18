@@ -190,6 +190,12 @@ async function createTodo(tabId, todoName) {
 	}
 }
 
+/**
+ * todoタブ名更新
+ * 
+ * @param {number} tabId 更新対象のタブID
+ * @param {string} todoTabName 更新対象のtodoタブ名
+ */
 async function updateTodoTabName(tabId, todoTabName) {
 	try {
 		const dto = {
@@ -215,18 +221,19 @@ async function updateTodoTabName(tabId, todoTabName) {
 }
 
 /**
- * todoタブ名更新
+ * todo名更新
  * 
  * @param {number} tabId 更新対象のtodoに紐づくタブID
- * @param {string} todoTabName 更新対象のtodoタブ名
+ * @param {number} todoId 更新対象のtodoID
+ * @param {string} todoName 更新対象のtodo名
  */
-async function updateTodoTabName(tabId, todoTabName) {
+async function updateTodoName(tabId, todoId, todoName) {
 	try {
 		const dto = {
-			todoTabName: todoTabName.trim(),
-		};
+			todoName: todoName.trim(),
+		}
 
-		const res = await fetch(`/api/tabs/${tabId}`, {
+		const res = await fetch(`/api/tabs/${tabId}/todos/${todoId}`, {
 			method: 'PATCH',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(dto),
@@ -345,7 +352,7 @@ async function commitTodoName(input) {
 
 	try {
 		if (todoId) {
-			//TODO:await updateTodo(todoTabId, todoName);
+			await updateTodoName(getActiveTodoTabId(), todoId, todoName);
 		} else {
 			const isCreated = await createTodo(getActiveTodoTabId(), todoName);
 			if (!isCreated) return;

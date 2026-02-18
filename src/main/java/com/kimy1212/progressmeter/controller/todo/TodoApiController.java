@@ -1,6 +1,7 @@
 package com.kimy1212.progressmeter.controller.todo;
 
 import java.util.List;
+import java.util.Optional;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -20,6 +21,7 @@ import com.kimy1212.progressmeter.controller.dto.CreateTodoRequest;
 import com.kimy1212.progressmeter.controller.dto.CreateTodoTabRequest;
 import com.kimy1212.progressmeter.controller.dto.CreateTodoTabResponse;
 import com.kimy1212.progressmeter.controller.dto.TodoResponse;
+import com.kimy1212.progressmeter.controller.dto.UpdateTodoRequest;
 import com.kimy1212.progressmeter.controller.dto.UpdateTodoTabRequest;
 import com.kimy1212.progressmeter.domain.valueobject.TodoId;
 import com.kimy1212.progressmeter.domain.valueobject.TodoName;
@@ -32,6 +34,7 @@ import com.kimy1212.progressmeter.service.command.CreateTodoTabCommand;
 import com.kimy1212.progressmeter.service.command.DeleteTodoCommand;
 import com.kimy1212.progressmeter.service.command.DeleteTodoTabCommand;
 import com.kimy1212.progressmeter.service.command.GetTodosCommand;
+import com.kimy1212.progressmeter.service.command.UpdateTodoCommand;
 import com.kimy1212.progressmeter.service.command.UpdateTodoTabCommand;
 import com.kimy1212.progressmeter.service.todo.TodoService;
 
@@ -101,6 +104,22 @@ public class TodoApiController {
 				TodoTabName.of(request.todoTabName()));
 
 		service.updateTodoTab(command);
+	}
+
+	@PatchMapping("api/tabs/{tabId}/todos/{todoId}")
+	public void updateTodo(
+			@PathVariable(name = "tabId") @NotNull @Positive final long todoTabId,
+			@PathVariable(name = "todoId") @NotNull @Positive final long todoId,
+			@Valid @RequestBody final UpdateTodoRequest request,
+			final HttpSession session) {
+		UpdateTodoCommand command = new UpdateTodoCommand(
+				UserId.of((String) session.getAttribute("userId")),
+				TodoTabId.of(todoTabId),
+				TodoId.of(todoId),
+				Optional.ofNullable(request.todoName())
+						.map(TodoName::of));
+
+		service.updateTodo(command);
 	}
 
 	@DeleteMapping("api/tabs/{tabId}")
