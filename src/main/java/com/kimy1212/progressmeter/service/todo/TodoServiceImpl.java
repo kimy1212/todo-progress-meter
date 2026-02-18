@@ -15,6 +15,8 @@ import com.kimy1212.progressmeter.service.command.DeleteTodoCommand;
 import com.kimy1212.progressmeter.service.command.DeleteTodoTabCommand;
 import com.kimy1212.progressmeter.service.command.GetTodoTabsCommand;
 import com.kimy1212.progressmeter.service.command.GetTodosCommand;
+import com.kimy1212.progressmeter.service.command.UpdateTodoCommand;
+import com.kimy1212.progressmeter.service.command.UpdateTodoTabCommand;
 import com.kimy1212.progressmeter.service.exception.NotFoundException;
 
 @Service
@@ -50,6 +52,18 @@ public class TodoServiceImpl implements TodoService {
 	@Transactional
 	public void createTodo(final CreateTodoCommand command) {
 		dao.createTodo(command.getUserId(), command.getTodoTabId(), command.getTodoName());
+	}
+
+	@Override
+	@Transactional
+	public void updateTodoTab(final UpdateTodoTabCommand command) {
+		dao.updateTodoTab(command.getUserId(), command.getTodoTabId(), command.getTodoTabName());
+	}
+
+	@Override
+	@Transactional
+	public void updateTodo(final UpdateTodoCommand command) {
+		dao.updateTodo(command);
 	}
 
 	@Override
