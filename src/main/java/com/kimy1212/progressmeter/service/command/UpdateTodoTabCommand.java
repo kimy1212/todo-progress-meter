@@ -17,6 +17,10 @@ public class UpdateTodoTabCommand {
 		this.todoTabName = todoTabName;
 		this.userId = userId;
 	}
+	
+	public UserId getUserId() {
+		return userId;
+	}
 
 	public TodoTabId getTodoTabId() {
 		return todoTabId;
@@ -24,10 +28,6 @@ public class UpdateTodoTabCommand {
 
 	public TodoTabName getTodoTabName() {
 		return todoTabName;
-	}
-
-	public UserId getUserId() {
-		return userId;
 	}
 
 }
