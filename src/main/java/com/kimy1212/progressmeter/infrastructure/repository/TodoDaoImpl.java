@@ -43,7 +43,7 @@ public class TodoDaoImpl implements TodoDao {
 				sql,
 				Map.of("userId", userId.value()),
 				(rs, rowNum) -> new TodoTabRow(
-						rs.getInt("todo_tab_id"),
+						rs.getLong("todo_tab_id"),
 						rs.getString("todo_tab_name")));
 	}
 
@@ -63,7 +63,7 @@ public class TodoDaoImpl implements TodoDao {
 				sql,
 				Map.of("userId", userId.value(), "todoTabId", todoTabId.value()),
 				(rs, rowNum) -> new TodoRow(
-						rs.getInt("todo_id"),
+						rs.getLong("todo_id"),
 						rs.getString("todo_name")));
 	}
 
