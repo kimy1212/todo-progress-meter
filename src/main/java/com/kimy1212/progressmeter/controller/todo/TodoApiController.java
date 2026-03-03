@@ -67,7 +67,7 @@ public class TodoApiController {
 		return response;
 	}
 
-	@PostMapping("api/tabs")
+	@PostMapping("/api/tabs")
 	public CreateTodoTabResponse createTodoTab(
 			@Valid @RequestBody final CreateTodoTabRequest request,
 			final HttpSession session) {
@@ -80,7 +80,7 @@ public class TodoApiController {
 		return new CreateTodoTabResponse(todoTabId.value());
 	}
 
-	@PostMapping("api/tabs/{tabId}/todos")
+	@PostMapping("/api/tabs/{tabId}/todos")
 	public void createTodo(
 			@PathVariable(name = "tabId") @NotNull @Positive final long todoTabId,
 			@Valid @RequestBody final CreateTodoRequest request,
@@ -93,7 +93,7 @@ public class TodoApiController {
 		service.createTodo(command);
 	}
 
-	@PatchMapping("api/tabs/{tabId}")
+	@PatchMapping("/api/tabs/{tabId}")
 	public void updateTodoTab(
 			@PathVariable(name = "tabId") @NotNull @Positive final long todoTabId,
 			@Valid @RequestBody final UpdateTodoTabRequest request,
@@ -106,7 +106,7 @@ public class TodoApiController {
 		service.updateTodoTab(command);
 	}
 
-	@PatchMapping("api/tabs/{tabId}/todos/{todoId}")
+	@PatchMapping("/api/tabs/{tabId}/todos/{todoId}")
 	public void updateTodo(
 			@PathVariable(name = "tabId") @NotNull @Positive final long todoTabId,
 			@PathVariable(name = "todoId") @NotNull @Positive final long todoId,
@@ -122,7 +122,7 @@ public class TodoApiController {
 		service.updateTodo(command);
 	}
 
-	@DeleteMapping("api/tabs/{tabId}")
+	@DeleteMapping("/api/tabs/{tabId}")
 	public void deleteTodoTab(
 			@PathVariable(name = "tabId") @NotNull @Positive final long todoTabId,
 			final HttpSession session) {
@@ -133,7 +133,7 @@ public class TodoApiController {
 		service.deleteTodoTab(command);
 	}
 
-	@DeleteMapping("api/tabs/{tabId}/todos/{todoId}")
+	@DeleteMapping("/api/tabs/{tabId}/todos/{todoId}")
 	public void deleteTodo(
 			@PathVariable(name = "tabId") @NotNull @Positive final long todoTabId,
 			@PathVariable(name = "todoId") @NotNull @Positive final long todoId,
