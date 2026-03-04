@@ -11,15 +11,15 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import com.kimy1212.progressmeter.application.command.UpdateTodoCommand;
+import com.kimy1212.progressmeter.domain.model.TodoId;
+import com.kimy1212.progressmeter.domain.model.TodoName;
+import com.kimy1212.progressmeter.domain.model.TodoTabId;
+import com.kimy1212.progressmeter.domain.model.TodoTabName;
+import com.kimy1212.progressmeter.domain.model.UserId;
 import com.kimy1212.progressmeter.domain.repository.TodoDao;
-import com.kimy1212.progressmeter.domain.valueobject.TodoId;
-import com.kimy1212.progressmeter.domain.valueobject.TodoName;
-import com.kimy1212.progressmeter.domain.valueobject.TodoTabId;
-import com.kimy1212.progressmeter.domain.valueobject.TodoTabName;
-import com.kimy1212.progressmeter.domain.valueobject.UserId;
 import com.kimy1212.progressmeter.infrastructure.repository.row.TodoRow;
 import com.kimy1212.progressmeter.infrastructure.repository.row.TodoTabRow;
-import com.kimy1212.progressmeter.service.command.UpdateTodoCommand;
 
 @Repository
 public class TodoDaoImpl implements TodoDao {
