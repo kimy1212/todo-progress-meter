@@ -16,10 +16,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.kimy1212.progressmeter.controller.dto.TodoTabResponse;
-import com.kimy1212.progressmeter.infrastructure.repository.row.TodoTabRow;
-import com.kimy1212.progressmeter.service.command.GetTodoTabsCommand;
-import com.kimy1212.progressmeter.service.todo.TodoService;
+import com.kimy1212.progressmeter.application.command.GetTodoTabsCommand;
+import com.kimy1212.progressmeter.application.response.TodoTabDto;
+import com.kimy1212.progressmeter.application.service.todo.TodoService;
+import com.kimy1212.progressmeter.presentation.controller.todo.TodoController;
+import com.kimy1212.progressmeter.presentation.dto.response.TodoTabResponse;
 
 @WebMvcTest(TodoController.class)
 class TodoControllerTest {
@@ -32,33 +33,33 @@ class TodoControllerTest {
 
 	@Test
 	void トップ画面でtodoTabsがModelに設定されること() throws Exception {
-		List<TodoTabRow> rows = List.of(
-				new TodoTabRow(1, "仕事"),
-				new TodoTabRow(2, "プライベート"));
+		List<TodoTabDto> dtos = List.of(
+				new TodoTabDto(1, "仕事"),
+				new TodoTabDto(2, "プライベート"));
 
 		when(service.getTodoTabs(any(GetTodoTabsCommand.class)))
-				.thenReturn(rows);
+				.thenReturn(dtos);
 
 		MvcResult result = mockMvc.perform(get("/"))
 				.andExpect(status().isOk())
 				.andExpect(view().name("todo-list"))
 				.andReturn();
-		
+
 		ModelAndView mav = result.getModelAndView();
 		assertNotNull(mav);
-		
+
 		Object modelObject = mav.getModel().get("todoTabs");
 		assertNotNull(modelObject);
-		
+
 		@SuppressWarnings("unchecked")
 		List<TodoTabResponse> todoTabs = (List<TodoTabResponse>) modelObject;
-		
+
 		assertEquals(2, todoTabs.size());
-		
+
 		TodoTabResponse first = todoTabs.get(0);
 		assertEquals(1, first.todoTabId());
 		assertEquals("仕事", first.todoTabName());
-		
+
 		TodoTabResponse second = todoTabs.get(1);
 		assertEquals(2, second.todoTabId());
 		assertEquals("プライベート", second.todoTabName());
