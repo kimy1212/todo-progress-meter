@@ -20,7 +20,7 @@ import com.kimy1212.progressmeter.application.command.GetTodoTabsCommand;
 import com.kimy1212.progressmeter.application.service.todo.TodoService;
 import com.kimy1212.progressmeter.infrastructure.repository.row.TodoTabRow;
 import com.kimy1212.progressmeter.presentation.controller.todo.TodoController;
-import com.kimy1212.progressmeter.presentation.dto.TodoTabResponse;
+import com.kimy1212.progressmeter.presentation.dto.response.TodoTabResponse;
 
 @WebMvcTest(TodoController.class)
 class TodoControllerTest {

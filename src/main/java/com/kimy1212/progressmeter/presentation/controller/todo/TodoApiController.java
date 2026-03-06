@@ -31,12 +31,12 @@ import com.kimy1212.progressmeter.domain.model.TodoTabId;
 import com.kimy1212.progressmeter.domain.model.TodoTabName;
 import com.kimy1212.progressmeter.domain.model.UserId;
 import com.kimy1212.progressmeter.infrastructure.repository.row.TodoRow;
-import com.kimy1212.progressmeter.presentation.dto.CreateTodoRequest;
-import com.kimy1212.progressmeter.presentation.dto.CreateTodoTabRequest;
-import com.kimy1212.progressmeter.presentation.dto.CreateTodoTabResponse;
-import com.kimy1212.progressmeter.presentation.dto.TodoResponse;
-import com.kimy1212.progressmeter.presentation.dto.UpdateTodoRequest;
-import com.kimy1212.progressmeter.presentation.dto.UpdateTodoTabRequest;
+import com.kimy1212.progressmeter.presentation.dto.request.CreateTodoRequest;
+import com.kimy1212.progressmeter.presentation.dto.request.CreateTodoTabRequest;
+import com.kimy1212.progressmeter.presentation.dto.request.UpdateTodoRequest;
+import com.kimy1212.progressmeter.presentation.dto.request.UpdateTodoTabRequest;
+import com.kimy1212.progressmeter.presentation.dto.response.CreateTodoTabResponse;
+import com.kimy1212.progressmeter.presentation.dto.response.TodoResponse;
 
 @RestController
 @Validated
