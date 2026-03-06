@@ -4,7 +4,9 @@ public record TodoResponse(
 
 		long todoId,
 
-		String todoName
+		String todoName,
+		
+		int progressRate
 
 ) {
 }

@@ -24,13 +24,13 @@ import com.kimy1212.progressmeter.application.command.DeleteTodoTabCommand;
 import com.kimy1212.progressmeter.application.command.GetTodosCommand;
 import com.kimy1212.progressmeter.application.command.UpdateTodoCommand;
 import com.kimy1212.progressmeter.application.command.UpdateTodoTabCommand;
+import com.kimy1212.progressmeter.application.response.TodoDto;
 import com.kimy1212.progressmeter.application.service.todo.TodoService;
 import com.kimy1212.progressmeter.domain.model.TodoId;
 import com.kimy1212.progressmeter.domain.model.TodoName;
 import com.kimy1212.progressmeter.domain.model.TodoTabId;
 import com.kimy1212.progressmeter.domain.model.TodoTabName;
 import com.kimy1212.progressmeter.domain.model.UserId;
-import com.kimy1212.progressmeter.infrastructure.repository.row.TodoRow;
 import com.kimy1212.progressmeter.presentation.dto.request.CreateTodoRequest;
 import com.kimy1212.progressmeter.presentation.dto.request.CreateTodoTabRequest;
 import com.kimy1212.progressmeter.presentation.dto.request.UpdateTodoRequest;
@@ -56,12 +56,13 @@ public class TodoApiController {
 				UserId.of((String) session.getAttribute("userId")),
 				TodoTabId.of(todoTabId));
 
-		List<TodoRow> rows = service.getTodos(command);
+		List<TodoDto> todos = service.getTodos(command);
 
-		List<TodoResponse> response = rows.stream()
-				.map(row -> new TodoResponse(
-						row.todoId(),
-						row.todoName()))
+		List<TodoResponse> response = todos.stream()
+				.map(todo -> new TodoResponse(
+						todo.todoId(),
+						todo.todoName(),
+						todo.progressRate()))
 				.toList();
 
 		return response;

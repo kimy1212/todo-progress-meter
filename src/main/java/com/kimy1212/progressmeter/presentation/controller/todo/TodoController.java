@@ -9,9 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.kimy1212.progressmeter.application.command.GetTodoTabsCommand;
+import com.kimy1212.progressmeter.application.response.TodoTabDto;
 import com.kimy1212.progressmeter.application.service.todo.TodoService;
 import com.kimy1212.progressmeter.domain.model.UserId;
-import com.kimy1212.progressmeter.infrastructure.repository.row.TodoTabRow;
 import com.kimy1212.progressmeter.presentation.dto.response.TodoTabResponse;
 
 @Controller
@@ -29,12 +29,12 @@ public class TodoController {
 		GetTodoTabsCommand command = new GetTodoTabsCommand(
 				UserId.of((String) session.getAttribute("userId")));
 
-		List<TodoTabRow> rows = service.getTodoTabs(command);
+		List<TodoTabDto> todoTabs = service.getTodoTabs(command);
 
-		List<TodoTabResponse> response = rows.stream()
-				.map(row -> new TodoTabResponse(
-						row.todoTabId(),
-						row.todoTabName()))
+		List<TodoTabResponse> response = todoTabs.stream()
+				.map(tab -> new TodoTabResponse(
+						tab.todoTabId(),
+						tab.todoTabName()))
 				.toList();
 
 		model.addAttribute("todoTabs", response);

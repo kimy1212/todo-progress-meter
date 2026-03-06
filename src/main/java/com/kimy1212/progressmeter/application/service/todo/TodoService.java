@@ -10,15 +10,15 @@ import com.kimy1212.progressmeter.application.command.GetTodoTabsCommand;
 import com.kimy1212.progressmeter.application.command.GetTodosCommand;
 import com.kimy1212.progressmeter.application.command.UpdateTodoCommand;
 import com.kimy1212.progressmeter.application.command.UpdateTodoTabCommand;
+import com.kimy1212.progressmeter.application.response.TodoTabDto;
+import com.kimy1212.progressmeter.application.response.TodoDto;
 import com.kimy1212.progressmeter.domain.model.TodoTabId;
-import com.kimy1212.progressmeter.infrastructure.repository.row.TodoRow;
-import com.kimy1212.progressmeter.infrastructure.repository.row.TodoTabRow;
 
 public interface TodoService {
 
-	public List<TodoTabRow> getTodoTabs(final GetTodoTabsCommand command);
+	public List<TodoTabDto> getTodoTabs(final GetTodoTabsCommand command);
 
-	public List<TodoRow> getTodos(final GetTodosCommand command);
+	public List<TodoDto> getTodos(final GetTodosCommand command);
 
 	public TodoTabId createTodoTab(final CreateTodoTabCommand command);
 

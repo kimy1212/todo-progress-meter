@@ -12,14 +12,14 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.kimy1212.progressmeter.application.command.UpdateTodoCommand;
+import com.kimy1212.progressmeter.domain.model.Todo;
 import com.kimy1212.progressmeter.domain.model.TodoId;
 import com.kimy1212.progressmeter.domain.model.TodoName;
+import com.kimy1212.progressmeter.domain.model.TodoTab;
 import com.kimy1212.progressmeter.domain.model.TodoTabId;
 import com.kimy1212.progressmeter.domain.model.TodoTabName;
 import com.kimy1212.progressmeter.domain.model.UserId;
 import com.kimy1212.progressmeter.domain.repository.TodoDao;
-import com.kimy1212.progressmeter.infrastructure.repository.row.TodoRow;
-import com.kimy1212.progressmeter.infrastructure.repository.row.TodoTabRow;
 
 @Repository
 public class TodoDaoImpl implements TodoDao {
@@ -31,7 +31,7 @@ public class TodoDaoImpl implements TodoDao {
 	}
 
 	@Override
-	public List<TodoTabRow> findTodoTabsByUserId(final UserId userId) {
+	public List<TodoTab> findTodoTabsByUserId(final UserId userId) {
 		String sql = """
 				SELECT todo_tab_id, todo_tab_name
 				FROM todo_tabs
@@ -42,15 +42,19 @@ public class TodoDaoImpl implements TodoDao {
 		return namedParameterJdbcTemplate.query(
 				sql,
 				Map.of("userId", userId.value()),
-				(rs, rowNum) -> new TodoTabRow(
-						rs.getLong("todo_tab_id"),
-						rs.getString("todo_tab_name")));
+				(rs, rowNum) -> new TodoTab(
+						TodoTabId.of(rs.getLong("todo_tab_id")),
+						TodoTabName.of(rs.getString("todo_tab_name"))));
 	}
 
 	@Override
-	public List<TodoRow> findTodosByUserIdAndTodoTabId(final UserId userId, final TodoTabId todoTabId) {
+	public List<Todo> findTodosByUserIdAndTodoTabId(final UserId userId, final TodoTabId todoTabId) {
 		String sql = """
-				SELECT todos.todo_id, todos.todo_name
+				SELECT
+					todos.todo_id,
+					todos.todo_name,
+					todos.progress_total,
+					todos.progress_completed
 				FROM todos
 				INNER JOIN todo_tabs
 				ON todos.todo_tab_id = todo_tabs.todo_tab_id
@@ -62,9 +66,11 @@ public class TodoDaoImpl implements TodoDao {
 		return namedParameterJdbcTemplate.query(
 				sql,
 				Map.of("userId", userId.value(), "todoTabId", todoTabId.value()),
-				(rs, rowNum) -> new TodoRow(
-						rs.getLong("todo_id"),
-						rs.getString("todo_name")));
+				(rs, rowNum) -> new Todo(
+						TodoId.of(rs.getLong("todo_id")),
+						TodoName.of(rs.getString("todo_name")),
+						rs.getInt("progress_completed"),
+						rs.getInt("progress_total")));
 	}
 
 	@Override
