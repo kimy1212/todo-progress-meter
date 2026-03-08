@@ -2,6 +2,7 @@
  * todoリスト画面
  */
 import * as common from './common/common.js';
+import * as editProgressRate from './edit-progress-rate.js';
 import { TodoTabNameValidationResult, validateTodoTabName } from './validation/todoTabName/validateTodoTabName.js';
 import { todoTabNameErrorMessage } from './validation/todoTabName/todoTabNameErrorMessage.js';
 import { TodoNameValidationResult, validateTodoName } from './validation/todoName/validateTodoName.js';
@@ -91,6 +92,23 @@ function init() {
 
 	const addTodoButton = document.getElementById('addTodoButton');
 	addTodoButton.addEventListener('click', handleAddTodoButtonClick);
+
+	// モーダル
+	todoList.addEventListener('click', (event) => {
+		const editButton = event.target.closest('#editProgressRateButton');
+		if (!editButton) return;
+		const todo = editButton.closest('.todo');
+		editProgressRate.openProgressRateModal(Number(todo.dataset.completed), Number(todo.dataset.total));
+	});
+
+	document.getElementById('progressRateModalOverlay').addEventListener('click', (event) => {
+		if (event.target === event.currentTarget) editProgressRate.closeProgressRateModal();
+	});
+	document.getElementById('progressRateModalCloseButton').addEventListener('click', editProgressRate.closeProgressRateModal);
+	document.getElementById('progressRateModalCancelButton').addEventListener('click', editProgressRate.closeProgressRateModal);
+
+	document.getElementById('progressRateCompleted').addEventListener('input', editProgressRate.updateModalPreview);
+	document.getElementById('progressRateTotal').addEventListener('input', editProgressRate.updateModalPreview);
 }
 
 /**
@@ -462,7 +480,10 @@ function createTodoElement(mode, todo) {
 
 	const todoContent = todoClone.querySelector('.todo-content');
 
-	todoClone.querySelector('.todo').dataset.todoId = todo.todoId;
+	const todoElement = todoClone.querySelector('.todo');
+	todoElement.dataset.todoId = todo.todoId;
+	todoElement.dataset.completed = todo.completed ?? 0;
+	todoElement.dataset.total = todo.total ?? 0;
 
 	if (mode === 'span' || mode === 'label') {
 		todoContent.append(common.createLabel(mode, todo.todoName, 'text-large-dark'));

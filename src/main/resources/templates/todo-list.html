@@ -5,6 +5,7 @@
 
 <th:block th:fragment="extraHead">
 	<link th:href="@{/css/todo-list.css}" rel="stylesheet">
+	<link th:href="@{/css/common/modal.css}" rel="stylesheet">
 </th:block>
 
 <body>
@@ -30,7 +31,7 @@
 		</div>
 	</main>
 
-	<!--	 templates -->
+	<!-- templates -->
 	<template id="todo">
 		<div class="todo">
 			<input type="checkbox" class="todo-checkbox" name="todo">
@@ -41,7 +42,7 @@
 
 			<ul class="todo-actions-menu">
 				<li>
-					<button class="todo-actions-item">
+					<button class="todo-actions-item" id="editProgressRateButton">
 						<i class="fa-solid fa-pen-to-square"></i>
 						<span class="text-small-dark">進捗率を編集する</span>
 					</button>
@@ -64,7 +65,9 @@
 		</div>
 	</template>
 
-	<!--	 scripts -->
+	<div th:insert="~{edit-progress-rate :: editProgressRate}"></div>
+
+	<!-- scripts -->
 	<script type="module" th:src="@{/js/todo-list.js}"></script>
 
 </body>
