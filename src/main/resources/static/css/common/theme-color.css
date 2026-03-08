@@ -1,13 +1,31 @@
 @charset "UTF-8";
 
 :root {
-	--color-header: #7B90D2;
-	--color-text-light: #FCFAF2;
-	--color-text-dark: #333333;
-	--color-text-error: #D8A373;
-	--color-border-primary: #DFDDE6;
-	--color-button-primary: #D8A373;
-	--color-icon-light: #FCFAF2;
-	--color-icon-dark: #333333;
-	--color-bg-hover: #F0F2F5;
+	--color-header-from: #6366F1;
+	--color-header-to: #8B5CF6;
+	--color-primary: #6366F1;
+	--color-primary-hover: #4F52D6;
+	--color-text-light: #F8FAFC;
+	--color-text-dark: #1E293B;
+	--color-text-muted: #64748B;
+	--color-text-error: #EF4444;
+	--color-border-primary: #E2E8F0;
+	--color-button-primary: #6366F1;
+	--color-icon-light: #F8FAFC;
+	--color-icon-dark: #475569;
+	--color-bg-main: #F1F5F9;
+	--color-bg-card: #FFFFFF;
+	--color-bg-hover: #F8FAFC;
+	--color-tab-active: #6366F1;
+	--color-success: #10B981;
+	--shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+	--shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.05);
+	--shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+	--shadow-primary: 0 4px 14px rgba(99, 102, 241, 0.35);
+	--radius-sm: 8px;
+	--radius-md: 12px;
+	--radius-lg: 16px;
+	--radius-full: 9999px;
+	--transition-fast: 150ms ease;
+	--transition-normal: 250ms ease;
 }
