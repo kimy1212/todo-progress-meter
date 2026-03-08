@@ -62,7 +62,9 @@ public class TodoApiController {
 				.map(todo -> new TodoResponse(
 						todo.todoId(),
 						todo.todoName(),
-						todo.progressRate()))
+						todo.progressRate(),
+						todo.completed(),
+						todo.total()))
 				.toList();
 
 		return response;

@@ -53,7 +53,9 @@ public class TodoServiceImpl implements TodoService {
 				.map(todo -> new TodoDto(
 						todo.getTodoId().value(),
 						todo.getTodoName().value(),
-						todo.progressRate().percentage()))
+						todo.progressRate().percentage(),
+						todo.getCompleted(),
+						todo.getTotal()))
 				.toList();
 	}
 

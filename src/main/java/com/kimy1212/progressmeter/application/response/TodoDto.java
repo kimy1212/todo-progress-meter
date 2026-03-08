@@ -6,7 +6,11 @@ public record TodoDto(
 
 		String todoName,
 
-		int progressRate
+		int progressRate,
+		
+		int completed,
+		
+		int total
 
 ) {
 }
