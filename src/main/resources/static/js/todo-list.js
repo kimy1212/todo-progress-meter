@@ -470,6 +470,8 @@ function createTodoElement(mode, todo) {
 		todoContent.append(common.createInputText(todo.todoName, ['text-large-dark', 'todo-text']));
 	}
 
+	todoClone.querySelector('.progress-rate-value').textContent = todo.progressRate ?? 0;
+
 	return todoClone;
 }
 
@@ -497,6 +499,13 @@ function displayTodo(todo) {
 
 	const newTodo = createTodoElement('label', todo);
 	todoList.insertBefore(newTodo, addTodoButton);
+
+	requestAnimationFrame(() => {
+		requestAnimationFrame(() => {
+			const insertedTodo = todoList.querySelector(`.todo[data-todo-id="${todo.todoId}"]`);
+			insertedTodo.querySelector('.donut-chart').style.setProperty('--value', todo.progressRate ?? 0);
+		});
+	});
 }
 
 /**
@@ -527,7 +536,8 @@ function addTodo() {
 
 	const newTodoData = {
 		todoId: '',
-		todoName: ''
+		todoName: '',
+		progressRate: 0
 	}
 	const newTodo = createTodoElement('input', newTodoData);
 	todoList.insertBefore(newTodo, addTodoButton);
