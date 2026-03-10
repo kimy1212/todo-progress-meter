@@ -93,22 +93,14 @@ function init() {
 	const addTodoButton = document.getElementById('addTodoButton');
 	addTodoButton.addEventListener('click', handleAddTodoButtonClick);
 
-	// モーダル
+	//進捗率編集画面
 	todoList.addEventListener('click', (event) => {
 		const editButton = event.target.closest('#editProgressRateButton');
 		if (!editButton) return;
 		const todo = editButton.closest('.todo');
-		editProgressRate.openProgressRateModal(Number(todo.dataset.completed), Number(todo.dataset.total));
+		editProgressRate.init(getActiveTodoTabId(), todo.dataset.todoId, Number(todo.dataset.completed), Number(todo.dataset.total));
 	});
 
-	document.getElementById('progressRateModalOverlay').addEventListener('click', (event) => {
-		if (event.target === event.currentTarget) editProgressRate.closeProgressRateModal();
-	});
-	document.getElementById('progressRateModalCloseButton').addEventListener('click', editProgressRate.closeProgressRateModal);
-	document.getElementById('progressRateModalCancelButton').addEventListener('click', editProgressRate.closeProgressRateModal);
-
-	document.getElementById('progressRateCompleted').addEventListener('input', editProgressRate.updateModalPreview);
-	document.getElementById('progressRateTotal').addEventListener('input', editProgressRate.updateModalPreview);
 }
 
 /**

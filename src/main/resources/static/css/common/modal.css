@@ -86,7 +86,7 @@
 	display: flex;
 	flex-direction: column;
 	gap: 28px;
-	padding: 28px 24px;
+	padding: 28px 24px 16px;
 }
 
 .modal-preview {
@@ -158,6 +158,16 @@
 	user-select: none;
 }
 
+.modal-error-message {
+	color: var(--color-text-error);
+	font-family: "Kosugi Maru", Arial, sans-serif;
+	font-size: 0.8rem;
+	margin: 0;
+	min-height: 1em;
+	padding: 12px 24px 24px;
+	text-align: center;
+}
+
 .modal-footer {
 	border-top: 1px solid var(--color-border-primary);
 	display: flex;
@@ -200,4 +210,11 @@
 	background-color: var(--color-primary-hover);
 	box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
 	transform: translateY(-1px);
+}
+
+.modal-button--save:disabled {
+	background-color: var(--color-border-primary);
+	box-shadow: none;
+	color: var(--color-text-muted);
+	cursor: not-allowed;
 }
