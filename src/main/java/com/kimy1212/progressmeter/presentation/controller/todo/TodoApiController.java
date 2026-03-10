@@ -26,6 +26,7 @@ import com.kimy1212.progressmeter.application.command.UpdateTodoCommand;
 import com.kimy1212.progressmeter.application.command.UpdateTodoTabCommand;
 import com.kimy1212.progressmeter.application.response.TodoDto;
 import com.kimy1212.progressmeter.application.service.todo.TodoService;
+import com.kimy1212.progressmeter.domain.model.ProgressRate;
 import com.kimy1212.progressmeter.domain.model.TodoId;
 import com.kimy1212.progressmeter.domain.model.TodoName;
 import com.kimy1212.progressmeter.domain.model.TodoTabId;
@@ -115,12 +116,17 @@ public class TodoApiController {
 			@PathVariable(name = "todoId") @NotNull @Positive final long todoId,
 			@Valid @RequestBody final UpdateTodoRequest request,
 			final HttpSession session) {
+		Optional<ProgressRate> progressRate = (request.completed() != null && request.total() != null)
+				? Optional.of(ProgressRate.of(request.completed(), request.total()))
+				: Optional.empty();
+
 		UpdateTodoCommand command = new UpdateTodoCommand(
 				UserId.of((String) session.getAttribute("userId")),
 				TodoTabId.of(todoTabId),
 				TodoId.of(todoId),
 				Optional.ofNullable(request.todoName())
-						.map(TodoName::of));
+						.map(TodoName::of),
+				progressRate);
 
 		service.updateTodo(command);
 	}

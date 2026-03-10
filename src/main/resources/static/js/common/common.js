@@ -71,3 +71,13 @@ export function replaceInputWithLabel(input, tagName, className) {
 export function replaceLabelWithInput(label, className) {
 	label.parentNode.replaceChild(createInputText(label.textContent, className), label);
 }
+
+/**
+ * 文字列を整数に変換する。空文字の場合はnullを返す。
+ *
+ * @param {string} value 変換対象の文字列
+ * @returns {number|null}
+ */
+export function toIntOrNull(value) {
+	return value !== '' ? parseInt(value, 10) : null;
+}
