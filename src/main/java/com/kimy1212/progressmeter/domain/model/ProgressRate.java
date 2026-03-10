@@ -27,6 +27,14 @@ public final class ProgressRate {
 		return new ProgressRate(completed, total);
 	}
 
+	public int getCompleted() {
+		return completed;
+	}
+
+	public int getTotal() {
+		return total;
+	}
+
 	public int percentage() {
 		return (int) ((double) completed / total * 100);
 	}

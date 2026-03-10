@@ -2,6 +2,7 @@ package com.kimy1212.progressmeter.application.command;
 
 import java.util.Optional;
 
+import com.kimy1212.progressmeter.domain.model.ProgressRate;
 import com.kimy1212.progressmeter.domain.model.TodoId;
 import com.kimy1212.progressmeter.domain.model.TodoName;
 import com.kimy1212.progressmeter.domain.model.TodoTabId;
@@ -17,11 +18,19 @@ public class UpdateTodoCommand {
 
 	private final Optional<TodoName> todoName;
 
-	public UpdateTodoCommand(UserId userId, TodoTabId todoTabId, TodoId todoId, Optional<TodoName> todoName) {
+	private final Optional<ProgressRate> progressRate;
+
+	public UpdateTodoCommand(
+			UserId userId,
+			TodoTabId todoTabId,
+			TodoId todoId,
+			Optional<TodoName> todoName,
+			Optional<ProgressRate> progressRate) {
 		this.userId = userId;
 		this.todoTabId = todoTabId;
 		this.todoId = todoId;
 		this.todoName = todoName;
+		this.progressRate = progressRate;
 	}
 
 	public UserId getUserId() {
@@ -38,6 +47,10 @@ public class UpdateTodoCommand {
 
 	public Optional<TodoName> getTodoName() {
 		return todoName;
+	}
+
+	public Optional<ProgressRate> getProgressRate() {
+		return progressRate;
 	}
 
 }

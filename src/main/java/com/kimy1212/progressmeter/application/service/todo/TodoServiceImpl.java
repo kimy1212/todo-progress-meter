@@ -80,7 +80,12 @@ public class TodoServiceImpl implements TodoService {
 	@Override
 	@Transactional
 	public void updateTodo(final UpdateTodoCommand command) {
-		dao.updateTodo(command);
+		dao.updateTodo(
+				command.getUserId(),
+				command.getTodoTabId(),
+				command.getTodoId(),
+				command.getTodoName(),
+				command.getProgressRate());
 	}
 
 	@Override

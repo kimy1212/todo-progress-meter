@@ -1,8 +1,9 @@
 package com.kimy1212.progressmeter.domain.repository;
 
 import java.util.List;
+import java.util.Optional;
 
-import com.kimy1212.progressmeter.application.command.UpdateTodoCommand;
+import com.kimy1212.progressmeter.domain.model.ProgressRate;
 import com.kimy1212.progressmeter.domain.model.Todo;
 import com.kimy1212.progressmeter.domain.model.TodoId;
 import com.kimy1212.progressmeter.domain.model.TodoName;
@@ -22,8 +23,13 @@ public interface TodoDao {
 	public void createTodo(final UserId userId, final TodoTabId todoTabId, final TodoName todoName);
 
 	public void updateTodoTab(final UserId userId, final TodoTabId todoTabId, final TodoTabName todoTabName);
-	
-	public void updateTodo(final UpdateTodoCommand command);
+
+	public void updateTodo(
+			final UserId userId,
+			final TodoTabId todoTabId,
+			final TodoId todoId,
+			final Optional<TodoName> todoName,
+			final Optional<ProgressRate> progressRate);
 
 	public int deleteTodoTabByUserIdAndTodoTabId(final UserId userId, final TodoTabId todoTabId);
 

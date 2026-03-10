@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -11,7 +12,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.kimy1212.progressmeter.application.command.UpdateTodoCommand;
+import com.kimy1212.progressmeter.domain.model.ProgressRate;
 import com.kimy1212.progressmeter.domain.model.Todo;
 import com.kimy1212.progressmeter.domain.model.TodoId;
 import com.kimy1212.progressmeter.domain.model.TodoName;
@@ -126,7 +127,12 @@ public class TodoDaoImpl implements TodoDao {
 	}
 
 	@Override
-	public void updateTodo(final UpdateTodoCommand command) {
+	public void updateTodo(
+			final UserId userId,
+			final TodoTabId todoTabId,
+			final TodoId todoId,
+			final Optional<TodoName> todoName,
+			final Optional<ProgressRate> progressRate) {
 		StringBuilder sql = new StringBuilder("""
 				UPDATE todos
 				SET
@@ -134,9 +140,16 @@ public class TodoDaoImpl implements TodoDao {
 		Map<String, Object> params = new HashMap<>();
 		List<String> sets = new ArrayList<>();
 
-		if (command.getTodoName().isPresent()) {
+		if (todoName.isPresent()) {
 			sets.add("todo_name = :todoName");
-			params.put("todoName", command.getTodoName().get().value());
+			params.put("todoName", todoName.get().value());
+		}
+
+		if (progressRate.isPresent()) {
+			sets.add("progress_completed = :completed");
+			sets.add("progress_total = :total");
+			params.put("completed", progressRate.get().getCompleted());
+			params.put("total", progressRate.get().getTotal());
 		}
 
 		sql.append(String.join(",", sets));
@@ -153,9 +166,9 @@ public class TodoDaoImpl implements TodoDao {
 				)
 				""");
 
-		params.put("todoId", command.getTodoId().value());
-		params.put("todoTabId", command.getTodoTabId().value());
-		params.put("userId", command.getUserId().value());
+		params.put("todoId", todoId.value());
+		params.put("todoTabId", todoTabId.value());
+		params.put("userId", userId.value());
 
 		namedParameterJdbcTemplate.update(sql.toString(), params);
 	}
