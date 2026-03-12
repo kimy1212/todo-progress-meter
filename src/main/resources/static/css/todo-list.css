@@ -157,47 +157,6 @@
 	z-index: 10;
 }
 
-/* ===========================
-   Custom Checkbox
-=========================== */
-
-.todo-checkbox {
-	appearance: none;
-	-webkit-appearance: none;
-	background-color: transparent;
-	border: 2px solid var(--color-border-primary);
-	border-radius: 6px;
-	cursor: pointer;
-	flex-shrink: 0;
-	height: 20px;
-	margin: 0 14px 0 0;
-	position: relative;
-	transition: border-color var(--transition-fast), background-color var(--transition-fast);
-	width: 20px;
-}
-
-.todo-checkbox:hover {
-	border-color: var(--color-primary);
-}
-
-.todo-checkbox:checked {
-	background-color: var(--color-success);
-	border-color: var(--color-success);
-}
-
-.todo-checkbox:checked::after {
-	border: 2px solid white;
-	border-left: none;
-	border-top: none;
-	content: "";
-	display: block;
-	height: 10px;
-	left: 5px;
-	position: absolute;
-	top: 2px;
-	transform: rotate(45deg);
-	width: 6px;
-}
 
 /* ===========================
    Todo Content
