@@ -3,7 +3,7 @@
 
 .modal-overlay {
 	align-items: center;
-	background-color: rgba(15, 23, 42, 0.5);
+	background-color: var(--color-overlay-bg);
 	backdrop-filter: blur(4px);
 	display: flex;
 	inset: 0;
@@ -56,11 +56,6 @@
 	margin: 0;
 }
 
-.modal-title .fa-chart-pie {
-	color: var(--color-primary);
-	font-size: 1.1rem;
-}
-
 .modal-close-button {
 	align-items: center;
 	background: none;
@@ -88,86 +83,6 @@
 	gap: 28px;
 	padding: 28px 24px 16px;
 }
-
-.modal-preview {
-	align-items: center;
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
-}
-
-.modal-preview .donut-chart {
-	--size: 100px;
-	--thickness: 12px;
-	margin-left: 0;
-}
-
-.modal-inputs {
-	align-items: flex-end;
-	display: flex;
-	gap: 12px;
-	justify-content: center;
-	width: 100%;
-}
-
-.modal-input-group {
-	display: flex;
-	flex-direction: column;
-	gap: 6px;
-}
-
-.modal-input-label {
-	color: var(--color-text-muted);
-	font-family: "Kosugi Maru", Arial, sans-serif;
-	font-size: 0.75rem;
-	font-weight: 600;
-	letter-spacing: 0.03em;
-}
-
-.modal-input {
-	background-color: var(--color-bg-main);
-	border: 2px solid var(--color-border-primary);
-	border-radius: var(--radius-sm);
-	color: var(--color-text-dark);
-	font-family: "Kosugi Maru", Arial, sans-serif;
-	font-size: 1.5rem;
-	font-weight: 700;
-	outline: none;
-	padding: 10px 12px;
-	text-align: center;
-	transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-	width: 120px;
-}
-
-.modal-input:focus {
-	border-color: var(--color-primary);
-	box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
-}
-
-.modal-input::-webkit-inner-spin-button,
-.modal-input::-webkit-outer-spin-button {
-	opacity: 1;
-}
-
-.modal-fraction-divider {
-	color: var(--color-text-muted);
-	font-size: 2rem;
-	font-weight: 300;
-	line-height: 1;
-	margin-bottom: 10px;
-	user-select: none;
-}
-
-.modal-error-message {
-	color: var(--color-text-error);
-	font-family: "Kosugi Maru", Arial, sans-serif;
-	font-size: 0.8rem;
-	margin: 0;
-	min-height: 1em;
-	padding: 12px 24px 24px;
-	text-align: center;
-}
-
 
 .modal-footer {
 	border-top: 1px solid var(--color-border-primary);
@@ -209,7 +124,7 @@
 
 .modal-button--save:hover {
 	background-color: var(--color-primary-hover);
-	box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
+	box-shadow: 0 6px 20px var(--color-primary-shadow-hover);
 	transform: translateY(-1px);
 }
 

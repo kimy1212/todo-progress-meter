@@ -45,11 +45,11 @@
 }
 
 .todo-tab:hover {
-	background-color: rgba(99, 102, 241, 0.08);
+	background-color: var(--color-primary-bg-faint);
 }
 
 .todo-tab.active {
-	background-color: rgba(99, 102, 241, 0.1);
+	background-color: var(--color-primary-bg-subtle);
 }
 
 .todo-tab.active .todo-tab-label {
@@ -88,8 +88,8 @@
 }
 
 .delete-todo-tab-button:hover {
-	background-color: rgba(239, 68, 68, 0.1);
-	color: #EF4444;
+	background-color: var(--color-danger-bg-subtle);
+	color: var(--color-text-error);
 }
 
 .todo-tab:hover:has(.todo-tab-label) .delete-todo-tab-button {
@@ -239,7 +239,7 @@
 }
 
 .todo-actions-trigger:hover {
-	background-color: rgba(99, 102, 241, 0.1);
+	background-color: var(--color-primary-bg-subtle);
 	color: var(--color-primary);
 }
 
@@ -294,7 +294,7 @@
 }
 
 .todo-actions-item .fa-trash {
-	color: #EF4444;
+	color: var(--color-text-error);
 }
 
 /* ===========================
@@ -305,10 +305,10 @@
 	--size: 72px;
 	--thickness: 8px;
 	--value: 0;
-	--color: #6366F1;
+	--color: var(--color-primary);
 
 	align-items: center;
-	background: conic-gradient(var(--color) calc(var(--value) * 1%), #E2E8F0 0);
+	background: conic-gradient(var(--color) calc(var(--value) * 1%), var(--color-border-primary) 0);
 	border-radius: 50%;
 	display: flex;
 	flex-shrink: 0;

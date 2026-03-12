@@ -17,7 +17,7 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<div class="modal-preview">
+					<div class="progress-rate-preview">
 						<div class="donut-chart" id="modalDonutChart">
 							<div class="donut-chart-inner">
 								<span class="progress-rate-value" id="modalProgressRateValue">0</span>
@@ -25,19 +25,19 @@
 							</div>
 						</div>
 					</div>
-					<div class="modal-inputs">
-						<div class="modal-input-group">
-							<label class="modal-input-label" for="progressRateCompleted">完了数（分子）</label>
-							<input type="number" id="progressRateCompleted" class="modal-input" min="0" step="1" placeholder="0">
+					<div class="progress-rate-inputs">
+						<div class="progress-rate-input-group">
+							<label class="progress-rate-input-label" for="progressRateCompleted">完了数（分子）</label>
+							<input type="number" id="progressRateCompleted" class="progress-rate-input" min="0" step="1" placeholder="0">
 						</div>
-						<span class="modal-fraction-divider">/</span>
-						<div class="modal-input-group">
-							<label class="modal-input-label" for="progressRateTotal">全体数（分母）</label>
-							<input type="number" id="progressRateTotal" class="modal-input" min="0" step="1" placeholder="100">
+						<span class="progress-rate-fraction-divider">/</span>
+						<div class="progress-rate-input-group">
+							<label class="progress-rate-input-label" for="progressRateTotal">全体数（分母）</label>
+							<input type="number" id="progressRateTotal" class="progress-rate-input" min="0" step="1" placeholder="100">
 						</div>
 					</div>
 				</div>
-				<p class="modal-error-message" id="progressRateErrorMessage" aria-live="polite"></p>
+				<p class="progress-rate-error-message" id="progressRateErrorMessage" aria-live="polite"></p>
 				<div class="modal-footer">
 					<button class="modal-button modal-button--cancel" id="progressRateModalCancelButton">キャンセル</button>
 					<button class="modal-button modal-button--save" id="progressRateModalSaveButton">

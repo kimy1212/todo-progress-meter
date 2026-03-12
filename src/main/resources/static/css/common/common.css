@@ -41,7 +41,7 @@ input[type="text"] {
 
 input[type="text"]:focus {
 	border-color: var(--color-primary);
-	box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+	box-shadow: 0 0 0 3px var(--color-primary-focus-ring);
 }
 
 .button-circle {
@@ -58,7 +58,7 @@ input[type="text"]:focus {
 
 .button-circle:hover {
 	background-color: var(--color-primary-hover);
-	box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
+	box-shadow: 0 6px 20px var(--color-primary-shadow-hover);
 	transform: translateY(-2px) scale(1.05);
 }
 
@@ -81,6 +81,6 @@ input[type="text"]:focus {
 
 .button-rectangle:hover {
 	background-color: var(--color-primary-hover);
-	box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
+	box-shadow: 0 6px 20px var(--color-primary-shadow-hover);
 	transform: translateY(-1px);
 }
