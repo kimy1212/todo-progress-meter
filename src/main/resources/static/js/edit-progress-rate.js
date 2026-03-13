@@ -153,5 +153,6 @@ async function handleProgressRateSaveButtonClick() {
 	const isUpdated = await updateProgressRate();
 	if (!isUpdated) return;
 	closeProgressRateModal();
+	sessionStorage.setItem('activeTabId', tabId);
 	window.location.href = '/';
 }

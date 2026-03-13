@@ -17,7 +17,12 @@ function init() {
 
 	const todoTabs = document.querySelectorAll('.todo-tab');
 	if (todoTabs.length > 0) {
-		activateTodoTab(todoTabs[0]);
+		const savedTabId = sessionStorage.getItem('activeTabId');
+		sessionStorage.removeItem('activeTabId');
+		const savedTab = savedTabId
+			? document.querySelector(`.todo-tab[data-todo-tab-id="${savedTabId}"]`)
+			: null;
+		activateTodoTab(savedTab ?? todoTabs[0]);
 		loadTodosForActiveTodoTab();
 	}
 
@@ -427,6 +432,10 @@ function getActiveTodoTabId() {
 async function handleDeleteTodoTabButtonClick(tabId) {
 	const isDeleted = await deleteTodoTab(tabId);
 	if (!isDeleted) return;
+	const activeTabId = getActiveTodoTabId();
+	if (activeTabId !== tabId) {
+		sessionStorage.setItem('activeTabId', activeTabId);
+	}
 	window.location.href = '/';
 }
 
