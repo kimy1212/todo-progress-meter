@@ -15,6 +15,9 @@
 
 	<main id="todoListScreen">
 		<div class="todo-tab-list" id="todoTabList">
+			<button class="sidebar-toggle-button" id="sidebarToggleButton">
+				<i class="fa-solid fa-angles-left"></i>
+			</button>
 			<div th:each="todoTab : ${todoTabs}" class="todo-tab" th:data-todo-tab-id="${todoTab.todoTabId}">
 				<span th:text="${todoTab.todoTabName}" class="text-small-dark todo-tab-label"></span>
 				<button class="delete-todo-tab-button">
@@ -25,6 +28,7 @@
 				<i class="icon fa-solid fa-plus"></i>
 			</button>
 		</div>
+		<div class="sidebar-resizer" id="sidebarResizer"></div>
 		<div class="todo-list" id="todoList">
 			<button class="button-circle add-todo-button" id="addTodoButton">
 				<i class="icon fa-solid fa-plus"></i>
@@ -35,7 +39,7 @@
 	<!-- templates -->
 	<template id="todo">
 		<div class="todo">
-		<div class="todo-content"></div>
+			<div class="todo-content"></div>
 			<button class="todo-actions-trigger" id="todoActionsTrigger">
 				<i class="icon fa-solid fa-ellipsis"></i>
 			</button>

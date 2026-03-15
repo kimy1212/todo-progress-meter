@@ -58,6 +58,29 @@ function init() {
 	const addTodoTabButton = document.getElementById('addTodoTabButton');
 	addTodoTabButton.addEventListener('click', handleAddTodoTabButtonClick);
 
+	const sidebarToggleButton = document.getElementById('sidebarToggleButton');
+	const todoTabListEl = document.getElementById('todoTabList');
+	if (localStorage.getItem('sidebarCollapsed') === 'true') {
+		todoTabListEl.classList.add('collapsed');
+		sidebarToggleButton.querySelector('i').classList.replace('fa-angles-left', 'fa-angles-right');
+	}
+	sidebarToggleButton.addEventListener('click', () => {
+		const isCollapsed = todoTabListEl.classList.toggle('collapsed');
+		const icon = sidebarToggleButton.querySelector('i');
+		icon.classList.toggle('fa-angles-left', !isCollapsed);
+		icon.classList.toggle('fa-angles-right', isCollapsed);
+		localStorage.setItem('sidebarCollapsed', isCollapsed);
+		if (isCollapsed) {
+			todoTabListEl.style.width = '';
+		} else {
+			const savedWidth = localStorage.getItem('sidebarWidth');
+			if (savedWidth) todoTabListEl.style.width = savedWidth + 'px';
+		}
+	});
+
+	const sidebarResizer = document.getElementById('sidebarResizer');
+	initSidebarResizer(sidebarResizer, todoTabListEl);
+
 	const todoList = document.getElementById('todoList');
 	todoList.addEventListener('keydown', (event) => {
 		if (event.key === 'Enter' && event.target.tagName === 'INPUT' && event.target.type === 'text') {
@@ -106,6 +129,49 @@ function init() {
 		editProgressRate.init(getActiveTodoTabId(), todo.dataset.todoId, Number(todo.dataset.completed), Number(todo.dataset.total));
 	});
 
+}
+
+/**
+ * サイドバーリサイザー初期化
+ *
+ * @param {HTMLElement} resizer リサイザー要素
+ * @param {HTMLElement} sidebar サイドバー要素
+ */
+const MIN_SIDEBAR_WIDTH = 200;
+const MAX_SIDEBAR_WIDTH = 700;
+
+function initSidebarResizer(resizer, sidebar) {
+	const savedWidth = localStorage.getItem('sidebarWidth');
+	if (savedWidth && !sidebar.classList.contains('collapsed')) {
+		sidebar.style.width = savedWidth + 'px';
+	}
+
+	resizer.addEventListener('mousedown', (e) => {
+		if (sidebar.classList.contains('collapsed')) return;
+
+		e.preventDefault();
+		resizer.classList.add('is-dragging');
+		sidebar.classList.add('is-dragging');
+		document.body.classList.add('todo-list-screen-no-select');
+
+		const onMouseMove = (e) => {
+			const newWidth = e.clientX - sidebar.getBoundingClientRect().left;
+			if (newWidth < MIN_SIDEBAR_WIDTH || newWidth > MAX_SIDEBAR_WIDTH) return;
+			sidebar.style.width = newWidth + 'px';
+		};
+
+		const onMouseUp = () => {
+			resizer.classList.remove('is-dragging');
+			sidebar.classList.remove('is-dragging');
+			document.body.classList.remove('todo-list-screen-no-select');
+			localStorage.setItem('sidebarWidth', parseInt(sidebar.style.width));
+			document.removeEventListener('mousemove', onMouseMove);
+			document.removeEventListener('mouseup', onMouseUp);
+		};
+
+		document.addEventListener('mousemove', onMouseMove);
+		document.addEventListener('mouseup', onMouseUp);
+	});
 }
 
 /**
