@@ -516,8 +516,7 @@ function handleAddTodoTabButtonClick() {
  * todoタブ追加処理
  */
 function addTodoTab() {
-	const todoTabList = document.getElementById('todoTabList');
-	const addTodoTabButton = document.getElementById('addTodoTabButton');
+	const todoTabScrollArea = document.getElementById('todoTabScrollArea');
 
 	const newTodoTab = document.createElement('div');
 	newTodoTab.classList.add('todo-tab');
@@ -530,7 +529,7 @@ function addTodoTab() {
 
 	newDeleteTodoTabButton.append(newDeleteTodoTabButtonIcon);
 	newTodoTab.append(common.createInputText('', ['text-small-dark', 'todo-tab-text']), newDeleteTodoTabButton);
-	todoTabList.insertBefore(newTodoTab, addTodoTabButton);
+	todoTabScrollArea.appendChild(newTodoTab);
 }
 
 /**

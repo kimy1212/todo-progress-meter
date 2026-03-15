@@ -15,14 +15,18 @@
 
 	<main id="todoListScreen">
 		<div class="todo-tab-list" id="todoTabList">
-			<button class="sidebar-toggle-button" id="sidebarToggleButton">
-				<i class="fa-solid fa-angles-left"></i>
-			</button>
-			<div th:each="todoTab : ${todoTabs}" class="todo-tab" th:data-todo-tab-id="${todoTab.todoTabId}">
-				<span th:text="${todoTab.todoTabName}" class="text-small-dark todo-tab-label"></span>
-				<button class="delete-todo-tab-button">
-					<i class="fa-solid fa-trash"></i>
+			<div class="sidebar-header">
+				<button class="sidebar-toggle-button" id="sidebarToggleButton">
+					<i class="fa-solid fa-angles-left"></i>
 				</button>
+			</div>
+			<div class="todo-tab-scroll-area" id="todoTabScrollArea">
+				<div th:each="todoTab : ${todoTabs}" class="todo-tab" th:data-todo-tab-id="${todoTab.todoTabId}">
+					<span th:text="${todoTab.todoTabName}" class="text-small-dark todo-tab-label"></span>
+					<button class="delete-todo-tab-button">
+						<i class="fa-solid fa-trash"></i>
+					</button>
+				</div>
 			</div>
 			<button class="button-circle add-todo-tab-button" id="addTodoTabButton">
 				<i class="icon fa-solid fa-plus"></i>
