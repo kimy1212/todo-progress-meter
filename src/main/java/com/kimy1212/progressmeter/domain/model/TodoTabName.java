@@ -1,8 +1,6 @@
 package com.kimy1212.progressmeter.domain.model;
 
 public class TodoTabName {
-	
-	private static final int MAX_LENGTH = 30;
 
 	private final String value;
 
@@ -10,9 +8,7 @@ public class TodoTabName {
 		if (value == null || value.isBlank()) {
 			throw new IllegalArgumentException("TodoTabName must not be blank");
 		}
-        if (value.length() > MAX_LENGTH) {
-            throw new IllegalArgumentException("TodoTabName must be within 30 characters");
-        }
+
 		this.value = value;
 	}
 

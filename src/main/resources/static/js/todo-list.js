@@ -395,6 +395,14 @@ async function commitTodoTabName(input) {
 		return;
 	}
 
+	const existingTabNames = [...document.querySelectorAll('.todo-tab-label')]
+		.map(el => el.textContent);
+	if (existingTabNames.includes(todoTabName.trim())) {
+		alert(todoTabNameErrorMessage(TodoTabNameValidationResult.DUPLICATE));
+		input.focus();
+		return;
+	}
+
 	try {
 		if (todoTabId) {
 			await updateTodoTabName(todoTabId, todoTabName);
@@ -427,6 +435,14 @@ async function commitTodoName(input) {
 	const result = validateTodoName(todoName);
 	if (result !== TodoNameValidationResult.OK) {
 		alert(todoNameErrorMessage(result));
+		input.focus();
+		return;
+	}
+
+	const existingTodoNames = [...document.querySelectorAll('#todoList .todo-content label')]
+		.map(el => el.textContent);
+	if (existingTodoNames.includes(todoName.trim())) {
+		alert(todoNameErrorMessage(TodoNameValidationResult.DUPLICATE));
 		input.focus();
 		return;
 	}
