@@ -5,6 +5,12 @@
 	box-sizing: border-box;
 }
 
+html,
+body {
+	height: 100%;
+	overflow: hidden;
+}
+
 body {
 	background-color: var(--color-bg-main);
 	margin: 0;
