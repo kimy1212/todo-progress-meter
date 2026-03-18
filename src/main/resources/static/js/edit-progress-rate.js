@@ -48,7 +48,7 @@ function openProgressRateModal(completed, total) {
 	document.getElementById('progressRateTotal').value = total || '';
 	updateModalPreview();
 	updateSaveButtonState();
-	clearErrorMessage();
+	common.clearInputError(document.getElementById('progressRateInputs'));
 	document.getElementById('progressRateModalOverlay').classList.add('is-open');
 	document.getElementById('progressRateCompleted').focus();
 	document.getElementById('todoListScreen').inert = true;
@@ -97,22 +97,6 @@ function updateModalPreview() {
 }
 
 /**
- * エラーメッセージを表示する
- *
- * @param {string} message
- */
-function showErrorMessage(message) {
-	document.getElementById('progressRateErrorMessage').textContent = message;
-}
-
-/**
- * エラーメッセージをクリアする
- */
-function clearErrorMessage() {
-	document.getElementById('progressRateErrorMessage').textContent = '';
-}
-
-/**
  * 進捗率更新
  */
 async function updateProgressRate() {
@@ -141,12 +125,13 @@ async function updateProgressRate() {
 }
 
 async function handleProgressRateSaveButtonClick() {
-	clearErrorMessage();
+	const progressRateInputs = document.getElementById('progressRateInputs');
+	common.clearInputError(progressRateInputs);
 
 	const completed = parseInt(document.getElementById('progressRateCompleted').value, 10);
 	const total = parseInt(document.getElementById('progressRateTotal').value, 10);
 	if (completed > total) {
-		showErrorMessage('完了数は全体数以下にしてください');
+		common.showInputError(progressRateInputs, '完了数は全体数以下にしてください');
 		return;
 	}
 

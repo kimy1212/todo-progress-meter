@@ -29,6 +29,32 @@ export function redirectToGenericError() {
 }
 
 /**
+ * inputのインラインエラーを表示する
+ *
+ * @param {HTMLElement} input
+ * @param {string} message
+ */
+export function showInputError(container, message, inputEl) {
+	clearInputError(container);
+	const error = document.createElement('span');
+	error.className = 'input-error';
+	error.textContent = message;
+	container.classList.add('has-input-error');
+	container.appendChild(error);
+	inputEl?.addEventListener('input', () => clearInputError(container), { once: true });
+}
+
+/**
+ * インラインエラーを削除する
+ *
+ * @param {HTMLElement} container
+ */
+export function clearInputError(container) {
+	container.querySelector('.input-error')?.remove();
+	container.classList.remove('has-input-error');
+}
+
+/**
  * テキスト入力項目作成
  */
 export function createInputText(text, className) {

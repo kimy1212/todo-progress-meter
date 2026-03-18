@@ -9,8 +9,8 @@ export function todoNameErrorMessage(result) {
 	switch (result) {
 		case TodoNameValidationResult.EMPTY:
 			return "TODOを入力してください";
-		case TodoNameValidationResult.TOO_LONG:
-			return "TODOは50文字以内で入力してください";
+		case TodoNameValidationResult.DUPLICATE:
+			return "同じ名前のTODOがすでに存在します";
 		default:
 			return;
 	}

@@ -1,21 +1,18 @@
 export const TodoNameValidationResult = {
 	OK: "OK",
 	EMPTY: "EMPTY",
-	TOO_LONG: "TOO_LONG",
+	DUPLICATE: "DUPLICATE",
 };
 
 
 /**
  * todo名検証
- * 
- * @param {string} name todoタブ名
+ *
+ * @param {string} name todo名
  */
 export function validateTodoName(name) {
 	if (!name || name.trim() === "") {
 		return TodoNameValidationResult.EMPTY;
-	}
-	if (name.length > 50) {
-		return TodoNameValidationResult.TOO_LONG;
 	}
 	return TodoNameValidationResult.OK;
 }

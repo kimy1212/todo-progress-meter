@@ -90,3 +90,15 @@ input[type="text"]:focus {
 	box-shadow: 0 6px 20px var(--color-primary-shadow-hover);
 	transform: translateY(-1px);
 }
+
+.has-input-error {
+	flex-wrap: wrap;
+}
+
+.input-error {
+	color: var(--color-text-error);
+	font-family: "Kosugi Maru", Arial, sans-serif;
+	font-size: 0.75rem;
+	padding: 2px 0 4px;
+	width: 100%;
+}

@@ -137,7 +137,7 @@ function init() {
  * @param {HTMLElement} resizer リサイザー要素
  * @param {HTMLElement} sidebar サイドバー要素
  */
-const MIN_SIDEBAR_WIDTH = 200;
+const MIN_SIDEBAR_WIDTH = 230;
 const MAX_SIDEBAR_WIDTH = 700;
 
 function initSidebarResizer(resizer, sidebar) {
@@ -381,7 +381,7 @@ async function deleteTodo(tabId, todoId) {
 
 /**
  * todoタブ名確定
- * 
+ *
  * @param {HTMLElement} input todoタブ要素
  */
 async function commitTodoTabName(input) {
@@ -390,7 +390,15 @@ async function commitTodoTabName(input) {
 
 	const result = validateTodoTabName(todoTabName);
 	if (result !== TodoTabNameValidationResult.OK) {
-		alert(todoTabNameErrorMessage(result));
+		common.showInputError(input.parentNode, todoTabNameErrorMessage(result), input);
+		input.focus();
+		return;
+	}
+
+	const existingTabNames = [...document.querySelectorAll('.todo-tab-label')]
+		.map(el => el.textContent);
+	if (existingTabNames.includes(todoTabName.trim())) {
+		common.showInputError(input.parentNode, todoTabNameErrorMessage(TodoTabNameValidationResult.DUPLICATE), input);
 		input.focus();
 		return;
 	}
@@ -404,13 +412,14 @@ async function commitTodoTabName(input) {
 			input.closest('.todo-tab').dataset.todoTabId = todoTabId;
 		}
 
+		common.clearInputError(input.parentNode);
 		common.replaceInputWithLabel(input, 'span', ['text-small-dark', 'todo-tab-label']);
 
 		const todoTab = document.querySelector(`.todo-tab[data-todo-tab-id="${todoTabId}"]`);
 		activateTodoTab(todoTab);
 		loadTodosForActiveTodoTab();
 	} catch {
-		alert('保存に失敗しました');
+		common.showInputError(input.parentNode, '保存に失敗しました', input);
 		input.focus();
 	}
 }
@@ -426,7 +435,15 @@ async function commitTodoName(input) {
 
 	const result = validateTodoName(todoName);
 	if (result !== TodoNameValidationResult.OK) {
-		alert(todoNameErrorMessage(result));
+		common.showInputError(input.parentNode, todoNameErrorMessage(result), input);
+		input.focus();
+		return;
+	}
+
+	const existingTodoNames = [...document.querySelectorAll('#todoList .todo-content label')]
+		.map(el => el.textContent);
+	if (existingTodoNames.includes(todoName.trim())) {
+		common.showInputError(input.parentNode, todoNameErrorMessage(TodoNameValidationResult.DUPLICATE), input);
 		input.focus();
 		return;
 	}
@@ -439,11 +456,12 @@ async function commitTodoName(input) {
 			if (!isCreated) return;
 		}
 
+		common.clearInputError(input.parentNode);
 		common.replaceInputWithLabel(input, 'label', 'text-large-dark');
 
 		loadTodosForActiveTodoTab();
 	} catch {
-		alert('保存に失敗しました');
+		common.showInputError(input.parentNode, '保存に失敗しました', input);
 		input.focus();
 	}
 }
