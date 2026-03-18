@@ -48,7 +48,7 @@ function openProgressRateModal(completed, total) {
 	document.getElementById('progressRateTotal').value = total || '';
 	updateModalPreview();
 	updateSaveButtonState();
-	common.clearInputError(document.getElementById('progressRateCompleted'));
+	common.clearInputError(document.getElementById('progressRateInputs'));
 	document.getElementById('progressRateModalOverlay').classList.add('is-open');
 	document.getElementById('progressRateCompleted').focus();
 	document.getElementById('todoListScreen').inert = true;
@@ -125,7 +125,7 @@ async function updateProgressRate() {
 }
 
 async function handleProgressRateSaveButtonClick() {
-	const progressRateInputs = document.querySelector('.progress-rate-inputs');
+	const progressRateInputs = document.getElementById('progressRateInputs');
 	common.clearInputError(progressRateInputs);
 
 	const completed = parseInt(document.getElementById('progressRateCompleted').value, 10);
