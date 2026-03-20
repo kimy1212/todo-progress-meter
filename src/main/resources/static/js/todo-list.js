@@ -494,6 +494,7 @@ function activateTodoTab(activeTodoTab) {
 async function loadTodosForActiveTodoTab() {
 	const activeTodoTabId = document.querySelector('.todo-tab.active').dataset.todoTabId;
 	const res = await fetchTodos(activeTodoTabId);
+	if (res === undefined) return;
 	createTodoList(res);
 }
 
