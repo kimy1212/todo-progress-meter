@@ -24,6 +24,8 @@ function init() {
 			: null;
 		activateTodoTab(savedTab ?? todoTabs[0]);
 		loadTodosForActiveTodoTab();
+	} else {
+		document.getElementById('addTodoButton').style.display = 'none';
 	}
 
 	//イベント付与
@@ -44,8 +46,11 @@ function init() {
 	});
 
 	todoTabList.addEventListener('keydown', (event) => {
-		if (event.key === 'Enter' && event.target.tagName === 'INPUT' && event.target.type === 'text') {
+		if (event.target.tagName !== 'INPUT' || event.target.type !== 'text') return;
+		if (event.key === 'Enter') {
 			commitTodoTabName(event.target);
+		} else if (event.key === 'Escape') {
+			cancelTodoTabInput(event.target);
 		}
 	});
 
@@ -83,14 +88,19 @@ function init() {
 
 	const todoList = document.getElementById('todoList');
 	todoList.addEventListener('keydown', (event) => {
-		if (event.key === 'Enter' && event.target.tagName === 'INPUT' && event.target.type === 'text') {
+		if (event.target.tagName !== 'INPUT' || event.target.type !== 'text') return;
+		if (event.key === 'Enter') {
 			commitTodoName(event.target);
+		} else if (event.key === 'Escape') {
+			cancelTodoInput(event.target);
 		}
 	});
 
 	todoList.addEventListener('dblclick', (event) => {
 		if (event.target.tagName === 'LABEL') {
+			const todo = event.target.closest('.todo');
 			common.replaceLabelWithInput(event.target, ['text-large-dark', 'todo-text']);
+			todo.querySelector('.todo-actions-trigger').style.display = 'none';
 		}
 	});
 
@@ -536,6 +546,26 @@ function addTodoTab() {
 	newDeleteTodoTabButton.append(newDeleteTodoTabButtonIcon);
 	newTodoTab.append(common.createInputText('', ['text-small-dark', 'todo-tab-text']), newDeleteTodoTabButton);
 	todoTabScrollArea.appendChild(newTodoTab);
+
+	//スクロールバーを最下部に移動
+	const bottom = todoTabScrollArea.scrollHeight - todoTabScrollArea.clientHeight;
+	todoTabScrollArea.scroll(0, bottom);
+}
+
+/**
+ * todoタブ入力キャンセル処理
+ *
+ * @param {HTMLElement} input todoタブのinput要素
+ */
+function cancelTodoTabInput(input) {
+	const todoTab = input.closest('.todo-tab');
+	if (todoTab.dataset.todoTabId) {
+		common.clearInputError(input.parentNode);
+		input.value = input.dataset.originalValue;
+		common.replaceInputWithLabel(input, 'span', ['text-small-dark', 'todo-tab-label']);
+	} else {
+		todoTab.remove();
+	}
 }
 
 /**
@@ -561,6 +591,7 @@ function createTodoElement(mode, todo) {
 		todoContent.append(common.createLabel(mode, todo.todoName, 'text-large-dark'));
 	} else if (mode === 'input') {
 		todoContent.append(common.createInputText(todo.todoName, ['text-large-dark', 'todo-text']));
+		todoClone.querySelector('.todo-actions-trigger').style.display = 'none';
 	}
 
 	todoClone.querySelector('.progress-rate-value').textContent = todo.progressRate ?? 0;
@@ -634,4 +665,25 @@ function addTodo() {
 	}
 	const newTodo = createTodoElement('input', newTodoData);
 	todoList.insertBefore(newTodo, addTodoButton);
+
+	//スクロールバーを最下部に移動
+	const bottom = todoList.scrollHeight - todoList.clientHeight;
+	todoList.scroll(0, bottom);
+}
+
+/**
+ * todo入力キャンセル処理
+ *
+ * @param {HTMLElement} input todoのinput要素
+ */
+function cancelTodoInput(input) {
+	const todo = input.closest('.todo');
+	if (todo.dataset.todoId) {
+		common.clearInputError(input.parentNode);
+		input.value = input.dataset.originalValue;
+		common.replaceInputWithLabel(input, 'label', 'text-large-dark');
+		todo.querySelector('.todo-actions-trigger').style.display = '';
+	} else {
+		todo.remove();
+	}
 }
