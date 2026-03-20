@@ -627,7 +627,8 @@ function displayTodo(todo) {
 	requestAnimationFrame(() => {
 		requestAnimationFrame(() => {
 			const insertedTodo = todoList.querySelector(`.todo[data-todo-id="${todo.todoId}"]`);
-			insertedTodo.querySelector('.donut-chart').style.setProperty('--value', todo.progressRate ?? 0);
+			const clamped = Math.min(100, Math.max(0, todo.progressRate ?? 0));
+			insertedTodo.querySelector('.donut-chart').style.setProperty('--value', clamped);
 		});
 	});
 }
