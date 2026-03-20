@@ -122,7 +122,7 @@ function init() {
 	});
 
 	todoList.addEventListener('click', (event) => {
-		const deleteTodoButton = event.target.closest('#deleteTodoButton');
+		const deleteTodoButton = event.target.closest('.delete-todo-button');
 		if (!deleteTodoButton) return;
 		const todoId = event.target.closest('.todo').dataset.todoId;
 		handleDeleteTodoButtonClick(getActiveTodoTabId(), todoId);
@@ -133,7 +133,7 @@ function init() {
 
 	//進捗率編集画面
 	todoList.addEventListener('click', (event) => {
-		const editButton = event.target.closest('#editProgressRateButton');
+		const editButton = event.target.closest('.edit-progress-rate-button');
 		if (!editButton) return;
 		const todo = editButton.closest('.todo');
 		editProgressRate.init(getActiveTodoTabId(), todo.dataset.todoId, Number(todo.dataset.completed), Number(todo.dataset.total));
