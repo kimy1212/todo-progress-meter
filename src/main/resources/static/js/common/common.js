@@ -95,7 +95,9 @@ export function replaceInputWithLabel(input, tagName, className) {
  * label→input変換処理
  */
 export function replaceLabelWithInput(label, className) {
-	label.parentNode.replaceChild(createInputText(label.textContent, className), label);
+	const input = createInputText(label.textContent, className);
+	input.dataset.originalValue = label.textContent;
+	label.parentNode.replaceChild(input, label);
 }
 
 /**
