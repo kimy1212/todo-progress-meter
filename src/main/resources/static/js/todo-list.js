@@ -388,17 +388,11 @@ async function commitTodoTabName(input) {
 	let todoTabId = input.closest('.todo-tab').dataset.todoTabId;
 	const todoTabName = input.value;
 
-	const result = validateTodoTabName(todoTabName);
-	if (result !== TodoTabNameValidationResult.OK) {
-		common.showInputError(input.parentNode, todoTabNameErrorMessage(result), input);
-		input.focus();
-		return;
-	}
-
 	const existingTabNames = [...document.querySelectorAll('.todo-tab-label')]
 		.map(el => el.textContent);
-	if (existingTabNames.includes(todoTabName.trim())) {
-		common.showInputError(input.parentNode, todoTabNameErrorMessage(TodoTabNameValidationResult.DUPLICATE), input);
+	const result = validateTodoTabName(todoTabName, existingTabNames);
+	if (result !== TodoTabNameValidationResult.OK) {
+		common.showInputError(input.parentNode, todoTabNameErrorMessage(result), input);
 		input.focus();
 		return;
 	}
@@ -433,17 +427,11 @@ async function commitTodoName(input) {
 	let todoId = input.closest('.todo').dataset.todoId;
 	const todoName = input.value;
 
-	const result = validateTodoName(todoName);
-	if (result !== TodoNameValidationResult.OK) {
-		common.showInputError(input.parentNode, todoNameErrorMessage(result), input);
-		input.focus();
-		return;
-	}
-
 	const existingTodoNames = [...document.querySelectorAll('#todoList .todo-content label')]
 		.map(el => el.textContent);
-	if (existingTodoNames.includes(todoName.trim())) {
-		common.showInputError(input.parentNode, todoNameErrorMessage(TodoNameValidationResult.DUPLICATE), input);
+	const result = validateTodoName(todoName, existingTodoNames);
+	if (result !== TodoNameValidationResult.OK) {
+		common.showInputError(input.parentNode, todoNameErrorMessage(result), input);
 		input.focus();
 		return;
 	}
