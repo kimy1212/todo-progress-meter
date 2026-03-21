@@ -36,6 +36,7 @@ public final class ProgressRate {
 	}
 
 	public int percentage() {
+		if (total == 0) return 0;
 		return (int) ((double) completed / total * 100);
 	}
 
