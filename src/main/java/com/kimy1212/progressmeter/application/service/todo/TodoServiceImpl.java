@@ -44,7 +44,7 @@ public class TodoServiceImpl implements TodoService {
 	@Override
 	public List<TodoDto> getTodos(final GetTodosCommand command) {
 		if (!dao.existsTodoTabByUserIdAndTodoTabId(command.getUserId(), command.getTodoTabId())) {
-			throw new NotFoundException("TODOタブが見つかりませんでした");
+			throw new NotFoundException("Todo tab not found");
 		}
 
 		List<Todo> todos = dao.findTodosByUserIdAndTodoTabId(command.getUserId(), command.getTodoTabId());
@@ -94,7 +94,7 @@ public class TodoServiceImpl implements TodoService {
 		int deleted = dao.deleteTodoTabByUserIdAndTodoTabId(command.getUserId(), command.getTodoTabId());
 
 		if (deleted == 0) {
-			throw new NotFoundException("TODOタブが見つかりませんでした");
+			throw new NotFoundException("Todo tab not found");
 		}
 	}
 
@@ -107,7 +107,7 @@ public class TodoServiceImpl implements TodoService {
 				command.getTodoId());
 
 		if (deleted == 0) {
-			throw new NotFoundException("TODOが見つかりませんでした");
+			throw new NotFoundException("Todo not found");
 		}
 	}
 
