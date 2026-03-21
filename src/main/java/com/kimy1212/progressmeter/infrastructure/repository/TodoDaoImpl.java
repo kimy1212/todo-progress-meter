@@ -90,9 +90,10 @@ public class TodoDaoImpl implements TodoDao {
 						.addValue("todoTabName", todoTabName.value()),
 				keyHolder);
 
-		Long todoTabId = keyHolder.getKey().longValue();
+		Number key = keyHolder.getKey();
+		if (key == null) throw new IllegalStateException("Failed to retrieve generated key after INSERT");
 
-		return TodoTabId.of(todoTabId);
+		return TodoTabId.of(key.longValue());
 	}
 
 	@Override
