@@ -3,11 +3,12 @@ package com.kimy1212.progressmeter.presentation.controller.todo;
 import java.util.List;
 import java.util.Optional;
 
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +32,7 @@ import com.kimy1212.progressmeter.domain.model.TodoId;
 import com.kimy1212.progressmeter.domain.model.TodoName;
 import com.kimy1212.progressmeter.domain.model.TodoTabId;
 import com.kimy1212.progressmeter.domain.model.TodoTabName;
-import com.kimy1212.progressmeter.domain.model.UserId;
+import com.kimy1212.progressmeter.infrastructure.security.UserIdResolver;
 import com.kimy1212.progressmeter.presentation.dto.request.CreateTodoRequest;
 import com.kimy1212.progressmeter.presentation.dto.request.CreateTodoTabRequest;
 import com.kimy1212.progressmeter.presentation.dto.request.UpdateTodoRequest;
@@ -52,9 +53,9 @@ public class TodoApiController {
 	@GetMapping("/api/tabs/{tabId}/todos")
 	public List<TodoResponse> getTodos(
 			@PathVariable(name = "tabId") @NotNull @Positive final long todoTabId,
-			final HttpSession session) {
+			@AuthenticationPrincipal OAuth2User principal) {
 		GetTodosCommand command = new GetTodosCommand(
-				UserId.of((String) session.getAttribute("userId")),
+				UserIdResolver.resolve(principal),
 				TodoTabId.of(todoTabId));
 
 		List<TodoDto> todos = service.getTodos(command);
@@ -74,9 +75,9 @@ public class TodoApiController {
 	@PostMapping("/api/tabs")
 	public CreateTodoTabResponse createTodoTab(
 			@Valid @RequestBody final CreateTodoTabRequest request,
-			final HttpSession session) {
+			@AuthenticationPrincipal OAuth2User principal) {
 		CreateTodoTabCommand command = new CreateTodoTabCommand(
-				UserId.of((String) session.getAttribute("userId")),
+				UserIdResolver.resolve(principal),
 				TodoTabName.of(request.todoTabName()));
 
 		TodoTabId todoTabId = service.createTodoTab(command);
@@ -88,9 +89,9 @@ public class TodoApiController {
 	public void createTodo(
 			@PathVariable(name = "tabId") @NotNull @Positive final long todoTabId,
 			@Valid @RequestBody final CreateTodoRequest request,
-			final HttpSession session) {
+			@AuthenticationPrincipal OAuth2User principal) {
 		CreateTodoCommand command = new CreateTodoCommand(
-				UserId.of((String) session.getAttribute("userId")),
+				UserIdResolver.resolve(principal),
 				TodoTabId.of(todoTabId),
 				TodoName.of(request.todoName()));
 
@@ -101,9 +102,9 @@ public class TodoApiController {
 	public void updateTodoTab(
 			@PathVariable(name = "tabId") @NotNull @Positive final long todoTabId,
 			@Valid @RequestBody final UpdateTodoTabRequest request,
-			final HttpSession session) {
+			@AuthenticationPrincipal OAuth2User principal) {
 		UpdateTodoTabCommand command = new UpdateTodoTabCommand(
-				UserId.of((String) session.getAttribute("userId")),
+				UserIdResolver.resolve(principal),
 				TodoTabId.of(todoTabId),
 				TodoTabName.of(request.todoTabName()));
 
@@ -115,13 +116,13 @@ public class TodoApiController {
 			@PathVariable(name = "tabId") @NotNull @Positive final long todoTabId,
 			@PathVariable(name = "todoId") @NotNull @Positive final long todoId,
 			@Valid @RequestBody final UpdateTodoRequest request,
-			final HttpSession session) {
+			@AuthenticationPrincipal OAuth2User principal) {
 		Optional<ProgressRate> progressRate = (request.completed() != null && request.total() != null)
 				? Optional.of(ProgressRate.of(request.completed(), request.total()))
 				: Optional.empty();
 
 		UpdateTodoCommand command = new UpdateTodoCommand(
-				UserId.of((String) session.getAttribute("userId")),
+				UserIdResolver.resolve(principal),
 				TodoTabId.of(todoTabId),
 				TodoId.of(todoId),
 				Optional.ofNullable(request.todoName())
@@ -134,9 +135,9 @@ public class TodoApiController {
 	@DeleteMapping("/api/tabs/{tabId}")
 	public void deleteTodoTab(
 			@PathVariable(name = "tabId") @NotNull @Positive final long todoTabId,
-			final HttpSession session) {
+			@AuthenticationPrincipal OAuth2User principal) {
 		DeleteTodoTabCommand command = new DeleteTodoTabCommand(
-				UserId.of((String) session.getAttribute("userId")),
+				UserIdResolver.resolve(principal),
 				TodoTabId.of(todoTabId));
 
 		service.deleteTodoTab(command);
@@ -146,9 +147,9 @@ public class TodoApiController {
 	public void deleteTodo(
 			@PathVariable(name = "tabId") @NotNull @Positive final long todoTabId,
 			@PathVariable(name = "todoId") @NotNull @Positive final long todoId,
-			final HttpSession session) {
+			@AuthenticationPrincipal OAuth2User principal) {
 		DeleteTodoCommand command = new DeleteTodoCommand(
-				UserId.of((String) session.getAttribute("userId")),
+				UserIdResolver.resolve(principal),
 				TodoTabId.of(todoTabId),
 				TodoId.of(todoId));
 
