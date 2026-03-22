@@ -97,7 +97,7 @@ public class TodoDaoImpl implements TodoDao {
 	}
 
 	@Override
-	public void createTodo(final UserId userId, final TodoTabId todoTabId, final TodoName todoName) {
+	public int createTodo(final UserId userId, final TodoTabId todoTabId, final TodoName todoName) {
 		String sql = """
 				INSERT INTO todos (todo_name, todo_tab_id)
 				SELECT
@@ -108,13 +108,13 @@ public class TodoDaoImpl implements TodoDao {
 				AND todo_tabs.user_id = :userId
 				""";
 
-		namedParameterJdbcTemplate.update(
+		return namedParameterJdbcTemplate.update(
 				sql,
 				Map.of("userId", userId.value(), "todoTabId", todoTabId.value(), "todoName", todoName.value()));
 	}
 
 	@Override
-	public void updateTodoTab(final UserId userId, final TodoTabId todoTabId, final TodoTabName todoTabName) {
+	public int updateTodoTab(final UserId userId, final TodoTabId todoTabId, final TodoTabName todoTabName) {
 		String sql = """
 				UPDATE todo_tabs
 				SET todo_tab_name = :todoTabName
@@ -122,13 +122,13 @@ public class TodoDaoImpl implements TodoDao {
 				AND user_id = :userId
 				""";
 
-		namedParameterJdbcTemplate.update(
+		return namedParameterJdbcTemplate.update(
 				sql,
 				Map.of("userId", userId.value(), "todoTabId", todoTabId.value(), "todoTabName", todoTabName.value()));
 	}
 
 	@Override
-	public void updateTodo(
+	public int updateTodo(
 			final UserId userId,
 			final TodoTabId todoTabId,
 			final TodoId todoId,
@@ -171,7 +171,7 @@ public class TodoDaoImpl implements TodoDao {
 		params.put("todoTabId", todoTabId.value());
 		params.put("userId", userId.value());
 
-		namedParameterJdbcTemplate.update(sql.toString(), params);
+		return namedParameterJdbcTemplate.update(sql.toString(), params);
 	}
 
 	@Override

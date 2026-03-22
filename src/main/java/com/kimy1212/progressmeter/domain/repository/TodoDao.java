@@ -20,11 +20,11 @@ public interface TodoDao {
 
 	public TodoTabId createTodoTab(final UserId userId, final TodoTabName todoTabName);
 
-	public void createTodo(final UserId userId, final TodoTabId todoTabId, final TodoName todoName);
+	public int createTodo(final UserId userId, final TodoTabId todoTabId, final TodoName todoName);
 
-	public void updateTodoTab(final UserId userId, final TodoTabId todoTabId, final TodoTabName todoTabName);
+	public int updateTodoTab(final UserId userId, final TodoTabId todoTabId, final TodoTabName todoTabName);
 
-	public void updateTodo(
+	public int updateTodo(
 			final UserId userId,
 			final TodoTabId todoTabId,
 			final TodoId todoId,
