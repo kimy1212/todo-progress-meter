@@ -198,7 +198,12 @@ public class TodoDaoImpl implements TodoDao {
 				FROM todos
 				WHERE todo_id = :todoId
 				AND todo_tab_id = :todoTabId
-				AND user_id = :userId
+				AND EXISTS (
+					SELECT 1
+					FROM todo_tabs
+					WHERE todo_tabs.todo_tab_id = :todoTabId
+					AND todo_tabs.user_id = :userId
+				)
 				""";
 
 		return namedParameterJdbcTemplate.update(
