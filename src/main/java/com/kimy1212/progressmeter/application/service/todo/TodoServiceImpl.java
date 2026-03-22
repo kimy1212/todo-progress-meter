@@ -22,6 +22,7 @@ import com.kimy1212.progressmeter.domain.model.TodoTabId;
 import com.kimy1212.progressmeter.domain.repository.TodoDao;
 
 @Service
+@Transactional(readOnly = true)
 public class TodoServiceImpl implements TodoService {
 
 	private final TodoDao dao;
@@ -68,24 +69,33 @@ public class TodoServiceImpl implements TodoService {
 	@Override
 	@Transactional
 	public void createTodo(final CreateTodoCommand command) {
-		dao.createTodo(command.getUserId(), command.getTodoTabId(), command.getTodoName());
+		int inserted = dao.createTodo(command.getUserId(), command.getTodoTabId(), command.getTodoName());
+		if (inserted == 0) {
+			throw new NotFoundException("Todo tab not found");
+		}
 	}
 
 	@Override
 	@Transactional
 	public void updateTodoTab(final UpdateTodoTabCommand command) {
-		dao.updateTodoTab(command.getUserId(), command.getTodoTabId(), command.getTodoTabName());
+		int updated = dao.updateTodoTab(command.getUserId(), command.getTodoTabId(), command.getTodoTabName());
+		if (updated == 0) {
+			throw new NotFoundException("Todo tab not found");
+		}
 	}
 
 	@Override
 	@Transactional
 	public void updateTodo(final UpdateTodoCommand command) {
-		dao.updateTodo(
+		int updated = dao.updateTodo(
 				command.getUserId(),
 				command.getTodoTabId(),
 				command.getTodoId(),
 				command.getTodoName(),
 				command.getProgressRate());
+		if (updated == 0) {
+			throw new NotFoundException("Todo not found");
+		}
 	}
 
 	@Override
