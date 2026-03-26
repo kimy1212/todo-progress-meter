@@ -49,29 +49,39 @@ public class TodoDaoImpl implements TodoDao {
 	}
 
 	@Override
-	public List<Todo> findTodosByUserIdAndTodoTabId(final UserId userId, final TodoTabId todoTabId) {
+	public Optional<List<Todo>> findTodosByUserIdAndTodoTabId(final UserId userId, final TodoTabId todoTabId) {
 		String sql = """
 				SELECT
 					todos.todo_id,
 					todos.todo_name,
 					todos.progress_total,
 					todos.progress_completed
-				FROM todos
-				INNER JOIN todo_tabs
+				FROM todo_tabs
+				LEFT JOIN todos
 				ON todos.todo_tab_id = todo_tabs.todo_tab_id
-				WHERE todos.todo_tab_id = :todoTabId
+				WHERE todo_tabs.todo_tab_id = :todoTabId
 				AND todo_tabs.user_id = :userId
 				ORDER BY todos.todo_id
 				""";
 
-		return namedParameterJdbcTemplate.query(
+		List<Map<String, Object>> rows = namedParameterJdbcTemplate.queryForList(
 				sql,
-				Map.of("userId", userId.value(), "todoTabId", todoTabId.value()),
-				(rs, rowNum) -> new Todo(
-						TodoId.of(rs.getLong("todo_id")),
-						TodoName.of(rs.getString("todo_name")),
-						rs.getInt("progress_completed"),
-						rs.getInt("progress_total")));
+				Map.of("userId", userId.value(), "todoTabId", todoTabId.value()));
+
+		if (rows.isEmpty()) {
+			return Optional.empty();
+		}
+
+		List<Todo> todos = rows.stream()
+				.filter(row -> row.get("todo_id") != null)
+				.map(row -> new Todo(
+						TodoId.of(((Number) row.get("todo_id")).longValue()),
+						TodoName.of((String) row.get("todo_name")),
+						((Number) row.get("progress_completed")).intValue(),
+						((Number) row.get("progress_total")).intValue()))
+				.toList();
+
+		return Optional.of(todos);
 	}
 
 	@Override
@@ -91,7 +101,8 @@ public class TodoDaoImpl implements TodoDao {
 				keyHolder);
 
 		Number key = keyHolder.getKey();
-		if (key == null) throw new IllegalStateException("Failed to retrieve generated key after INSERT");
+		if (key == null)
+			throw new IllegalStateException("Failed to retrieve generated key after INSERT");
 
 		return TodoTabId.of(key.longValue());
 	}
@@ -212,25 +223,6 @@ public class TodoDaoImpl implements TodoDao {
 						"userId", userId.value(),
 						"todoTabId", todoTabId.value(),
 						"todoId", todoId.value()));
-	}
-
-	@Override
-	public boolean existsTodoTabByUserIdAndTodoTabId(final UserId userId, final TodoTabId todoTabId) {
-		String sql = """
-				SELECT EXISTS (
-					SELECT 1
-					FROM todo_tabs
-					WHERE todo_tab_id = :todoTabId
-					AND user_id = :userId
-				)
-				""";
-
-		Boolean existsTodoTab = namedParameterJdbcTemplate.queryForObject(
-				sql,
-				Map.of("userId", userId.value(), "todoTabId", todoTabId.value()),
-				Boolean.class);
-
-		return Boolean.TRUE.equals(existsTodoTab);
 	}
 
 }

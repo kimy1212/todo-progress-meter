@@ -44,11 +44,8 @@ public class TodoServiceImpl implements TodoService {
 
 	@Override
 	public List<TodoDto> getTodos(final GetTodosCommand command) {
-		if (!dao.existsTodoTabByUserIdAndTodoTabId(command.getUserId(), command.getTodoTabId())) {
-			throw new NotFoundException("Todo tab not found");
-		}
-
-		List<Todo> todos = dao.findTodosByUserIdAndTodoTabId(command.getUserId(), command.getTodoTabId());
+		List<Todo> todos = dao.findTodosByUserIdAndTodoTabId(command.getUserId(), command.getTodoTabId())
+				.orElseThrow(() -> new NotFoundException("Todo tab not found"));
 
 		return todos.stream()
 				.map(todo -> new TodoDto(
