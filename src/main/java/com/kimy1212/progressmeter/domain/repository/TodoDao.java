@@ -16,7 +16,7 @@ public interface TodoDao {
 
 	public List<TodoTab> findTodoTabsByUserId(final UserId userId);
 
-	public List<Todo> findTodosByUserIdAndTodoTabId(final UserId userId, final TodoTabId todoTabId);
+	public Optional<List<Todo>> findTodosByUserIdAndTodoTabId(final UserId userId, final TodoTabId todoTabId);
 
 	public TodoTabId createTodoTab(final UserId userId, final TodoTabName todoTabName);
 
@@ -37,7 +37,5 @@ public interface TodoDao {
 			final UserId userId,
 			final TodoTabId todoTabId,
 			final TodoId todoId);
-
-	public boolean existsTodoTabByUserIdAndTodoTabId(final UserId userId, final TodoTabId todoTabId);
 
 }
