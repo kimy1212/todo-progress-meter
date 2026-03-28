@@ -1,5 +1,11 @@
-<header th:fragment="header">
+<header th:fragment="header" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	<div>
 		<span class="app-name">進捗メーター</span>
+	</div>
+	<div class="header-user" sec:authorize="isAuthenticated()">
+		<span class="header-user-name" th:text="${#authentication.principal.attributes['name']}"></span>
+		<form th:action="@{/logout}" method="post">
+			<button type="submit" class="logout-button">ログアウト</button>
+		</form>
 	</div>
 </header>
