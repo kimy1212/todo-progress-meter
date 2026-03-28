@@ -36,7 +36,7 @@ function init() {
 			const todoTab = deleteTodoTabButton.closest('.todo-tab');
 			if (!todoTab) return;
 
-			handleDeleteTodoTabButtonClick(todoTab.dataset.todoTabId);
+			handleDeleteTodoTabButtonClick(deleteTodoTabButton, todoTab.dataset.todoTabId);
 			return;
 		}
 
@@ -125,7 +125,7 @@ function init() {
 		const deleteTodoButton = event.target.closest('.delete-todo-button');
 		if (!deleteTodoButton) return;
 		const todoId = event.target.closest('.todo').dataset.todoId;
-		handleDeleteTodoButtonClick(getActiveTodoTabId(), todoId);
+		handleDeleteTodoButtonClick(deleteTodoButton, getActiveTodoTabId(), todoId);
 	});
 
 	const addTodoButton = document.getElementById('addTodoButton');
@@ -395,6 +395,8 @@ async function deleteTodo(tabId, todoId) {
  * @param {HTMLElement} input todoタブ要素
  */
 async function commitTodoTabName(input) {
+	if (input._submitting) return;
+
 	let todoTabId = input.closest('.todo-tab').dataset.todoTabId;
 	const todoTabName = input.value;
 
@@ -407,6 +409,7 @@ async function commitTodoTabName(input) {
 		return;
 	}
 
+	input._submitting = true;
 	try {
 		if (todoTabId) {
 			await updateTodoTabName(todoTabId, todoTabName);
@@ -425,6 +428,8 @@ async function commitTodoTabName(input) {
 	} catch {
 		common.showInputError(input.parentNode, '保存に失敗しました', input);
 		input.focus();
+	} finally {
+		input._submitting = false;
 	}
 }
 
@@ -434,6 +439,8 @@ async function commitTodoTabName(input) {
  * @param {HTMLElement} input todo要素
  */
 async function commitTodoName(input) {
+	if (input._submitting) return;
+
 	let todoId = input.closest('.todo').dataset.todoId;
 	const todoName = input.value;
 
@@ -446,6 +453,7 @@ async function commitTodoName(input) {
 		return;
 	}
 
+	input._submitting = true;
 	try {
 		if (todoId) {
 			await updateTodoName(getActiveTodoTabId(), todoId, todoName);
@@ -461,6 +469,8 @@ async function commitTodoName(input) {
 	} catch {
 		common.showInputError(input.parentNode, '保存に失敗しました', input);
 		input.focus();
+	} finally {
+		input._submitting = false;
 	}
 }
 
@@ -509,17 +519,23 @@ function getActiveTodoTabId() {
 
 /**
  * todoタブ削除ボタン押下
- * 
+ *
+ * @param {HTMLElement} button 削除ボタン要素
  * @param {number} tabId 削除対象のtodoタブID
  */
-async function handleDeleteTodoTabButtonClick(tabId) {
-	const isDeleted = await deleteTodoTab(tabId);
-	if (!isDeleted) return;
-	const activeTabId = getActiveTodoTabId();
-	if (activeTabId !== tabId) {
-		sessionStorage.setItem('activeTabId', activeTabId);
+async function handleDeleteTodoTabButtonClick(button, tabId) {
+	button.disabled = true;
+	try {
+		const isDeleted = await deleteTodoTab(tabId);
+		if (!isDeleted) return;
+		const activeTabId = getActiveTodoTabId();
+		if (activeTabId !== tabId) {
+			sessionStorage.setItem('activeTabId', activeTabId);
+		}
+		window.location.href = '/';
+	} finally {
+		button.disabled = false;
 	}
-	window.location.href = '/';
 }
 
 /**
@@ -636,14 +652,20 @@ function displayTodo(todo) {
 
 /**
  * todo削除ボタン押下
- * 
+ *
+ * @param {HTMLElement} button 削除ボタン要素
  * @param {number} tabId 削除対象のtodoタブID
  * @param {number} todoId 削除対象のtodoID
  */
-async function handleDeleteTodoButtonClick(tabId, todoId) {
-	const isDeleted = await deleteTodo(tabId, todoId);
-	if (!isDeleted) return;
-	loadTodosForActiveTodoTab();
+async function handleDeleteTodoButtonClick(button, tabId, todoId) {
+	button.disabled = true;
+	try {
+		const isDeleted = await deleteTodo(tabId, todoId);
+		if (!isDeleted) return;
+		loadTodosForActiveTodoTab();
+	} finally {
+		button.disabled = false;
+	}
 }
 
 /**

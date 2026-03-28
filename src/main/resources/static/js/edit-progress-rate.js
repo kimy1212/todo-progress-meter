@@ -135,9 +135,15 @@ async function handleProgressRateSaveButtonClick() {
 		return;
 	}
 
-	const isUpdated = await updateProgressRate();
-	if (!isUpdated) return;
-	closeProgressRateModal();
-	sessionStorage.setItem('activeTabId', tabId);
-	window.location.href = '/';
+	const saveButton = document.getElementById('progressRateModalSaveButton');
+	saveButton.disabled = true;
+	try {
+		const isUpdated = await updateProgressRate();
+		if (!isUpdated) return;
+		closeProgressRateModal();
+		sessionStorage.setItem('activeTabId', tabId);
+		window.location.href = '/';
+	} finally {
+		updateSaveButtonState();
+	}
 }
