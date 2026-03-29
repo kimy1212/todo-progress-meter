@@ -9,6 +9,8 @@ export function todoTabNameErrorMessage(result) {
 	switch (result) {
 		case TodoTabNameValidationResult.EMPTY:
 			return "タブを入力してください";
+		case TodoTabNameValidationResult.TOO_LONG:
+			return "255文字以内で入力してください";
 		case TodoTabNameValidationResult.DUPLICATE:
 			return "同じ名前のタブがすでに存在します";
 		default:
