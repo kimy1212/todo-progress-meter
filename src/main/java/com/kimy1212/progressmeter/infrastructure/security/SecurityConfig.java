@@ -33,7 +33,8 @@ public class SecurityConfig {
 								.authorizationRequestResolver(resolver)))
 				.logout(logout -> logout
 						.logoutSuccessUrl("/login")
-						.deleteCookies("JSESSIONID"))
+						.invalidateHttpSession(true)
+						.deleteCookies("SESSION"))
 				.headers(headers -> headers
 						.httpStrictTransportSecurity(hsts -> hsts
 								.includeSubDomains(true)

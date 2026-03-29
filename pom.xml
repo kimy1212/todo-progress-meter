@@ -61,6 +61,12 @@
         <artifactId>mysql-connector-j</artifactId>
     </dependency>
 
+    <!-- Session -->
+    <dependency>
+        <groupId>org.springframework.session</groupId>
+        <artifactId>spring-session-jdbc</artifactId>
+    </dependency>
+
     <!-- Security / OAuth2 -->
     <dependency>
         <groupId>org.springframework.boot</groupId>
