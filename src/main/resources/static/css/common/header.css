@@ -3,7 +3,7 @@
 
 header {
 	align-items: center;
-	background: linear-gradient(135deg, var(--color-header-from) 0%, var(--color-header-to) 100%);
+	background: var(--color-header-from);
 	box-shadow: 0 2px 12px rgba(99, 102, 241, 0.3);
 	display: flex;
 	height: 64px;
@@ -26,4 +26,148 @@ header {
 .app-name::before {
 	content: "✓ ";
 	opacity: 0.85;
+}
+
+.header-user {
+	align-items: center;
+	display: flex;
+	margin-left: auto;
+	margin-right: 24px;
+}
+
+/* ── ユーザーメニュー ── */
+
+.user-menu-wrapper {
+	position: relative;
+}
+
+.user-menu-trigger {
+	align-items: center;
+	background: none;
+	border: none;
+	cursor: pointer;
+	display: flex;
+	padding: 0;
+}
+
+.header-user-icon {
+	border-radius: 50%;
+	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7);
+	height: 36px;
+	object-fit: cover;
+	transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+	width: 36px;
+}
+
+.user-menu-trigger:hover .header-user-icon,
+.user-menu-trigger[aria-expanded="true"] .header-user-icon {
+	border-color: rgba(255, 255, 255, 1);
+	box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.4), 0 4px 12px rgba(0, 0, 0, 0.25);
+	transform: scale(1.07);
+}
+
+/* ── ドロップダウン ── */
+
+.user-menu-dropdown {
+	background: var(--color-bg-card);
+	border-radius: var(--radius-md);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.08);
+	min-width: 248px;
+	opacity: 0;
+	padding: 8px;
+	pointer-events: none;
+	position: absolute;
+	right: 0;
+	top: calc(100% + 12px);
+	transform: translateY(-6px);
+	transition: opacity var(--transition-fast), transform var(--transition-fast);
+	z-index: 300;
+}
+
+.user-menu-dropdown.is-open {
+	opacity: 1;
+	pointer-events: auto;
+	transform: translateY(0);
+}
+
+.user-menu-info {
+	align-items: center;
+	display: flex;
+	gap: 12px;
+	padding: 10px 12px 14px;
+}
+
+.user-menu-avatar {
+	border-radius: 50%;
+	flex-shrink: 0;
+	height: 40px;
+	object-fit: cover;
+	width: 40px;
+}
+
+.user-menu-details {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	min-width: 0;
+}
+
+.user-menu-name {
+	color: var(--color-text-dark);
+	font-family: "Kosugi Maru", Arial, sans-serif;
+	font-size: 0.875rem;
+	font-weight: 600;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.user-menu-email {
+	color: var(--color-text-muted);
+	font-family: "Kosugi Maru", Arial, sans-serif;
+	font-size: 0.75rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.user-menu-divider {
+	background-color: var(--color-border-primary);
+	height: 1px;
+	margin: 4px 0;
+}
+
+.user-menu-item {
+	align-items: center;
+	background: none;
+	border: none;
+	border-radius: var(--radius-sm);
+	color: var(--color-text-muted);
+	cursor: pointer;
+	display: flex;
+	font-family: "Kosugi Maru", Arial, sans-serif;
+	font-size: 0.875rem;
+	gap: 10px;
+	padding: 10px 12px;
+	text-decoration: none;
+	transition: background-color var(--transition-fast), color var(--transition-fast);
+	width: 100%;
+}
+
+.user-menu-item:hover {
+	background-color: var(--color-bg-hover);
+	color: var(--color-text-dark);
+}
+
+.user-menu-item--danger {
+	color: var(--color-text-error);
+}
+
+.user-menu-item--danger:hover {
+	background-color: var(--color-danger-bg-subtle);
+	color: var(--color-text-error);
+}
+
+.user-menu-logout-form {
+	margin: 0;
 }

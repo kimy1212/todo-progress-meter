@@ -23,6 +23,11 @@ public class TodoController {
 		this.service = service;
 	}
 
+	@GetMapping("/login")
+	public String login() {
+		return "login";
+	}
+
 	@GetMapping("/")
 	public String getTodoTabs(@AuthenticationPrincipal OAuth2User principal, final Model model) {
 		GetTodoTabsCommand command = new GetTodoTabsCommand(

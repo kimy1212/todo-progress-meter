@@ -422,6 +422,8 @@ async function commitTodoTabName(input) {
 		common.clearInputError(input.parentNode);
 		common.replaceInputWithLabel(input, 'span', ['text-small-dark', 'todo-tab-label']);
 
+		document.getElementById('addTodoButton').style.display = '';
+
 		const todoTab = document.querySelector(`.todo-tab[data-todo-tab-id="${todoTabId}"]`);
 		activateTodoTab(todoTab);
 		loadTodosForActiveTodoTab();
