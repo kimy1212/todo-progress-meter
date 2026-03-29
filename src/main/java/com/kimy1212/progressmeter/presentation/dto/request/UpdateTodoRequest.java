@@ -17,6 +17,11 @@ public record UpdateTodoRequest(
 
 ) {
 
+	@AssertTrue(message = "todoName, or both completed and total must be provided")
+	public boolean isAtLeastOneFieldPresent() {
+		return todoName != null || (completed != null && total != null);
+	}
+
 	@AssertTrue(message = "completed must not exceed total")
 	public boolean isValidProgressRate() {
 		if (completed == null || total == null) return true;

@@ -164,6 +164,10 @@ public class TodoDaoImpl implements TodoDao {
 			params.put("total", progressRate.get().getTotal());
 		}
 
+		if (sets.isEmpty()) {
+			throw new IllegalArgumentException("At least one field must be specified for update");
+		}
+
 		sql.append(String.join(",", sets));
 		sql.append("\n");
 
