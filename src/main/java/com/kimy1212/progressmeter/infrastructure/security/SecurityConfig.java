@@ -33,9 +33,7 @@ public class SecurityConfig {
 								.authorizationRequestResolver(resolver)))
 				.logout(logout -> logout
 						.logoutSuccessUrl("/login")
-						.deleteCookies("JSESSIONID"))
-				.csrf(csrf -> csrf
-						.ignoringRequestMatchers("/api/**"));
+						.deleteCookies("JSESSIONID"));
 
 		return http.build();
 	}
