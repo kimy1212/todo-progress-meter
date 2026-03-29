@@ -33,7 +33,20 @@ public class SecurityConfig {
 								.authorizationRequestResolver(resolver)))
 				.logout(logout -> logout
 						.logoutSuccessUrl("/login")
-						.deleteCookies("JSESSIONID"));
+						.deleteCookies("JSESSIONID"))
+				.headers(headers -> headers
+						.httpStrictTransportSecurity(hsts -> hsts
+								.includeSubDomains(true)
+								.maxAgeInSeconds(31536000))
+						.contentSecurityPolicy(csp -> csp
+								.policyDirectives(
+										"default-src 'self'; " +
+										"script-src 'self'; " +
+										"style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; " +
+										"font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; " +
+										"img-src 'self' https://*.googleusercontent.com; " +
+										"connect-src 'self'; " +
+										"frame-ancestors 'none'")));
 
 		return http.build();
 	}
