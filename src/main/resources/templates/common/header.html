@@ -3,9 +3,29 @@
 		<span class="app-name">進捗メーター</span>
 	</div>
 	<div class="header-user" sec:authorize="isAuthenticated()">
-		<span class="header-user-name" th:text="${#authentication.principal.attributes['name']}"></span>
-		<form th:action="@{/logout}" method="post">
-			<button type="submit" class="logout-button">ログアウト</button>
-		</form>
+		<div class="user-menu-wrapper">
+			<button class="user-menu-trigger" id="userMenuTrigger" type="button" aria-expanded="false"
+				aria-haspopup="true">
+				<img class="header-user-icon" th:src="${#authentication.principal.attributes['picture']}"
+					th:alt="${#authentication.principal.attributes['name']}" referrerpolicy="no-referrer">
+			</button>
+			<div class="user-menu-dropdown" id="userMenuDropdown" aria-hidden="true">
+				<div class="user-menu-info">
+					<img class="user-menu-avatar" th:src="${#authentication.principal.attributes['picture']}"
+						th:alt="${#authentication.principal.attributes['name']}" referrerpolicy="no-referrer">
+					<div class="user-menu-details">
+						<span class="user-menu-name" th:text="${#authentication.principal.attributes['name']}"></span>
+						<span class="user-menu-email" th:text="${#authentication.principal.attributes['email']}"></span>
+					</div>
+				</div>
+				<div class="user-menu-divider"></div>
+				<form th:action="@{/logout}" method="post" class="user-menu-logout-form">
+					<button type="submit" class="user-menu-item user-menu-item--danger">
+						<i class="fa-solid fa-arrow-right-from-bracket"></i>
+						<span>ログアウト</span>
+					</button>
+				</form>
+			</div>
+		</div>
 	</div>
 </header>
