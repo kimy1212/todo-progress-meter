@@ -98,7 +98,8 @@ public class TodoDaoImpl implements TodoDao {
 				new MapSqlParameterSource()
 						.addValue("userId", userId.value())
 						.addValue("todoTabName", todoTabName.value()),
-				keyHolder);
+				keyHolder,
+				new String[] { "todo_tab_id" });
 
 		Number key = keyHolder.getKey();
 		if (key == null)
