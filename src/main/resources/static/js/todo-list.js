@@ -158,7 +158,7 @@ const MAX_SIDEBAR_WIDTH = 700;
 
 function initSidebarResizer(resizer, sidebar) {
 	const savedWidth = localStorage.getItem('sidebarWidth');
-	if (savedWidth && !sidebar.classList.contains('collapsed')) {
+	if (savedWidth && !sidebar.classList.contains('collapsed') && window.innerWidth > 768) {
 		sidebar.style.width = savedWidth + 'px';
 	}
 
