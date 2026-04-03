@@ -110,7 +110,13 @@ function init() {
 
 		if (trigger) {
 			const targetMenu = trigger.nextElementSibling;
-			targetMenu.classList.toggle('is-open');
+			const isCurrentlyOpen = targetMenu.classList.contains('is-open');
+			document
+				.querySelectorAll('.todo-actions-menu.is-open')
+				.forEach(e => e.classList.remove('is-open'));
+			if (!isCurrentlyOpen) {
+				targetMenu.classList.add('is-open');
+			}
 			return;
 		}
 
