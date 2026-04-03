@@ -422,3 +422,69 @@
 	color: var(--color-icon-light);
 	font-size: 1.4rem;
 }
+
+/* ===========================
+   Responsive (Mobile)
+=========================== */
+
+@media (max-width: 768px) {
+	.todo-tab-list {
+		width: 120px;
+	}
+
+	.todo-tab {
+		padding: 4px 2px 4px 6px;
+	}
+
+	.todo-tab-label {
+		font-size: 0.75rem;
+	}
+
+	.add-todo-tab-button {
+		height: 26px;
+		width: 26px;
+	}
+
+	.add-todo-tab-button .icon {
+		font-size: 0.75rem;
+	}
+
+	.todo-tab-text {
+		min-width: 0;
+		width: 100%;
+	}
+
+	.todo-list {
+		padding: 12px 8px 80px;
+	}
+
+	.todo {
+		margin-bottom: 6px;
+		padding: 8px 10px;
+	}
+
+	.donut-chart {
+		--size: 52px;
+		--thickness: 6px;
+		margin-left: 8px;
+	}
+
+	.progress-rate-value {
+		font-size: 0.8rem;
+	}
+
+	.progress-rate-unit {
+		font-size: 0.55rem;
+	}
+
+	.add-todo-button {
+		bottom: 16px;
+		height: 36px;
+		right: 16px;
+		width: 36px;
+	}
+
+	.add-todo-button .icon {
+		font-size: 1.1rem;
+	}
+}
