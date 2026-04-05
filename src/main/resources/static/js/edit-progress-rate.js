@@ -108,7 +108,7 @@ async function updateProgressRate() {
 
 		const res = await fetch(`/api/tabs/${tabId}/todos/${todoId}`, {
 			method: 'PATCH',
-			headers: { 'Content-Type': 'application/json' },
+			headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
 			body: JSON.stringify(dto),
 		});
 

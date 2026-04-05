@@ -207,6 +207,7 @@ async function fetchTodos(tabId) {
 	try {
 		const res = await fetch(`/api/tabs/${tabId}/todos`, {
 			method: 'GET',
+			headers: { 'X-Requested-With': 'XMLHttpRequest' },
 			signal: todosController.signal
 		});
 
@@ -241,7 +242,7 @@ async function createTodoTab(todoTabName) {
 
 		const res = await fetch(`/api/tabs`, {
 			method: 'POST',
-			headers: { "Content-Type": "application/json" },
+			headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
 			body: JSON.stringify(dto),
 		});
 
@@ -271,7 +272,7 @@ async function createTodo(tabId, todoName) {
 
 		const res = await fetch(`/api/tabs/${tabId}/todos`, {
 			method: 'POST',
-			headers: { "Content-Type": "application/json" },
+			headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
 			body: JSON.stringify(dto),
 		});
 
@@ -301,7 +302,7 @@ async function updateTodoTabName(tabId, todoTabName) {
 
 		const res = await fetch(`/api/tabs/${tabId}`, {
 			method: 'PATCH',
-			headers: { 'Content-Type': 'application/json' },
+			headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
 			body: JSON.stringify(dto),
 		});
 
@@ -332,7 +333,7 @@ async function updateTodoName(tabId, todoId, todoName) {
 
 		const res = await fetch(`/api/tabs/${tabId}/todos/${todoId}`, {
 			method: 'PATCH',
-			headers: { 'Content-Type': 'application/json' },
+			headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
 			body: JSON.stringify(dto),
 		});
 
@@ -357,6 +358,7 @@ async function deleteTodoTab(tabId) {
 	try {
 		const res = await fetch(`/api/tabs/${tabId}`, {
 			method: 'DELETE',
+			headers: { 'X-Requested-With': 'XMLHttpRequest' },
 		});
 
 		if (!res.ok) {
@@ -381,6 +383,7 @@ async function deleteTodo(tabId, todoId) {
 	try {
 		const res = await fetch(`/api/tabs/${tabId}/todos/${todoId}`, {
 			method: 'DELETE',
+			headers: { 'X-Requested-With': 'XMLHttpRequest' },
 		});
 
 		if (!res.ok) {
